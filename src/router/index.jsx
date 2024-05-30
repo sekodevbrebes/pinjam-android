@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   GetStarted,
   SigIn,
@@ -8,9 +9,22 @@ import {
   SignUpSuccess,
   Splash,
   Home,
+  Booking,
+  Profile,
 } from '../pages';
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const MainApp = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Booking" component={Booking} />
+      <Tab.Screen name="Profile" component={Profile} />
+    </Tab.Navigator>
+  );
+};
 
 const Router = () => {
   return (
@@ -48,6 +62,11 @@ const Router = () => {
       <Stack.Screen
         name="Home"
         component={Home}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MainApp"
+        component={MainApp}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

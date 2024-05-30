@@ -15,7 +15,7 @@ const SignUpSuccess = ({navigation}) => {
         style={styles.button}
         title="Home"
         type="primary"
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.replace('MainApp')}
       />
     </View>
   );
