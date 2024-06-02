@@ -21,7 +21,7 @@ const SigIn = ({navigation}) => {
       <Button
         title="Sign In"
         type="primary"
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.replace('MainApp')}
       />
       <View style={{height: 20}} />
       <Button

@@ -12,13 +12,16 @@ import {
   Booking,
   Profile,
 } from '../pages';
+import {BottomNavigator} from '../components';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const MainApp = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{headerShown: false}}
+      tabBar={props => <BottomNavigator {...props} />}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Booking" component={Booking} />
       <Tab.Screen name="Profile" component={Profile} />
