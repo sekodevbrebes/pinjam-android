@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 14,
     overflow: 'hidden',
-    marginRight: 16,
+    margin: 12,
   },
   image: {
     width: 200,

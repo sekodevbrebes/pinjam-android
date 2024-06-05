@@ -7,6 +7,7 @@ import SignUp from './SignUp';
 import SignUpAddress from './SignUpAddress';
 import SignUpSuccess from './SignUpSuccess';
 import Splash from './Splash';
+import RoomDetail from './RoomDetail';
 
 export {
   Splash,
@@ -18,4 +19,5 @@ export {
   Home,
   Profile,
   Booking,
+  RoomDetail,
 };

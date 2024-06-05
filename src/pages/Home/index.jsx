@@ -2,36 +2,38 @@ import React from 'react';
 import {StyleSheet, View, Text, Image, ScrollView} from 'react-native';
 import {Aula, ProfilUser, RuangBupati, RuangCC, RuangSekda} from '../../assets';
 import RoomCard from '../../components/RoomCard';
-import {Gap} from '../../components';
+import {Gap, HomeTab} from '../../components';
+import HomeProfile from '../../components/HomeProfile';
 
 const Home = () => {
   return (
-    <View>
-      <View style={styles.profilContainer}>
-        <Image source={ProfilUser} style={styles.profil} />
+    <ScrollView>
+      <View style={styles.page}>
+        <HomeProfile />
         <View>
-          <Text style={styles.halo}>
-            Halo, <Text style={styles.name}>Sus Hardianto</Text>
-          </Text>
-          <Text style={styles.instansi}>DP3KB Kabupaten Brebes</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View style={styles.roomCardContainer}>
+              <RoomCard image={Aula} />
+              <RoomCard image={RuangSekda} />
+              <RoomCard image={RuangBupati} />
+              <RoomCard image={RuangCC} />
+            </View>
+          </ScrollView>
+        </View>
+        <View style={styles.tabContainer}>
+          <HomeTab />
         </View>
       </View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <View style={styles.roomCardContainer}>
-          <Gap width={16} />
-          <RoomCard image={Aula} />
-          <RoomCard image={RuangSekda} />
-          <RoomCard image={RuangBupati} />
-          <RoomCard image={RuangCC} />
-        </View>
-      </ScrollView>
-    </View>
+    </ScrollView>
   );
 };
 
 export default Home;
 
 const styles = StyleSheet.create({
+  page: {
+    flex: 1,
+  },
   profilContainer: {
     flexDirection: 'row',
     paddingHorizontal: 24,
@@ -39,9 +41,12 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
     backgroundColor: 'white',
   },
+  tabContainer: {
+    flex: 1,
+  },
   roomCardContainer: {
     flexDirection: 'row',
-    marginVertical: 24,
+    marginVertical: 16,
   },
   halo: {
     fontSize: 18,

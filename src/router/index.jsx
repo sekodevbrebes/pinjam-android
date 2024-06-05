@@ -11,6 +11,7 @@ import {
   Home,
   Booking,
   Profile,
+  RoomDetail,
 } from '../pages';
 import {BottomNavigator} from '../components';
 
@@ -70,6 +71,11 @@ const Router = () => {
       <Stack.Screen
         name="MainApp"
         component={MainApp}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="RoomDetail"
+        component={RoomDetail}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
