@@ -9,7 +9,6 @@ const Header = ({title, subTitle, onPress}) => {
       <View style={styles.back}>
         <Button type="icon-only" onPress={onPress} />
       </View>
-
       <View>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.subTitle}>{subTitle}</Text>

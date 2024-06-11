@@ -1,6 +1,7 @@
 // import BackButton from './arrow_back.png';
 import TesTes from './testes.svg';
 import BackButton from './back-button.svg';
+import BackButtonLight from './back-button-light.svg';
 import IcHomeOn from './home-On.svg';
 import IcHomeOff from './home-Off.svg';
 import IcBookingOff from './booking-Off.svg';
@@ -9,6 +10,7 @@ import IcProfileOff from './profile-Off.svg';
 import IcProfileOn from './profile-On.svg';
 import IcStarOn from './star-on.svg'
 import IcStarOff from './star-off.svg'
+import ICTime from './time.svg'
 
 export {
     BackButton,
@@ -20,5 +22,7 @@ export {
     IcProfileOn,
     IcProfileOff,
     IcStarOn,
-    IcStarOff
+    IcStarOff,
+    BackButtonLight,
+    ICTime
 }

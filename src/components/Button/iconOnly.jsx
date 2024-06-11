@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {BackButton} from '../../assets';
+import {BackButton, BackButtonLight} from '../../assets';
 
 const IconOnly = ({onPress, icon}) => {
   const Icon = () => {
@@ -8,7 +8,7 @@ const IconOnly = ({onPress, icon}) => {
       return <BackButton />;
     }
     if (icon === 'back-light') {
-      return <BackButton />;
+      return <BackButtonLight />;
     }
     return <BackButton />;
   };

@@ -8,6 +8,10 @@ import SignUpAddress from './SignUpAddress';
 import SignUpSuccess from './SignUpSuccess';
 import Splash from './Splash';
 import RoomDetail from './RoomDetail';
+import DetailRuangan from './RoomDetail';
+import BookingDate from './BookingDate';
+import Agenda from './Agenda';
+import SuccessBooking from './SuccessBooking';
 
 export {
   Splash,
@@ -20,4 +24,8 @@ export {
   Profile,
   Booking,
   RoomDetail,
+  DetailRuangan,
+  BookingDate,
+  Agenda,
+  SuccessBooking,
 };

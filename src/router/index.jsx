@@ -12,6 +12,10 @@ import {
   Booking,
   Profile,
   RoomDetail,
+  DetailRuangan,
+  BookingDate,
+  Agenda,
+  SuccessBooking,
 } from '../pages';
 import {BottomNavigator} from '../components';
 
@@ -69,13 +73,33 @@ const Router = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="MainApp"
-        component={MainApp}
+        name="RoomDetail"
+        component={RoomDetail}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="RoomDetail"
-        component={RoomDetail}
+        name="DetailRuangan"
+        component={DetailRuangan}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="BookingDate"
+        component={BookingDate}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Agenda"
+        component={Agenda}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="SuccessBooking"
+        component={SuccessBooking}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MainApp"
+        component={MainApp}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

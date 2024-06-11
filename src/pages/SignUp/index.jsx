@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     paddingHorizontal: 24,
-    marginTop: 20,
+    marginTop: 14,
     flex: 1,
   },
   photoContainer: {

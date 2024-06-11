@@ -65,19 +65,19 @@ const Popular = () => {
     <View style={styles.page}>
       <ListRoom
         image={Aula}
-        onPress={() => navigation.navigate('RoomDetail')}
+        onPress={() => navigation.navigate('DetailRuangan')}
       />
       <ListRoom
         image={RuangBupati}
-        onPress={() => navigation.navigate('RoomDetail')}
+        onPress={() => navigation.navigate('DetailRuangan')}
       />
       <ListRoom
         image={RuangCC}
-        onPress={() => navigation.navigate('RoomDetail')}
+        onPress={() => navigation.navigate('DetailRuangan')}
       />
       <ListRoom
         image={RuangSekda}
-        onPress={() => navigation.navigate('RoomDetail')}
+        onPress={() => navigation.navigate('DetailRuangan')}
       />
     </View>
   );
