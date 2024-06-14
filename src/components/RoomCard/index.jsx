@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 14,
     overflow: 'hidden',
-    margin: 12,
+    margin: 6,
   },
   image: {
     width: 200,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#020202',
   },
-  desc: {},
+
   starContainer: {
     flexDirection: 'row',
   },

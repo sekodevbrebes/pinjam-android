@@ -17,10 +17,12 @@ const Home = () => {
               <RoomCard image={RuangSekda} />
               <RoomCard image={RuangBupati} />
               <RoomCard image={RuangCC} />
+              <RoomCard image={Aula} />
+              <RoomCard image={RuangBupati} />
             </View>
           </ScrollView>
         </View>
-        <View style={styles.tabContainer}>
+        <View style={styles.pageTab}>
           <HomeTab />
         </View>
       </View>
@@ -34,19 +36,11 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
   },
-  profilContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: 24,
-    backgroundColor: 'white',
-  },
-  tabContainer: {
-    flex: 1,
-  },
+
   roomCardContainer: {
     flexDirection: 'row',
-    marginVertical: 16,
+    marginVertical: 8,
+    marginHorizontal: 8,
   },
   halo: {
     fontSize: 18,

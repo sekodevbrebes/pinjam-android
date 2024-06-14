@@ -2,9 +2,10 @@ import React from 'react';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import {View, Text, useWindowDimensions, Image, StyleSheet} from 'react-native';
 import {Aula, RuangBupati, RuangCC, RuangSekda} from '../../assets';
-import ListRoom from '../ListRoom';
 
 import {useNavigation} from '@react-navigation/native';
+
+import ListBooking from '../ListBooking';
 
 const renderTabBar = props => (
   <TabBar
@@ -35,66 +36,38 @@ const renderTabBar = props => (
   />
 );
 
-const Ruangan = () => {
+const InProgress = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.page}>
-      <ListRoom
-        image={Aula}
-        onPress={() => navigation.navigate('RoomDetail')}
-      />
-      <ListRoom
-        image={RuangBupati}
-        onPress={() => navigation.navigate('RoomDetail')}
-      />
-      <ListRoom
-        image={RuangCC}
-        onPress={() => navigation.navigate('RoomDetail')}
-      />
-      <ListRoom
-        image={RuangSekda}
-        onPress={() => navigation.navigate('RoomDetail')}
-      />
+      <ListBooking image={Aula} />
+      <ListBooking image={RuangCC} />
+      <ListBooking image={RuangCC} />
     </View>
   );
 };
 
-const Popular = () => {
+const PastBooking = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.page}>
-      <ListRoom
-        image={Aula}
-        onPress={() => navigation.navigate('DetailRuangan')}
-      />
-      <ListRoom
-        image={RuangBupati}
-        onPress={() => navigation.navigate('DetailRuangan')}
-      />
-      <ListRoom
-        image={RuangCC}
-        onPress={() => navigation.navigate('DetailRuangan')}
-      />
-      <ListRoom
-        image={RuangSekda}
-        onPress={() => navigation.navigate('DetailRuangan')}
-      />
+      <ListBooking image={Aula} />
     </View>
   );
 };
 
 const renderScene = SceneMap({
-  1: Ruangan,
-  2: Popular,
+  1: InProgress,
+  2: PastBooking,
 });
 
-const HomeTab = () => {
+const BookingTab = () => {
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: '1', title: 'Ruang'},
-    {key: '2', title: 'Popular'},
+    {key: '1', title: 'In Progress'},
+    {key: '2', title: 'Past Booking'},
   ]);
   return (
     <TabView
@@ -108,7 +81,7 @@ const HomeTab = () => {
   );
 };
 
-export default HomeTab;
+export default BookingTab;
 
 const styles = StyleSheet.create({
   page: {flex: 1},

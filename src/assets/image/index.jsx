@@ -5,6 +5,7 @@ import RuangSekda from './ruang-sekda.jpeg';
 import RuangBupati from './ruang-bupati.jpg';
 import RuangCC from './ruangkerjasekda-1.png';
 import SuccessBook from './successbooking.png';
+import EmptyImg from './emptybooking.png';
 
 export {
   SuccessImg,
@@ -14,4 +15,5 @@ export {
   RuangCC,
   RuangBupati,
   SuccessBook,
+  EmptyImg,
 };

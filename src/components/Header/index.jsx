@@ -23,8 +23,7 @@ const styles = StyleSheet.create({
   container: {
     fontFamily: 'Poppins-medium',
     paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 24,
+    paddingVertical: 8,
     backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',

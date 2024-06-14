@@ -6,6 +6,10 @@ import InputType from './Input';
 import HomeTab from './HomeTab';
 import SlideShow from './SlideShow';
 import EmptyBooking from './EmptyBooking';
+import ProfileTab from './ProfileTab';
+import ListAccount from './ListAccount';
+import BookingTab from './BookingTab';
+import ListBooking from './ListBooking';
 
 export {
   Button,
@@ -16,4 +20,8 @@ export {
   HomeTab,
   SlideShow,
   EmptyBooking,
+  ProfileTab,
+  ListAccount,
+  BookingTab,
+  ListBooking,
 };

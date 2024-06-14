@@ -4,7 +4,13 @@ import IconOnly from './iconOnly';
 
 const Button = ({type, title, onPress, icon}) => {
   if (type === 'icon-only') {
-    return <IconOnly icon={icon} onPress={onPress} />;
+    return (
+      <IconOnly
+        icon={icon}
+        onPress={onPress}
+        style={{backgroundColor: 'red'}}
+      />
+    );
   }
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>

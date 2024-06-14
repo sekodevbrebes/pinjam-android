@@ -14,7 +14,7 @@ const index = ({image}) => {
               type="icon-only"
               icon="back-light"
               style={styles.backbutton}
-              onPress={() => navigation.navigate('Home')}
+              onPress={() => navigation.goBack()}
             />
             <Gap width={16} />
             <View>

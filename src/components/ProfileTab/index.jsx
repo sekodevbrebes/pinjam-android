@@ -5,6 +5,7 @@ import {Aula, RuangBupati, RuangCC, RuangSekda} from '../../assets';
 import ListRoom from '../ListRoom';
 
 import {useNavigation} from '@react-navigation/native';
+import ListAccount from '../ListAccount';
 
 const renderTabBar = props => (
   <TabBar
@@ -35,66 +36,40 @@ const renderTabBar = props => (
   />
 );
 
-const Ruangan = () => {
+const Account = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.page}>
-      <ListRoom
-        image={Aula}
-        onPress={() => navigation.navigate('RoomDetail')}
-      />
-      <ListRoom
-        image={RuangBupati}
-        onPress={() => navigation.navigate('RoomDetail')}
-      />
-      <ListRoom
-        image={RuangCC}
-        onPress={() => navigation.navigate('RoomDetail')}
-      />
-      <ListRoom
-        image={RuangSekda}
-        onPress={() => navigation.navigate('RoomDetail')}
-      />
+      <ListAccount name="Edit Profile" />
+      <ListAccount name="Unit Kerja" />
     </View>
   );
 };
 
-const Popular = () => {
+const About = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.page}>
-      <ListRoom
-        image={Aula}
-        onPress={() => navigation.navigate('DetailRuangan')}
-      />
-      <ListRoom
-        image={RuangBupati}
-        onPress={() => navigation.navigate('DetailRuangan')}
-      />
-      <ListRoom
-        image={RuangCC}
-        onPress={() => navigation.navigate('DetailRuangan')}
-      />
-      <ListRoom
-        image={RuangSekda}
-        onPress={() => navigation.navigate('DetailRuangan')}
-      />
+      <ListAccount name="Rate App" />
+      <ListAccount name="Help Center" />
+      <ListAccount name="Privacy & Policy" />
+      <ListAccount name="Terms & Conditions" />
     </View>
   );
 };
 
 const renderScene = SceneMap({
-  1: Ruangan,
-  2: Popular,
+  1: Account,
+  2: About,
 });
 
-const HomeTab = () => {
+const ProfileTab = () => {
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: '1', title: 'Ruang'},
-    {key: '2', title: 'Popular'},
+    {key: '1', title: 'Account'},
+    {key: '2', title: 'About'},
   ]);
   return (
     <TabView
@@ -108,8 +83,8 @@ const HomeTab = () => {
   );
 };
 
-export default HomeTab;
+export default ProfileTab;
 
 const styles = StyleSheet.create({
-  page: {flex: 1},
+  page: {paddingTop: 10},
 });

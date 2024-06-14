@@ -7,9 +7,9 @@ const SignUpSuccess = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={SuccessImg} />
-      <Text style={styles.title}>Registerasi Success...!</Text>
+      <Text style={styles.title}>Registration successful</Text>
       <Text style={styles.subtitle}>
-        Sekarang anda bisa mulai {'\n'} meminjam tempat untuk kegiatan
+        Now you can start {'\n'} borrowing a place for activities
       </Text>
       <Button
         style={styles.button}

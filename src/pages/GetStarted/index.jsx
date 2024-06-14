@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     // backgroundColor: '#FF9736',
     justifyContent: 'space-between',
     flex: 1,
+    paddingBottom: 40,
   },
   image: {
     width: 150,
