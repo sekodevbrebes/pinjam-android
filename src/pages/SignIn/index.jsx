@@ -1,9 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Logo} from '../../assets';
 import {Button, Gap, InputType} from '../../components';
+import useForm from '../../utilities/useForm';
 
 const SigIn = ({navigation}) => {
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+
+  const [form, setForm] = useForm({
+    email: '',
+    password: '',
+  });
+
+  const onSubmit = () => {
+    console.log('form :', form);
+  };
+
   return (
     <View style={styles.page}>
       <Image style={styles.image} source={Logo} />
@@ -14,15 +27,19 @@ const SigIn = ({navigation}) => {
       <InputType
         label="Email Address :"
         placeholder="Type Your Email Address"
+        value={form.email}
+        onChangeText={value => setForm('email', value)}
       />
       <Gap height={36} />
-      <InputType label="Password :" placeholder="Type Your Password" />
-      <Gap height={36} />
-      <Button
-        title="Sign In"
-        type="primary"
-        onPress={() => navigation.replace('MainApp')}
+      <InputType
+        label="Password :"
+        placeholder="Type Your Password"
+        value={form.password}
+        onChangeText={value => setForm('password', value)}
+        secureTextEntry
       />
+      <Gap height={36} />
+      <Button title="Sign In" type="primary" onPress={onSubmit} />
       <View style={{height: 20}} />
       <Button
         title="Create New Account"

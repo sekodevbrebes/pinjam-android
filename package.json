@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "debug": "start open-rn-debugger.bat && react-native start"
   },
   "dependencies": {
     "@coder-shubh/react-native-image-slider": "^1.0.4",
@@ -15,6 +16,7 @@
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
+    "axios": "^1.7.2",
     "np": "^2.0.7",
     "pinar": "^0.12.2",
     "react": "18.2.0",
@@ -28,7 +30,10 @@
     "react-native-svg": "^15.3.0",
     "react-native-swiper-flatlist": "^3.2.4",
     "react-native-tab-view": "^3.5.2",
-    "react-native-vector-icons": "^10.1.0"
+    "react-native-vector-icons": "^10.1.0",
+    "react-redux": "^9.1.2",
+    "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

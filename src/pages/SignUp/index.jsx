@@ -33,7 +33,7 @@ const SignUp = ({navigation}) => {
           type="primary"
           onPress={() => navigation.navigate('SignUpAddress')}
         />
-        <Gap height={36} />
+        <Gap height={18} />
         <Text style={styles.footer}>
           Sudah Punya Akun?{' '}
           <Text

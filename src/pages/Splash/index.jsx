@@ -1,18 +1,20 @@
 import React, {useEffect} from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
-import {Logo} from '../../assets';
+import {View, Image, ImageBackground, Text, StyleSheet} from 'react-native';
+import {BgFlash, Logo, LogoFlash} from '../../assets';
 
 const Splash = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
       navigation.replace('GetStarted');
-    }, 3000);
+    }, 2500);
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Image style={styles.image} source={Logo} />
-    </View>
+    <ImageBackground source={BgFlash} style={styles.container}>
+      <View style={styles.container}>
+        <Image style={styles.image} source={LogoFlash} />
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -23,11 +25,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FF9736',
   },
   image: {
-    width: 150,
-    height: 150,
+    width: 200,
+    height: 200,
   },
   title: {
     fontSize: 20,

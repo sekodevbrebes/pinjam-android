@@ -1,12 +1,13 @@
 import React from 'react';
-import {SuccessImg} from '../../assets';
+
 import {StyleSheet, View, Text, Image} from 'react-native';
 import {Button} from '../../components';
+import {SuccessRegisteration} from '../../assets';
 
 const SignUpSuccess = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Image style={styles.image} source={SuccessImg} />
+      <Image style={styles.image} source={SuccessRegisteration} />
       <Text style={styles.title}>Registration successful</Text>
       <Text style={styles.subtitle}>
         Now you can start {'\n'} borrowing a place for activities
