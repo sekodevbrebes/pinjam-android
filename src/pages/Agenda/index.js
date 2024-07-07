@@ -120,7 +120,7 @@ const AgendaCalendar = ({navigation}) => {
 
   const markedDates = {};
   for (const date in agendaData) {
-    markedDates[date] = {marked: true, selected: true, selectedColor: 'orange'};
+    markedDates[date] = {marked: true, selected: true, selectedColor: '#64B5D7'};
   }
 
   return (

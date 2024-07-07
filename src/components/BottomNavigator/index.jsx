@@ -65,7 +65,7 @@ export default BottomNavigator;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#FF9736',
+    backgroundColor: '#64B5D7',
     paddingVertical: 8,
     paddingHorizontal: 50,
     justifyContent: 'space-between',

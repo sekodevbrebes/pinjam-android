@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   label: {
-    marginBottom: 10,
+    marginBottom: 8,
     fontSize: 18,
     color: '#000000',
     fontFamily: 'Poppins-Regular',

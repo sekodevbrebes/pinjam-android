@@ -8,8 +8,11 @@ const GetStarted = ({navigation}) => {
     <ImageBackground source={BgStarted} style={styles.page}>
       <View>
         <Image style={styles.image} source={Logo} />
-        <Text style={styles.title}>Pinjam Tempat</Text>
-        <Text style={styles.title}>Lebih Cepet & Tepat</Text>
+        {/* <Text style={styles.title}>Si KPT</Text> */}
+        <Text style={styles.subtitle}>
+          ( Sistem Ketersediaan Pinjam Tempat )
+        </Text>
+        <Text style={styles.subtitle}>Mudah, Cepat dan Akurat</Text>
       </View>
       <View>
         <Button
@@ -32,18 +35,27 @@ const styles = StyleSheet.create({
     // backgroundColor: '#FF9736',
     justifyContent: 'space-between',
     flex: 1,
-    paddingBottom: 40,
+    paddingBottom: 70,
+    paddingTop: 50,
   },
   image: {
     width: 150,
     height: 150,
     alignSelf: 'center',
+    paddingBottom: 150,
+    marginBottom: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontStyle: 'bold',
     color: '#FFFFFF',
     marginTop: 10,
     textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontFamily: 'Poppins-Regular',
   },
 });

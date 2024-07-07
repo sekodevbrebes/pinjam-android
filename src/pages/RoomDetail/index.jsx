@@ -5,8 +5,6 @@ import Rating from '../../components/Rating';
 import {Gap, SlideShow, Button} from '../../components';
 import {Aula, RuangBupati, RuangCC, RuangSekda} from '../../assets';
 
-const colors = ['tomato', 'thistle', 'skyblue', 'teal'];
-
 const DetailRuangan = ({navigation}) => (
   <View style={styles.page}>
     <ScrollView>
