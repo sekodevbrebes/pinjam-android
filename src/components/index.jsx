@@ -10,6 +10,7 @@ import ProfileTab from './ProfileTab';
 import ListAccount from './ListAccount';
 import BookingTab from './BookingTab';
 import ListBooking from './ListBooking';
+import Loading from './Loading';
 
 export {
   Button,
@@ -24,4 +25,5 @@ export {
   ListAccount,
   BookingTab,
   ListBooking,
+  Loading,
 };

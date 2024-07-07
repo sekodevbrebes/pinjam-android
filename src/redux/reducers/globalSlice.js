@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isError: true,
   message: 'Error',
+  isLoading: false, // Tambahkan state awal untuk isLoading
 };
 
 // Membuat slice reducer untuk global state
@@ -22,10 +23,14 @@ const globalSlice = createSlice({
       state.isError = false;
       state.message = '';
     },
+    // Action untuk mengatur status loading
+    setLoading(state, action) {
+      state.isLoading = action.payload.isLoading;
+    },
   },
 });
 
 // Ekspor actions dari slice reducer
-export const { setError, clearError } = globalSlice.actions;
+export const { setError, clearError, setLoading } = globalSlice.actions;
 // Ekspor reducer untuk slice global
 export default globalSlice.reducer;

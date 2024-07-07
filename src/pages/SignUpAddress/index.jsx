@@ -4,6 +4,8 @@ import {Button, Gap, Header, InputType} from '../../components';
 import {useDispatch, useSelector} from 'react-redux'; // Impor hook useDispatch dari Redux
 import useForm from '../../utilities/useForm';
 import axios from 'axios'; // Impor Axios
+import {showMessage, hideMessage} from 'react-native-flash-message';
+import {setLoading} from '../../redux/reducers/globalSlice'; // Import action setLoading
 
 const SignUpAddress = ({navigation}) => {
   const dispatch = useDispatch(); // Menginisialisasi hook useDispatch
@@ -24,20 +26,33 @@ const SignUpAddress = ({navigation}) => {
     };
     console.log('Data Register :', data);
 
+    // Set isLoading ke true saat mulai mengirim data
+    dispatch(setLoading({isLoading: true}));
+
     // Mengirim data ke endpoint register menggunakan Axios
     axios
       .post('http://10.0.2.2:8000/api/register', data)
       .then(response => {
-        console.log('Data Sukses:', response.data);
+        // console.log('Data Sukses:', response.data);
+        dispatch(setLoading({isLoading: false})); // Set isLoading ke false setelah sukses
+        ShowToast('Register Success', 'success');
         // Jika berhasil, navigasi ke layar sukses
         navigation.navigate('SignUpSuccess');
       })
       .catch(error => {
-        console.log('Error registering:', error);
+        // console.log('Error registering:', error.response);
         // Tangani kesalahan di sini (misalnya, tampilkan pesan kesalahan kepada pengguna)
+        dispatch(setLoading({isLoading: false})); // Set isLoading ke false setelah gagal
+        ShowToast(error.response.data.message, 'danger');
       });
   };
 
+  const ShowToast = (message, type) => {
+    showMessage({
+      message,
+      type: type === 'success' ? 'success' : 'danger',
+    });
+  };
   return (
     <ScrollView>
       <View style={styles.page}>
