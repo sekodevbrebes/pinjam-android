@@ -1,15 +1,21 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, InputType} from '../../components';
-import {useDispatch, useSelector} from 'react-redux'; // Impor hook useDispatch dari Redux
+import {useDispatch, useSelector} from 'react-redux';
 import useForm from '../../utilities/useForm';
-import axios from 'axios'; // Impor Axios
-import {setLoading} from '../../redux/reducers/globalSlice'; // Import action setLoading
-import {ShowMessage} from '../../utilities';
+import axios from 'axios';
+import {setLoading} from '../../redux/reducers/globalSlice';
+import {showMessage} from '../../utilities';
+import {
+  setRegister,
+  clearRegisterState,
+} from '../../redux/reducers/registerSlice';
+import {setPhoto, setUploadStatus} from '../../redux/reducers/photoSlice';
 
 const SignUpAddress = ({navigation}) => {
-  const dispatch = useDispatch(); // Menginisialisasi hook useDispatch
-  const registerReducer = useSelector(state => state.register);
+  const dispatch = useDispatch();
+  const register = useSelector(state => state.register);
+  const photo = useSelector(state => state.photo);
 
   const [form, setForm] = useForm({
     instansi: '',
@@ -17,33 +23,54 @@ const SignUpAddress = ({navigation}) => {
     telephone: '',
   });
 
-  // Fungsi untuk menangani pengiriman formulir
   const onSubmit = () => {
-    console.log('form:', form); // Mencatat data formulir untuk pengujian
     const data = {
       ...form,
-      ...registerReducer,
+      ...register,
     };
-    console.log('Data Register :', data);
 
-    // Set isLoading ke true saat mulai mengirim data
     dispatch(setLoading({isLoading: true}));
 
-    // Mengirim data ke endpoint register menggunakan Axios
     axios
       .post('http://10.0.2.2:8000/api/register', data)
       .then(response => {
-        console.log('Data Sukses:', response.data);
-        dispatch(setLoading({isLoading: false})); // Set isLoading ke false setelah sukses
-        ShowMessageMessage('Register Success', 'success');
-        // Jika berhasil, navigasi ke layar sukses
-        navigation.navigate('SignUpSuccess');
+        console.log('Data Sukse :', response.data);
+        if (photo.isUploadPhoto) {
+          const photoForUpload = new FormData();
+          photoForUpload.append('image', {
+            uri: photo.uri,
+            type: photo.type,
+            name: photo.name,
+          });
+
+          axios
+            .post('http://10.0.2.2:8000/api/user/photo', photoForUpload, {
+              headers: {
+                Authorization: `${response.data.token_type} ${response.data.token}`,
+                'Content-Type': 'multipart/form-data',
+              },
+            })
+            .then(resUpload => {
+              console.log('Photo Sukses :', resUpload);
+              dispatch(setLoading({isLoading: false}));
+              showMessage('Register Success');
+              navigation.navigate('SignUpSuccess');
+            })
+            .catch(err => {
+              dispatch(setLoading({isLoading: false}));
+              console.log('Eroor Upload', err);
+            });
+        } else {
+          dispatch(setLoading({isLoading: false}));
+          showMessage('Register Success');
+          navigation.navigate('SignUpSuccess');
+        }
+        dispatch(clearRegisterState());
+        dispatch(setUploadStatus(false));
       })
       .catch(error => {
-        // console.log('Error registering:', error.response);
-        // Tangani kesalahan di sini (misalnya, tampilkan pesan kesalahan kepada pengguna)
-        dispatch(setLoading({isLoading: false})); // Set isLoading ke false setelah gagal
-        ShowMessage(error.response.data.message, 'danger');
+        dispatch(setLoading({isLoading: false}));
+        showMessage(error.response.data.message, 'danger');
       });
   };
 

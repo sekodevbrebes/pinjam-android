@@ -1,15 +1,9 @@
-// store.js
 import { configureStore } from '@reduxjs/toolkit';
-import registerReducer from './reducers/registerSlice'; // Import reducer untuk slice registrasi
-import globalReducer from './reducers/globalSlice'; // Import reducer untuk slice global
+import rootReducer from './reducers'; // Impor rootReducer yang sudah didefinisikan
 
-// Konfigurasi store dengan menggunakan combineReducers untuk menggabungkan semua reducer
+// Konfigurasi store Redux
 const store = configureStore({
-  reducer: {
-    register: registerReducer, // Tambahkan reducer untuk slice registrasi
-    global: globalReducer, // Tambahkan reducer untuk slice global
-  },
+  reducer: rootReducer, // Menggunakan rootReducer sebagai reducer utama
 });
 
-// Ekspor store yang telah dikonfigurasi
 export default store;

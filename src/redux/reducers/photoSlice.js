@@ -1,7 +1,5 @@
-// reducers/photoSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
-// State awal untuk slice foto
 const initialState = {
   uri: '',
   type: '',
@@ -9,15 +7,15 @@ const initialState = {
   isUploadPhoto: false,
 };
 
-// Membuat slice reducer untuk foto
 const photoSlice = createSlice({
-  name: 'photo', // Nama slice
-  initialState, // State awal
+  name: 'photo',
+  initialState,
   reducers: {
     setPhoto(state, action) {
-      state.uri = action.payload.uri;
-      state.type = action.payload.type;
-      state.name = action.payload.name;
+      const { uri, type, name } = action.payload;
+      state.uri = uri;
+      state.type = type;
+      state.name = name;
     },
     setUploadStatus(state, action) {
       state.isUploadPhoto = action.payload;
@@ -25,7 +23,5 @@ const photoSlice = createSlice({
   },
 });
 
-// Ekspor actions dari slice reducer
 export const { setPhoto, setUploadStatus } = photoSlice.actions;
-// Ekspor reducer untuk slice foto
 export default photoSlice.reducer;
