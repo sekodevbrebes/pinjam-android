@@ -1,10 +1,24 @@
-import React from 'react';
-import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+} from 'react-native';
 import {Button, Gap, Header, InputType} from '../../components';
 import {Link} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import useForm from '../../utilities/useForm';
 import {setRegister} from '../../redux/reducers/registerSlice';
+import {
+  setPhoto as setImage,
+  setUploadStatus,
+} from '../../redux/reducers/photoSlice';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {ShowMessage} from '../../utilities';
 
 const SignUp = ({navigation}) => {
   // Inisialisasi state form menggunakan custom hook useForm
@@ -15,23 +29,61 @@ const SignUp = ({navigation}) => {
     password_confirmation: '',
   });
 
+  // Inisialisasi state untuk menyimpan foto yang dipilih
+  const [photo, setPhoto] = useState(null);
+
   // Inisialisasi dispatch
   const dispatch = useDispatch();
 
   // Fungsi untuk menangani submit form
   const onSubmit = () => {
     console.log('form : ', form);
-    // Memeriksa apakah password dan confirmPassword sama
+    // Memeriksa apakah password dan password_confirmation sama
     if (form.password !== form.password_confirmation) {
       Alert.alert('Error', 'Passwords do not match');
       return;
     }
 
-    // Dispatch aksi register
+    // Dispatch aksi register dengan data form
     dispatch(setRegister(form));
 
-    // Navigasi ke layar berikutnya jika validasi berhasil
+    // Navigasi ke layar SignUpAddress jika validasi berhasil
     navigation.navigate('SignUpAddress');
+  };
+
+  // Fungsi untuk membuka galeri dan menambahkan foto
+  const addPhoto = () => {
+    launchImageLibrary(
+      {
+        quality: 0.5,
+        maxHeight: 200,
+        maxWidth: 200,
+        includeBase64: false, // Menggunakan base64 untuk menyimpan foto
+        mediaType: 'photo', // Memilih gambar saja
+      },
+      response => {
+        console.log('Response: ', response);
+        // Jika pengguna membatalkan pemilihan foto
+        if (response.didCancel || response.error) {
+          ShowMessage('User cancelled Upload');
+
+          // Jika terjadi error saat memilih foto
+        } else if (response.error) {
+          ShowMessage('Upload Error');
+        } else {
+          // Menyimpan uri foto yang dipilih ke state photo
+          const source = {uri: response.assets[0].uri};
+          const dataImage = {
+            uri: response.assets[0].uri,
+            type: response.assets[0].type,
+            name: response.assets[0].fileName,
+          };
+          setPhoto(source);
+          dispatch(setImage(dataImage));
+          dispatch(setUploadStatus({isUploadPhoto: true}));
+        }
+      },
+    );
   };
 
   return (
@@ -40,18 +92,26 @@ const SignUp = ({navigation}) => {
         {/* Komponen Header dengan judul dan subjudul */}
         <Header
           title="Sign Up"
-          subTitle="Register dan Ajukan Permohoan"
+          subTitle="Register dan Ajukan Permohonan"
           onPress={() => navigation.goBack()}
         />
 
         <View style={styles.container}>
           {/* Placeholder untuk menambahkan foto */}
           <View style={styles.photo}>
-            <View style={styles.borderPhoto}>
-              <View style={styles.photoContainer}>
-                <Text style={styles.textPhoto}>Add Photo</Text>
+            <TouchableOpacity onPress={addPhoto}>
+              <View style={styles.borderPhoto}>
+                {photo ? (
+                  // Menampilkan foto yang dipilih
+                  <Image source={photo} style={styles.photoContainer} />
+                ) : (
+                  // Menampilkan teks Add Photo jika belum ada foto yang dipilih
+                  <View style={styles.photoContainer}>
+                    <Text style={styles.textPhoto}>Add Photo</Text>
+                  </View>
+                )}
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
 
           {/* Input untuk Nama Lengkap */}
@@ -137,10 +197,11 @@ const styles = StyleSheet.create({
     height: 90,
     borderRadius: 45,
     backgroundColor: '#F0F0F0',
-    padding: 24,
   },
   textPhoto: {
     textAlign: 'center',
+    lineHeight: 90,
+    color: '#8D92A3',
   },
   borderPhoto: {
     width: 110,

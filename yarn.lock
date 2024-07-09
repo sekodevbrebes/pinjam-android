@@ -3342,6 +3342,7 @@ __metadata:
     react-native: 0.74.1
     react-native-calendars: ^1.1305.0
     react-native-flash-message: ^0.4.2
+    react-native-image-picker: ^7.1.2
     react-native-image-slider-box: ^2.0.7
     react-native-modal: ^13.0.1
     react-native-pager-view: ^6.3.1
@@ -10009,6 +10010,16 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: ab1e83db9f75888607cdeac8160194630a3e16f5e16133b6316d595b392b92f1c3b8e597e365636dcf3c622a4a5731753ce24fe9710867335c06ec0d212c5178
+  languageName: node
+  linkType: hard
+
+"react-native-image-picker@npm:^7.1.2":
+  version: 7.1.2
+  resolution: "react-native-image-picker@npm:7.1.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: af52328b7cb06c28549442f0d923cfa92dde8d5a968a642336df4c882f81adbf0e5e606a14de27f96883a76fa1e03230061c4080011c9107942edebc8e09c478
   languageName: node
   linkType: hard
 
