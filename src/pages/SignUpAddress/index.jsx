@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import useForm from '../../utilities/useForm';
 import axios from 'axios';
 import {setLoading} from '../../redux/reducers/globalSlice';
-import {showMessage} from '../../utilities';
+import {ShowMessage} from '../../utilities';
 import {
   setRegister,
   clearRegisterState,
@@ -53,7 +53,7 @@ const SignUpAddress = ({navigation}) => {
             .then(resUpload => {
               console.log('Photo Sukses :', resUpload);
               dispatch(setLoading({isLoading: false}));
-              showMessage('Register Success');
+              ShowMessage('Register Success');
               navigation.navigate('SignUpSuccess');
             })
             .catch(err => {
@@ -62,7 +62,7 @@ const SignUpAddress = ({navigation}) => {
             });
         } else {
           dispatch(setLoading({isLoading: false}));
-          showMessage('Register Success');
+          ShowMessage('Register Success');
           navigation.navigate('SignUpSuccess');
         }
         dispatch(clearRegisterState());
@@ -70,7 +70,7 @@ const SignUpAddress = ({navigation}) => {
       })
       .catch(error => {
         dispatch(setLoading({isLoading: false}));
-        showMessage(error.response.data.message, 'danger');
+        ShowMessage(error.response.data.message, 'danger');
       });
   };
 

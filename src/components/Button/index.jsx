@@ -25,7 +25,7 @@ export default Button;
 
 const styles = StyleSheet.create({
   container: type => ({
-    backgroundColor: type === 'primary' ? '#64B5D7' : '#F2F3F7',
+    backgroundColor: type === 'primary' ? 'orange' : '#F2F3F7',
     padding: 10,
     borderRadius: 10,
     height: 50,

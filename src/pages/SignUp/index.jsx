@@ -65,7 +65,7 @@ const SignUp = ({navigation}) => {
         console.log('Response: ', response);
         // Jika pengguna membatalkan pemilihan foto
         if (response.didCancel || response.error) {
-          ShowMessage('User cancelled Upload');
+          ShowMessage('User cancelled Upload', 'danger');
 
           // Jika terjadi error saat memilih foto
         } else if (response.error) {
