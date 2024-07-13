@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import useForm from '../../utilities/useForm';
 import axios from 'axios';
 import {setLoading} from '../../redux/reducers/globalSlice';
-import {ShowMessage} from '../../utilities';
+import {ShowMessage, storeData} from '../../utilities';
 import {
   setRegister,
   clearRegisterState,
@@ -34,6 +34,13 @@ const SignUpAddress = ({navigation}) => {
     axios
       .post('http://10.0.2.2:8000/api/register', data)
       .then(response => {
+        const profile = response.data.user;
+        const token = `${response.data.token_type} ${response.data.access_token}`;
+
+        storeData('userProfile', profile);
+
+        storeData('tokenData', {value: token});
+
         console.log('Data Sukse :', response.data);
         if (photo.isUploadPhoto) {
           const photoForUpload = new FormData();
@@ -46,7 +53,7 @@ const SignUpAddress = ({navigation}) => {
           axios
             .post('http://10.0.2.2:8000/api/user/photo', photoForUpload, {
               headers: {
-                Authorization: `${response.data.token_type} ${response.data.access_token}`,
+                Authorization: token,
                 'Content-Type': 'multipart/form-data',
               },
             })

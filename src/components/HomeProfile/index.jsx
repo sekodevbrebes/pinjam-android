@@ -1,16 +1,33 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, Image, ScrollView} from 'react-native';
 import {ProfilUser} from '../../assets';
+import {getData} from '../../utilities';
 
 const HomeProfile = () => {
+  const [photo, setphoto] = useState(ProfilUser);
+  const [name, setName] = useState('');
+  const [instansi, setInstansi] = useState('');
+
+  useEffect(() => {
+    getData('userProfile').then(response => {
+      console.log('Hasil Local Storate', response);
+      setName(response.name);
+      setInstansi(response.instansi);
+      // Get user's profile picture from API or database
+      // fetch('https://randomuser.me/api/?gender=female')
+      //   .then(response => response.json())
+      //   .then(data => setphoto(data.profile_picture))
+      //   .catch(error => console.error('Error:', error));
+    });
+  }, []);
   return (
     <View style={styles.profilContainer}>
       <Image source={ProfilUser} style={styles.profil} />
       <View>
         <Text style={styles.halo}>
-          Halo, <Text style={styles.name}>Sus Hardianto</Text>
+          Halo, <Text style={styles.name}>{name}</Text>
         </Text>
-        <Text style={styles.instansi}>DP3KB Kabupaten Brebes</Text>
+        <Text style={styles.instansi}>{instansi}</Text>
       </View>
     </View>
   );
