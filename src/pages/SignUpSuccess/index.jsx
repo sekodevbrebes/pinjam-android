@@ -16,7 +16,9 @@ const SignUpSuccess = ({navigation}) => {
         style={styles.button}
         title="Home"
         type="primary"
-        onPress={() => navigation.replace('MainApp')}
+        onPress={() =>
+          navigation.reset({index: 0, routes: [{name: 'MainApp'}]})
+        }
       />
     </View>
   );
@@ -36,8 +38,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   image: {
-    width: 225,
-    height: 326,
+    width: 250,
+    height: 363,
     alignSelf: 'center',
     marginBottom: 40,
   },

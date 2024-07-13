@@ -46,14 +46,14 @@ const SignUpAddress = ({navigation}) => {
           axios
             .post('http://10.0.2.2:8000/api/user/photo', photoForUpload, {
               headers: {
-                Authorization: `${response.data.token_type} ${response.data.token}`,
+                Authorization: `${response.data.token_type} ${response.data.access_token}`,
                 'Content-Type': 'multipart/form-data',
               },
             })
             .then(resUpload => {
               console.log('Photo Sukses :', resUpload);
               dispatch(setLoading({isLoading: false}));
-              ShowMessage('Register Success');
+              // ShowMessage('Register Success');
               navigation.navigate('SignUpSuccess');
             })
             .catch(err => {
@@ -62,7 +62,7 @@ const SignUpAddress = ({navigation}) => {
             });
         } else {
           dispatch(setLoading({isLoading: false}));
-          ShowMessage('Register Success');
+          // ShowMessage('Register Success');
           navigation.navigate('SignUpSuccess');
         }
         dispatch(clearRegisterState());
