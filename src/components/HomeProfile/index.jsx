@@ -1,27 +1,25 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Text, Image, ScrollView} from 'react-native';
-import {ProfilUser} from '../../assets';
+import {StyleSheet, View, Text, Image} from 'react-native';
 import {getData} from '../../utilities';
+import {ProfilUser} from '../../assets';
 
 const HomeProfile = () => {
-  const [photo, setphoto] = useState(ProfilUser);
+  const [photo, setPhoto] = useState(ProfilUser); //mau disesuaikan lagi
   const [name, setName] = useState('');
   const [instansi, setInstansi] = useState('');
 
   useEffect(() => {
     getData('userProfile').then(response => {
-      console.log('Hasil Local Storate', response);
+      console.log('Hasil Local Storage', response);
       setName(response.name);
       setInstansi(response.instansi);
-      // Get user's profile picture from API or database
-      // fetch('https://randomuser.me/api/?gender=female')
-      //   .then(response => response.json())
-      //   .then(data => setphoto(data.profile_picture))
-      //   .catch(error => console.error('Error:', error));
+      setPhoto({uri: response.profile_photo_url});
     });
   }, []);
+
   return (
     <View style={styles.profilContainer}>
+      {/* Gambar mau disesuaikan biar dinamis */}
       <Image source={ProfilUser} style={styles.profil} />
       <View>
         <Text style={styles.halo}>
@@ -42,13 +40,6 @@ const styles = StyleSheet.create({
     paddingTop: 32,
     paddingBottom: 24,
     backgroundColor: 'white',
-  },
-  tabContainer: {
-    flex: 1,
-  },
-  roomCardContainer: {
-    flexDirection: 'row',
-    marginVertical: 16,
   },
   halo: {
     fontSize: 18,

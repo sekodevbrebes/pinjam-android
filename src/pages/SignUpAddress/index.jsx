@@ -37,8 +37,6 @@ const SignUpAddress = ({navigation}) => {
         const profile = response.data.user;
         const token = `${response.data.token_type} ${response.data.access_token}`;
 
-        storeData('userProfile', profile);
-
         storeData('tokenData', {value: token});
 
         console.log('Data Sukse :', response.data);
@@ -59,18 +57,28 @@ const SignUpAddress = ({navigation}) => {
             })
             .then(resUpload => {
               console.log('Photo Sukses :', resUpload);
+              profile.profile_photo_url = `http://10.0.2.2:8000/storage/${resUpload.data.data[0]}`;
+              storeData('userProfile', profile);
               dispatch(setLoading({isLoading: false}));
               // ShowMessage('Register Success');
-              navigation.navigate('SignUpSuccess');
+              navigation.reset({index: 0, routes: [{name: ''}]});
             })
             .catch(err => {
               dispatch(setLoading({isLoading: false}));
               console.log('Eroor Upload', err);
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'SignUpSuccess'}],
+              });
             });
         } else {
+          storeData('userProfile', profile);
           dispatch(setLoading({isLoading: false}));
           // ShowMessage('Register Success');
-          navigation.navigate('SignUpSuccess');
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'SignUpSuccess'}],
+          });
         }
         dispatch(clearRegisterState());
         dispatch(setUploadStatus(false));
@@ -82,10 +90,10 @@ const SignUpAddress = ({navigation}) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrollContainer}>
       <View style={styles.page}>
         <Header
-          title="Alamat"
+          title="Address"
           subTitle="Please Fill Your Information more"
           onPress={() => navigation.goBack()}
         />
@@ -121,6 +129,10 @@ const SignUpAddress = ({navigation}) => {
 export default SignUpAddress;
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    backgroundColor: '#fff',
+  },
   page: {
     flex: 1,
     fontFamily: 'Poppins-Regular',

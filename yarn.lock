@@ -1715,6 +1715,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expo/vector-icons@npm:^14.0.2":
+  version: 14.0.2
+  resolution: "@expo/vector-icons@npm:14.0.2"
+  dependencies:
+    prop-types: ^15.8.1
+  checksum: 49e27ff52eb138745313fa2c39863fb762230b0089b910d668d7f2c06b7e71a0249dc3a26bfc8725d07bdfaadab1dbcbce087b34dfc244b00a15fc02fe4866e2
+  languageName: node
+  linkType: hard
+
 "@hapi/hoek@npm:^9.0.0, @hapi/hoek@npm:^9.3.0":
   version: 9.3.0
   resolution: "@hapi/hoek@npm:9.3.0"
@@ -3331,6 +3340,7 @@ __metadata:
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
     "@coder-shubh/react-native-image-slider": ^1.0.4
+    "@expo/vector-icons": ^14.0.2
     "@react-native-async-storage/async-storage": ^1.23.1
     "@react-native-community/datetimepicker": ^8.1.0
     "@react-native/babel-preset": 0.74.83
@@ -3346,6 +3356,7 @@ __metadata:
     axios: ^1.7.2
     babel-jest: ^29.6.3
     eslint: ^8.19.0
+    expo-font: ^12.0.8
     jest: ^29.6.3
     np: ^2.0.7
     pinar: ^0.12.2
@@ -5728,6 +5739,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-font@npm:^12.0.8":
+  version: 12.0.8
+  resolution: "expo-font@npm:12.0.8"
+  dependencies:
+    fontfaceobserver: ^2.1.0
+  peerDependencies:
+    expo: "*"
+  checksum: 42968cceb60b9f5d1ef4fd29b243819e738588c8f51a8eb63750e21656f93be13d925982d8ef3b874da9145ebe4cd789da4d9d32bbd6577519ca0bfb214daa4b
+  languageName: node
+  linkType: hard
+
 "exponential-backoff@npm:^3.1.1":
   version: 3.1.1
   resolution: "exponential-backoff@npm:3.1.1"
@@ -5987,6 +6009,13 @@ __metadata:
     debug:
       optional: true
   checksum: a62c378dfc8c00f60b9c80cab158ba54e99ba0239a5dd7c81245e5a5b39d10f0c35e249c3379eae719ff0285fff88c365dd446fab19dee771f1d76252df1bbf5
+  languageName: node
+  linkType: hard
+
+"fontfaceobserver@npm:^2.1.0":
+  version: 2.3.0
+  resolution: "fontfaceobserver@npm:2.3.0"
+  checksum: 5f14715974203b9d68f299f93a7623afd9d5701572d683e861cdbb7514573ac556f56e9b5d07d2d534e01aed19a3b0bbe568e735e0e5494cbea913fc3f12b856
   languageName: node
   linkType: hard
 
