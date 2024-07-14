@@ -23,7 +23,27 @@ const SignUpAddress = ({navigation}) => {
     telephone: '',
   });
 
+  const onChangeTelephone = value => {
+    // Hanya memperbolehkan angka
+    const phoneRegex = /^[0-9]*$/;
+    if (phoneRegex.test(value)) {
+      setForm('telephone', value);
+    }
+  };
+
   const onSubmit = () => {
+    // Validasi form
+    if (!form.instansi || !form.alamat || !form.telephone) {
+      ShowMessage('Please fill in all fields', 'danger');
+      return;
+    }
+
+    // Validasi nomor telepon hanya berupa angka
+    const phoneRegex = /^[0-9]+$/;
+    if (!phoneRegex.test(form.telephone)) {
+      ShowMessage('Phone number should contain only numbers', 'danger');
+      return;
+    }
     const data = {
       ...form,
       ...register,
@@ -113,11 +133,13 @@ const SignUpAddress = ({navigation}) => {
           />
           <Gap height={30} />
           <InputType
-            label="WhatsApp Number :"
+            label="Telephone :"
             placeholder="Type Your Phone Number"
             value={form.telephone}
-            onChangeText={value => setForm('telephone', value)}
+            onChangeText={onChangeTelephone}
+            keyboardType="numeric"
           />
+
           <Gap height={36} />
           <Button title="Sign Up Now" type="primary" onPress={onSubmit} />
         </View>
@@ -129,16 +151,13 @@ const SignUpAddress = ({navigation}) => {
 export default SignUpAddress;
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    backgroundColor: '#fff',
-  },
   page: {
     flex: 1,
     fontFamily: 'Poppins-Regular',
   },
   container: {
-    backgroundColor: '#fff',
+    flex: 1,
+    backgroundColor: 'white',
     paddingHorizontal: 24,
     marginTop: 14,
     paddingTop: 42,

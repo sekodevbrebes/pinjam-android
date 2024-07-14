@@ -38,9 +38,28 @@ const SignUp = ({navigation}) => {
   // Fungsi untuk menangani submit form
   const onSubmit = () => {
     console.log('form : ', form);
+
+    // Validasi form
+    if (
+      !form.name ||
+      !form.email ||
+      !form.password ||
+      !form.password_confirmation
+    ) {
+      ShowMessage('Please fill in all fields', 'danger');
+      return;
+    }
+
+    // Validasi format email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      ShowMessage('Invalid email format', 'danger');
+      return;
+    }
+
     // Memeriksa apakah password dan password_confirmation sama
     if (form.password !== form.password_confirmation) {
-      Alert.alert('Error', 'Passwords do not match');
+      ShowMessage('Passwords do not match', 'danger');
       return;
     }
 

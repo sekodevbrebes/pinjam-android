@@ -6,6 +6,7 @@ import ListRoom from '../ListRoom';
 
 import {useNavigation} from '@react-navigation/native';
 import ListAccount from '../ListAccount';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const renderTabBar = props => (
   <TabBar
@@ -38,10 +39,19 @@ const renderTabBar = props => (
 
 const Account = () => {
   const navigation = useNavigation();
+  const signOut = () => {
+    AsyncStorage.multiRemove(['userProfile', 'token']).then(() => {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'GetStarted'}],
+      });
+    });
+  };
   return (
     <View style={styles.page}>
       <ListAccount name="Edit Profile" />
       <ListAccount name="Unit Kerja" />
+      <ListAccount name="Sign Out" onPress={signOut} />
     </View>
   );
 };

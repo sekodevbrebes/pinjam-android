@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
 import {Logo} from '../../assets';
 import {Button, Gap, InputType} from '../../components';
@@ -6,7 +6,7 @@ import useForm from '../../utilities/useForm';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import {setLoading} from '../../redux/reducers/globalSlice';
-import {ShowMessage, storeData} from '../../utilities';
+import {getData, ShowMessage, storeData} from '../../utilities';
 
 const SigIn = ({navigation}) => {
   const dispatch = useDispatch(); // Dapatkan dispatch dari react-redux
@@ -35,7 +35,8 @@ const SigIn = ({navigation}) => {
 
         storeData('token', {value: token});
         storeData('userProfile', profile);
-        navigation.reset({index: 0, routes: [{name: 'MainApp'}]});
+        // navigation.reset({index: 0, routes: [{name: 'MainApp'}]});
+        navigation.navigate('MainApp');
       })
       .catch(response => {
         ShowMessage(response.response.data.message, 'danger');

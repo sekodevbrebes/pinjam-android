@@ -1,13 +1,15 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {ICNext} from '../../assets';
 
-const ListAccount = ({name}) => {
+const ListAccount = ({name, onPress}) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>{name}</Text>
-      <ICNext />
-    </View>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.container}>
+        <Text style={styles.text}>{name}</Text>
+        <ICNext />
+      </View>
+    </TouchableOpacity>
   );
 };
 

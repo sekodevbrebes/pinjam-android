@@ -1,11 +1,24 @@
 import React, {useEffect} from 'react';
-import {View, Image, ImageBackground, Text, StyleSheet} from 'react-native';
-import {BgFlash, Logo, LogoFlash} from '../../assets';
+import {View, Image, ImageBackground, StyleSheet} from 'react-native';
+import {BgFlash, LogoFlash} from '../../assets';
+import {getData} from '../../utilities';
 
 const Splash = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('GetStarted');
+      getData('token').then(response => {
+        console.log('Masih ada Token :', response);
+        if (response) {
+          // Mengatur ulang stack navigasi untuk memastikan pengguna tidak dapat kembali
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'MainApp'}],
+          });
+        } else {
+          // Menggantikan layar saat ini dengan 'GetStarted' sehingga pengguna tidak dapat kembali
+          navigation.replace('GetStarted');
+        }
+      });
     }, 2500);
   }, []);
 
@@ -29,12 +42,5 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    fontColor: '#000000',
-    marginTop: 10,
-    textAlign: 'center',
   },
 });

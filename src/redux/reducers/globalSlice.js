@@ -8,6 +8,7 @@ const initialState = {
   isLoading: false, // Tambahkan state awal untuk isLoading
 };
 
+
 // Membuat slice reducer untuk global state
 const globalSlice = createSlice({
   name: 'global', // Nama slice, akan digunakan sebagai nama properti di state global

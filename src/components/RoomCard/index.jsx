@@ -3,14 +3,14 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 
 import Rating from '../Rating';
 
-const RoomCard = ({image}) => {
+const RoomCard = ({image, name, location, rating}) => {
   return (
     <View style={styles.container}>
       <Image source={image} style={styles.image} />
       <View style={styles.content}>
-        <Text style={styles.title}>Aula</Text>
-        <Text style={styles.desc}>Lantai 5 KPT</Text>
-        <Rating />
+        <Text style={styles.title}>{name}</Text>
+        <Text style={styles.desc}>{location}</Text>
+        <Rating number={rating} />
       </View>
     </View>
   );
