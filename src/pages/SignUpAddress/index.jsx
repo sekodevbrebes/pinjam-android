@@ -11,6 +11,7 @@ import {
   clearRegisterState,
 } from '../../redux/reducers/registerSlice';
 import {setPhoto, setUploadStatus} from '../../redux/reducers/photoSlice';
+import {API_HOST} from '../../config';
 
 const SignUpAddress = ({navigation}) => {
   const dispatch = useDispatch();
@@ -52,7 +53,8 @@ const SignUpAddress = ({navigation}) => {
     dispatch(setLoading({isLoading: true}));
 
     axios
-      .post('http://10.0.2.2:8000/api/register', data)
+      // .post('http://10.0.2.2:8000/api/register', data)
+      .post(`${API_HOST.url}/register`, data)
       .then(response => {
         const profile = response.data.user;
         const token = `${response.data.token_type} ${response.data.access_token}`;
@@ -69,7 +71,7 @@ const SignUpAddress = ({navigation}) => {
           });
 
           axios
-            .post('http://10.0.2.2:8000/api/user/photo', photoForUpload, {
+            .post(`${API_HOST.url}/user/photo`, photoForUpload, {
               headers: {
                 Authorization: token,
                 'Content-Type': 'multipart/form-data',

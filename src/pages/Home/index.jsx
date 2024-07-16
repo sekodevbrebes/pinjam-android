@@ -16,7 +16,7 @@ const Home = () => {
   // const isLoading = useSelector(state => state.global.isLoading); // Ditambahkan
 
   useEffect(() => {
-    // dispatch(setLoading({isLoading: true}));
+    dispatch(setLoading({isLoading: true}));
     axios
       .get(`${API_HOST.url}/rooms`)
       .then(response => {
@@ -26,10 +26,10 @@ const Home = () => {
       })
       .catch(error => {
         console.log(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false)); // Set loading menjadi false setelah fetch data selesai
       });
-    // .finally(() => {
-    //   dispatch(setLoading(false)); // Set loading menjadi false setelah fetch data selesai
-    // });
   }, [dispatch]);
 
   return (

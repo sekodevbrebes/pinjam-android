@@ -1,16 +1,17 @@
 import React from 'react';
 import {View, StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
+import Rating from '../Rating';
 
-const ListRoom = ({image, onPress}) => {
+const ListRoom = ({image, onPress, rating, name, location}) => {
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
       <View style={styles.pageContainer}>
-        <View style={styles.CardContent}>
-          <Image source={image} style={styles.imagelist} />
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>Aula</Text>
-            <Text style={styles.desc}>Lantai 5</Text>
-            <Text style={styles.desc}>Ukuran 100 x 30</Text>
+        <Image source={image} style={styles.imagelist} />
+        <View style={styles.contentContainer}>
+          <View>
+            <Text style={styles.title}>{name}</Text>
+            <Text style={styles.desc}>{location}</Text>
+            <Rating number={rating} />
           </View>
         </View>
       </View>
@@ -40,5 +41,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
     marginRight: 12,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    paddingBottom: 6,
+  },
+  desc: {
+    fontSize: 14,
+    marginTop: 2,
+    paddingBottom: 8,
   },
 });

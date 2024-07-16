@@ -1,8 +1,9 @@
 import React from 'react';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {View, Text, useWindowDimensions, Image, StyleSheet} from 'react-native';
-import {Aula, RuangBupati, RuangCC, RuangSekda} from '../../assets';
+import {View, Text, useWindowDimensions, StyleSheet} from 'react-native';
 import ListRoom from '../ListRoom';
+import {useSelector} from 'react-redux';
+import {createSelector} from 'reselect'; // Import createSelector from reselect
 
 import {useNavigation} from '@react-navigation/native';
 
@@ -35,67 +36,62 @@ const renderTabBar = props => (
   />
 );
 
-const Ruangan = () => {
+// Selector menggunakan createSelector untuk memilih ruangan berdasarkan tipe
+const selectRoomsByType = createSelector(
+  state => state.home.rooms,
+  (_, type) => type,
+  (rooms, type) => rooms.filter(room => room.type === type),
+);
+
+const RoomList = ({rooms}) => {
   const navigation = useNavigation();
+
   return (
     <View style={styles.page}>
-      <ListRoom
-        image={Aula}
-        onPress={() => navigation.navigate('RoomDetail')}
-      />
-      <ListRoom
-        image={RuangBupati}
-        onPress={() => navigation.navigate('RoomDetail')}
-      />
-      <ListRoom
-        image={RuangCC}
-        onPress={() => navigation.navigate('RoomDetail')}
-      />
-      <ListRoom
-        image={RuangSekda}
-        onPress={() => navigation.navigate('RoomDetail')}
-      />
+      {rooms.map(room => {
+        const imageArray = JSON.parse(room.image);
+        const secondImage = imageArray[1];
+
+        return (
+          <ListRoom
+            key={room.id}
+            image={{uri: secondImage}}
+            name={room.name}
+            rating={room.rate}
+            location={room.location}
+            onPress={() => navigation.navigate('RoomDetail', {room})}
+          />
+        );
+      })}
     </View>
   );
 };
-
-const Popular = () => {
-  const navigation = useNavigation();
-  return (
-    <View style={styles.page}>
-      <ListRoom
-        image={Aula}
-        onPress={() => navigation.navigate('DetailRuangan')}
-      />
-      <ListRoom
-        image={RuangBupati}
-        onPress={() => navigation.navigate('DetailRuangan')}
-      />
-      <ListRoom
-        image={RuangCC}
-        onPress={() => navigation.navigate('DetailRuangan')}
-      />
-      <ListRoom
-        image={RuangSekda}
-        onPress={() => navigation.navigate('DetailRuangan')}
-      />
-    </View>
-  );
-};
-
-const renderScene = SceneMap({
-  1: Ruangan,
-  2: Popular,
-});
 
 const HomeTab = () => {
   const layout = useWindowDimensions();
+  const navigation = useNavigation();
+
+  const rooms = useSelector(state => state.home.rooms);
+  const popularRooms = useSelector(state =>
+    selectRoomsByType(state, 'Popular'),
+  );
+  const recommendedRooms = useSelector(state =>
+    selectRoomsByType(state, 'Recommended'),
+  );
+
+  const renderScene = SceneMap({
+    1: () => <RoomList rooms={rooms} />,
+    2: () => <RoomList rooms={popularRooms} />,
+    3: () => <RoomList rooms={recommendedRooms} />,
+  });
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: '1', title: 'Ruang'},
+    {key: '1', title: 'Room'},
     {key: '2', title: 'Popular'},
+    {key: '3', title: 'Recommended'},
   ]);
+
   return (
     <TabView
       renderTabBar={renderTabBar}
@@ -108,8 +104,8 @@ const HomeTab = () => {
   );
 };
 
-export default HomeTab;
-
 const styles = StyleSheet.create({
   page: {flex: 1},
 });
+
+export default HomeTab;

@@ -3376,10 +3376,12 @@ __metadata:
     react-native-swiper-flatlist: ^3.2.4
     react-native-tab-view: ^3.5.2
     react-native-vector-icons: ^10.1.0
+    react-number-format: ^5.4.0
     react-redux: ^9.1.2
     react-test-renderer: 18.2.0
     redux: ^5.0.1
     redux-thunk: ^3.1.0
+    reselect: ^5.1.1
     typescript: 5.0.4
   languageName: unknown
   linkType: soft
@@ -10282,6 +10284,18 @@ react-native-snap-carousel@latest:
   languageName: node
   linkType: hard
 
+"react-number-format@npm:^5.4.0":
+  version: 5.4.0
+  resolution: "react-number-format@npm:5.4.0"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 7ddfc7a3a01336234c6417ee2ee0660aef342ed0505abc5dd5b378c2c10182ed8afc74ce9be5aa60c4793f95039448ac1feac34dca0bbf5bd2c1a8235aa07b61
+  languageName: node
+  linkType: hard
+
 "react-redux@npm:^9.1.2":
   version: 9.1.2
   resolution: "react-redux@npm:9.1.2"
@@ -10581,7 +10595,7 @@ react-native-snap-carousel@latest:
   languageName: node
   linkType: hard
 
-"reselect@npm:^5.1.0":
+"reselect@npm:^5.1.0, reselect@npm:^5.1.1":
   version: 5.1.1
   resolution: "reselect@npm:5.1.1"
   checksum: 5d32d48be29071ddda21a775945c2210cf4ca3fccde1c4a0e1582ac3bf99c431c6c2330ef7ca34eae4c06feea617e7cb2c275c4b33ccf9a930836dfc98b49b13

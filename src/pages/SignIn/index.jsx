@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import {setLoading} from '../../redux/reducers/globalSlice';
 import {getData, ShowMessage, storeData} from '../../utilities';
+import {API_HOST} from '../../config';
 
 const SigIn = ({navigation}) => {
   const dispatch = useDispatch(); // Dapatkan dispatch dari react-redux
@@ -26,7 +27,8 @@ const SigIn = ({navigation}) => {
 
     dispatch(setLoading({isLoading: true}));
     axios
-      .post('http://10.0.2.2:8000/api/login', form)
+      // .post('http://10.0.2.2:8000/api/login', form)
+      .post(`${API_HOST.url}/login`, form)
       .then(response => {
         const profile = response.data.user;
         const token = `${response.data.token_type} ${response.data.access_token}`;
