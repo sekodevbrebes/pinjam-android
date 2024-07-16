@@ -3,62 +3,98 @@ import {Text, StyleSheet, View, ScrollView} from 'react-native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import Rating from '../../components/Rating';
 import {Gap, SlideShow, Button} from '../../components';
-import {Aula, RuangBupati, RuangCC, RuangSekda} from '../../assets';
 
-const DetailRuangan = ({navigation}) => (
-  <View style={styles.page}>
-    <ScrollView>
-      <View style={styles.container}>
-        <SwiperFlatList
-          autoplay
-          autoplayDelay={2}
-          autoplayLoop
-          index={2}
-          showPagination>
-          <SlideShow image={Aula} />
-          <SlideShow image={RuangBupati} />
-          <SlideShow image={RuangSekda} />
-          <SlideShow image={RuangCC} />
-        </SwiperFlatList>
-      </View>
+// Komponen DetailRuangan menerima props navigation dan route
+const DetailRuangan = ({navigation, route}) => {
+  // Mengambil parameter itemRoom dari route.params
+  const {itemRoom} = route.params;
+  // Destructuring itemRoom untuk mendapatkan detail ruangan
+  const {name, location, capacity, facility, image, rate} = itemRoom;
 
-      <View style={styles.contentContainer}>
-        <View style={styles.content}>
-          <View>
-            <Text style={styles.titleContent}>Aula</Text>
-            <Rating />
-          </View>
-          <Gap height={12} />
-          <View>
-            <Text style={styles.titleContent}>Lokasi</Text>
-            <Text>
-              Lantai 5 Kantor Pemerintahan Terpadu, Jl. Proklamasi No. 77 Brebes
-              Contact : 0899-5900-700
-            </Text>
-          </View>
-          <Gap height={12} />
-          <View>
-            <Text style={styles.titleContent}>Fasilitas :</Text>
-            <Text style={{margin: 14, lineHeight: 22}}>
-              1. Ruangan Ukuran 120 x 50 mtr {'\n'}2. Video Wall 100 Inc {'\n'}
-              3. Sound System {'\n'}4. Meja Kursi Narasumber {'\n'}5.Kursi
-              Peserta mak 400 {'\n'}6. Meja Peserta 20 {'\n'}7. Meja Kursi
-              Operator/MC {'\n'}8. Kabel HDMI ke Laptop {'\n'}9. Podium
-            </Text>
-          </View>
+  // Parsing URL gambar dari string JSON menjadi array
+  const images = JSON.parse(image);
+
+  // Mengubah string fasilitas menjadi array dengan menghapus tag <p> dan memisahkan berdasarkan koma
+  // const facilitiesArray = facility
+  //   .replace('<p>', '')
+  //   .replace('</p>', '')
+  //   .split(', ');
+
+  // Mengubah string fasilitas menjadi array dengan memisahkan berdasarkan tag <li>
+  const facilitiesArray = facility
+    .replace(/<\/?ol>/g, '') // Menghapus tag <ol> dan </ol>
+    .split('</li><li>') // Memisahkan berdasarkan tag </li><li>
+    .map(item => item.replace(/<\/?li>/g, '')); // Menghapus tag <li> dan </li>
+
+  //Harus di Hapus nanti
+  console.log('Nilai Param : ', itemRoom); // Menampilkan nilai params di console
+
+  return (
+    <View style={styles.page}>
+      <ScrollView>
+        <View style={styles.container}>
+          {/* Menampilkan gambar-gambar dalam swiper dengan autoplay */}
+          <SwiperFlatList
+            autoplay
+            autoplayDelay={2}
+            autoplayLoop
+            index={0}
+            showPagination>
+            {images.map((imgUrl, index) => (
+              // Menggunakan komponen SlideShow untuk menampilkan gambar
+              <SlideShow key={index} image={{uri: imgUrl}} />
+            ))}
+          </SwiperFlatList>
         </View>
 
-        <View style={{paddingHorizontal: 40}}>
-          <Button
-            title="Booking Now"
-            type="primary"
-            onPress={() => navigation.navigate('Agenda')}
-          />
+        <View style={styles.contentContainer}>
+          <View style={styles.content}>
+            <View>
+              {/* Menampilkan nama ruangan */}
+              <Text style={styles.title}>{name}</Text>
+              {/* Menampilkan rating ruangan */}
+              <Rating rating={rate} />
+            </View>
+            <Gap height={12} />
+            <View>
+              {/* Menampilkan lokasi ruangan */}
+              <Text style={styles.subTitle}>Lokasi</Text>
+              <Text>{location}</Text>
+            </View>
+            <Gap height={12} />
+            <View>
+              {/* Menampilkan kapasitas ruangan */}
+              <Text style={styles.subTitle}>Kapasitas</Text>
+              <Text>{capacity} orang</Text>
+            </View>
+            <Gap height={12} />
+            <View>
+              {/* Menampilkan fasilitas ruangan dalam bentuk list item berangkaian */}
+              <Text style={styles.subTitle}>Fasilitas :</Text>
+              <View style={styles.listFacility}>
+                {facilitiesArray.map((facility, index) => (
+                  // Menampilkan setiap fasilitas dengan nomor urut
+                  <Text key={index} style={styles.facilityItem}>
+                    {index + 1}. {facility}
+                  </Text>
+                ))}
+              </View>
+            </View>
+          </View>
+
+          <View style={{paddingHorizontal: 40}}>
+            {/* Tombol untuk melakukan booking yang mengarahkan ke halaman Agenda */}
+            <Button
+              title="Booking Now"
+              type="primary"
+              onPress={() => navigation.navigate('Agenda')}
+            />
+          </View>
         </View>
-      </View>
-    </ScrollView>
-  </View>
-);
+      </ScrollView>
+    </View>
+  );
+};
 
 export default DetailRuangan;
 
@@ -83,20 +119,19 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: '#000',
     marginBottom: 12,
   },
-
   subTitle: {
-    fontSize: 14,
-    color: '#ffffff',
+    fontSize: 16,
+    color: '#000',
     fontWeight: 'semi-bold',
   },
-  titleContent: {
-    fontFamily: 'Poppins-Regular',
-    fontWeight: 'bold',
-    fontSize: 20,
-
-    color: '#000000',
+  listFacility: {
+    margin: 14,
+    paddingBottom: 24,
+  },
+  facilityItem: {
+    marginBottom: 4, // Menambahkan jarak antar baris
   },
 });

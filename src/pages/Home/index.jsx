@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setHome} from '../../redux/reducers/homeSlice'; // Import action setHome
 import {API_HOST} from '../../config';
 
-const Home = () => {
+const Home = ({navigation}) => {
   const dispatch = useDispatch(); // Ditambahkan
   const rooms = useSelector(state => state.home.rooms); // Ditambahkan
   // const isLoading = useSelector(state => state.global.isLoading); // Ditambahkan
@@ -53,6 +53,9 @@ const Home = () => {
                     location={itemRoom.location}
                     image={{uri: firstImage}}
                     rating={itemRoom.rate}
+                    onPress={() =>
+                      navigation.navigate('RoomDetail', {itemRoom})
+                    }
                   />
                 );
               })}

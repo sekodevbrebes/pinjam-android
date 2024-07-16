@@ -1,18 +1,20 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 import Rating from '../Rating';
 
-const RoomCard = ({image, name, location, rating}) => {
+const RoomCard = ({image, name, location, rating, onPress}) => {
   return (
-    <View style={styles.container}>
-      <Image source={image} style={styles.image} />
-      <View style={styles.content}>
-        <Text style={styles.title}>{name}</Text>
-        <Text style={styles.desc}>{location}</Text>
-        <Rating number={rating} />
+    <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
+      <View style={styles.container}>
+        <Image source={image} style={styles.image} />
+        <View style={styles.content}>
+          <Text style={styles.title}>{name}</Text>
+          <Text style={styles.desc}>{location}</Text>
+          <Rating number={rating} />
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
