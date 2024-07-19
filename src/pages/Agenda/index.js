@@ -14,7 +14,7 @@ const { width } = Dimensions.get('window');
 
 const AgendaCalendar = ({ navigation, route }) => {
   const dispatch = useDispatch();
-  const { item } = route.params;
+  const { item } = route.params; // Ruangan yang dipilih
   const [agendaData, setAgendaData] = useState({});
   const [selectedDate, setSelectedDate] = useState('');
   const [newAgenda, setNewAgenda] = useState({
@@ -38,9 +38,17 @@ const AgendaCalendar = ({ navigation, route }) => {
           },
         });
 
-        console.log('response tampil Agenda :', response.data.data);
+        console.log('Room ID yang dipilih:', item.id); // Tambahkan log di sini
+        
+        console.log('Data agenda dari API:', response.data.data); // Cetak data dari API
         const data = response.data.data;
-        const formattedData = data.reduce((acc, agenda) => {
+
+        // Filter data berdasarkan room_id yang dipilih
+        const filteredData = data.filter(agenda => agenda.room_id === item.id);
+        console.log('Data agenda setelah filter:', filteredData); // Cetak data setelah filter
+
+        // Format data sesuai dengan tanggal
+        const formattedData = filteredData.reduce((acc, agenda) => {
           const date = agenda.tanggal; // Perhatikan perubahan dari `date` menjadi `tanggal`
           if (!acc[date]) {
             acc[date] = [];
@@ -48,6 +56,8 @@ const AgendaCalendar = ({ navigation, route }) => {
           acc[date].push(agenda);
           return acc;
         }, {});
+
+        console.log('Data agenda yang sudah diformat:', formattedData); // Cetak data setelah diformat
 
         setAgendaData(formattedData); // Mengatur data ke state lokal
       } catch (error) {
@@ -59,7 +69,7 @@ const AgendaCalendar = ({ navigation, route }) => {
     };
 
     fetchAgendaData();
-  }, [dispatch]);
+  }, [dispatch, item.id]); // Pastikan item.id terdeteksi jika terjadi perubahan
 
   const handleDayPress = day => {
     setSelectedDate(day.dateString);
@@ -111,8 +121,7 @@ const AgendaCalendar = ({ navigation, route }) => {
                 <View key={index} style={styles.agendaItem}>
                   <View style={styles.timeContainer}>
                     <ICTime />
-                    <Text style={styles.time}>{agenda.waktu_mulai} - {agenda.waktu_selesai}
-                    </Text>
+                    <Text style={styles.time}>{agenda.waktu_mulai} - {agenda.waktu_selesai}</Text>
                   </View>
                   <View style={styles.activityContainer}>
                     <Text style={styles.activity}>{agenda.activities}</Text>
@@ -254,31 +263,33 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    width: width * 0.9,
-    backgroundColor: '#fff',
+    width: width - 40,
     padding: 20,
+    backgroundColor: '#FFF',
     borderRadius: 10,
+    elevation: 10,
   },
   formTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    fontFamily: 'Poppins-Regular',
+    fontSize: 18,
+    fontFamily: 'Poppins-Bold',
+    marginBottom: 15,
+    textAlign: 'center',
   },
   input: {
-    marginBottom: 10,
-    padding: 10,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
-    backgroundColor: '#fff',
+    paddingHorizontal: 10,
+    marginBottom: 15,
+    height: 40,
+    fontFamily: 'Poppins-Regular',
   },
   iconPlus: {
-    fontSize: 32,
-    color: '#fff',
+    fontSize: 24,
+    color: '#FFF',
   },
 });
 

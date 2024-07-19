@@ -37,6 +37,7 @@ const DetailRuangan = ({navigation, route}) => {
       .then(userProfile => {
         const data = {
           item: {
+            id: itemRoom.id,
             name: name,
           },
           userProfile, // Menyertakan userProfile yang telah diambil
