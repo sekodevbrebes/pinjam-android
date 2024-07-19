@@ -1,193 +1,183 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, Text, TextInput, ScrollView} from 'react-native';
-import {Calendar} from 'react-native-calendars';
-import {Button, Header} from '../../components';
-import {ICTime} from '../../assets';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text, TextInput, ScrollView, TouchableOpacity, Modal, Dimensions } from 'react-native';
+import axios from 'axios';
+import { LocaleConfig, Calendar } from 'react-native-calendars';
+import { useDispatch } from 'react-redux';
+import { Button, Header } from '../../components';
+import { ICTime } from '../../assets';
+import { setLoading } from '../../redux/reducers/globalSlice';
+import '../../config/Calender';
+import { API_HOST } from '../../config';
+import { getData, ShowMessage } from '../../utilities';
 
-const initialAgendaData = {
-  '2024-06-10': [
-    {
-      startTime: '07:00',
-      endTime: '16:00',
-      activity: 'Sosialisasi Produk Hukum bagi Pelaku UMKM di Kab. Brebes',
-      peminjam: 'Bagian Hukum Setda Kabupaten Brebes',
-    },
-  ],
-  '2024-06-11': [
-    {
-      startTime: '10:00',
-      endTime: '11:00',
-      activity:
-        'Sosialisasi Perbub No. 16 Tahun 2024 tentang Hukuman bagi ASN melanggar peraturan',
-      peminjam: 'DP3KB Kabupaten Brebes',
-    },
-    {
-      startTime: '14:00',
-      endTime: '15:00',
-      activity:
-        'Pengajian Akbar dan Halal Bihalal Pegawai di Lingkungan Setda Kab. Brebes',
-      peminjam: 'DP3KB Kabupaten Brebes',
-    },
-    {
-      startTime: '18:00',
-      endTime: '22:00',
-      activity:
-        'Pengajian Akbar dan Halal Bihalal Pegawai di Lingkungan Setda Kab. Brebes',
-      peminjam: 'Bagian Kesra Setda Kab. Brebes',
-    },
-  ],
-  '2024-06-14': [
-    {
-      startTime: '09:30',
-      endTime: '10:30',
-      activity: 'Project Planning',
-      peminjam: 'DP3KB Kabupaten Brebes',
-    },
-    {
-      startTime: '13:00',
-      endTime: '14:00',
-      activity: 'Lunch Break',
-      peminjam: 'DP3KB Kabupaten Brebes',
-    },
-  ],
-  '2024-06-25': [
-    {
-      startTime: '09:30',
-      endTime: '10:30',
-      activity: 'Project Planning',
-      peminjam: 'DP3KB Kabupaten Brebes',
-    },
-    {
-      startTime: '13:00',
-      endTime: '14:00',
-      activity: 'Lunch Break',
-      peminjam: 'DP3KB Kabupaten Brebes',
-    },
-  ],
-  '2024-06-28': [
-    {
-      startTime: '09:30',
-      endTime: '10:30',
-      activity: 'Project Planning',
-      peminjam: 'DP3KB Kabupaten Brebes',
-    },
-    {
-      startTime: '13:00',
-      endTime: '14:00',
-      activity: 'Lunch Break',
-      peminjam: 'DP3KB Kabupaten Brebes',
-    },
-  ],
-  '2024-07-02': [
-    {
-      startTime: '09:30',
-      endTime: '10:30',
-      activity: 'Project Planning',
-      peminjamin: 'DP3KB Kabupaten Brebes',
-    },
-    {
-      startTime: '13:00',
-      endTime: '14:00',
-      activity: 'Lunch Break',
-      peminjamin: 'DP3KB Kabupaten Brebes',
-    },
-  ],
-};
+const { width } = Dimensions.get('window');
 
-const AgendaCalendar = ({navigation}) => {
-  const [agendaData, setAgendaData] = useState(initialAgendaData);
+const AgendaCalendar = ({ navigation, route }) => {
+  const dispatch = useDispatch();
+  const { item } = route.params;
+  const [agendaData, setAgendaData] = useState({});
   const [selectedDate, setSelectedDate] = useState('');
   const [newAgenda, setNewAgenda] = useState({
     startTime: '',
     endTime: '',
     activity: '',
-    peminjamin: '',
+    peminjam: '',
   });
+  const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    const fetchAgendaData = async () => {
+      try {
+        dispatch(setLoading({ isLoading: true }));
+        const tokenData = await getData('token');
+        const token = tokenData?.value;
+
+        const response = await axios.get(`${API_HOST.url}/agendas`, {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        console.log('response tampil Agenda :', response.data.data);
+        const data = response.data.data;
+        const formattedData = data.reduce((acc, agenda) => {
+          const date = agenda.tanggal; // Perhatikan perubahan dari `date` menjadi `tanggal`
+          if (!acc[date]) {
+            acc[date] = [];
+          }
+          acc[date].push(agenda);
+          return acc;
+        }, {});
+
+        setAgendaData(formattedData); // Mengatur data ke state lokal
+      } catch (error) {
+        console.log(error);
+        ShowMessage('Failed to load agenda data', 'danger');
+      } finally {
+        dispatch(setLoading({ isLoading: false }));
+      }
+    };
+
+    fetchAgendaData();
+  }, [dispatch]);
 
   const handleDayPress = day => {
     setSelectedDate(day.dateString);
   };
 
   const handleAddAgenda = () => {
-    const updatedAgenda = {...agendaData};
+    const updatedAgenda = { ...agendaData };
     if (!updatedAgenda[selectedDate]) {
       updatedAgenda[selectedDate] = [];
     }
     updatedAgenda[selectedDate].push(newAgenda);
     setAgendaData(updatedAgenda);
-    setNewAgenda({startTime: '', endTime: '', activity: '', peminjamin: ''});
+    setNewAgenda({ startTime: '', endTime: '', activity: '', peminjam: '' });
+    setModalVisible(false);
   };
 
   const markedDates = {};
   for (const date in agendaData) {
-    markedDates[date] = {marked: true, selected: true, selectedColor: '#64B5D7'};
+    markedDates[date] = { marked: true, selected: true, selectedColor: 'orange' };
+  }
+
+  if (selectedDate !== '') {
+    markedDates[selectedDate] = { marked: true, selected: true, selectedColor: '#08CDFE' };
   }
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Header
-          title="Date"
-          subTitle="Select Date"
-          onPress={() => navigation.goBack()}
-        />
-        <Calendar
-          onDayPress={handleDayPress}
-          markedDates={markedDates}
-          style={{marginTop: 14}}
-        />
-        {selectedDate && !agendaData[selectedDate] && (
-          <View style={styles.formContainer}>
+    <View style={{ flex: 1 }}>
+      <ScrollView>
+        <View style={styles.container}>
+          <Header
+            title="Date"
+            subTitle="Select Date"
+            onPress={() => navigation.goBack()}
+          />
+          <Calendar
+            onDayPress={handleDayPress}
+            markedDates={markedDates}
+            style={{ marginTop: 14 }}
+          />
+          {!agendaData[selectedDate] && (
+            <View style={styles.noAgendaContainer}>
+              <Text style={styles.noAgendaText}>There is no agenda for today's date.</Text>
+            </View>
+          )}
+          {selectedDate && agendaData[selectedDate] && (
+            <View style={styles.agendaContainer}>
+              <Text style={styles.agendaTitle}>Room : {item.name}</Text>
+              {agendaData[selectedDate].map((agenda, index) => (
+                <View key={index} style={styles.agendaItem}>
+                  <View style={styles.timeContainer}>
+                    <ICTime />
+                    <Text style={styles.time}>{agenda.waktu_mulai} - {agenda.waktu_selesai}
+                    </Text>
+                  </View>
+                  <View style={styles.activityContainer}>
+                    <Text style={styles.activity}>{agenda.activities}</Text>
+                    <Text style={styles.peminjam}>{agenda.user.instansi}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          )}
+        </View>
+      </ScrollView>
+      <TouchableOpacity
+        style={styles.floatingButton}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.iconPlus}>+</Text>
+      </TouchableOpacity>
+
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
             <Text style={styles.formTitle}>
-              Add New : {selectedDate}
+              Add New
             </Text>
             <TextInput
               style={styles.input}
               placeholder="Start Time"
               value={newAgenda.startTime}
               onChangeText={text =>
-                setNewAgenda({...newAgenda, startTime: text})
+                setNewAgenda({ ...newAgenda, startTime: text })
               }
             />
             <TextInput
               style={styles.input}
               placeholder="End Time"
               value={newAgenda.endTime}
-              onChangeText={text => setNewAgenda({...newAgenda, endTime: text})}
+              onChangeText={text => setNewAgenda({ ...newAgenda, endTime: text })}
             />
             <TextInput
               style={styles.input}
               placeholder="Activity"
               value={newAgenda.activity}
               onChangeText={text =>
-                setNewAgenda({...newAgenda, activity: text})
+                setNewAgenda({ ...newAgenda, activity: text })
               }
             />
-            <Button title="Submit" type="primary" onPress={() => navigation.navigate('SuccessBooking')} />      
-            {/* <Button title="Submit" type="primary" onPress={handleAddAgenda} /> */}
+            <TextInput
+              style={styles.input}
+              placeholder="Peminjam"
+              value={newAgenda.peminjam}
+              onChangeText={text =>
+                setNewAgenda({ ...newAgenda, peminjam: text })
+              }
+            />
+            <Button title="Submit" type="primary" onPress={handleAddAgenda} />
+            <Button title="Cancel" type="secondary" onPress={() => setModalVisible(false)} />
           </View>
-        )}
-        {selectedDate && agendaData[selectedDate] && (
-          <View style={styles.agendaContainer}>
-            <Text style={styles.agendaTitle}>Agenda : {selectedDate}</Text>
-            {agendaData[selectedDate].map((item, index) => (
-              <View key={index} style={styles.agendaItem}>
-                <View style={styles.timeContainer}>
-                  <ICTime />
-                  <Text style={styles.time}>
-                    {item.startTime} - {item.endTime}
-                  </Text>
-                </View>
-                <View style={styles.activityContainer}>
-                  <Text style={styles.activity}>{item.activity}</Text>
-                  <Text style={styles.peminjam}>{item.peminjam}</Text>
-                </View>
-              </View>
-            ))}
-          </View>
-        )}
-      </View>
-    </ScrollView>
+        </View>
+      </Modal>
+    </View>
   );
 };
 
@@ -195,35 +185,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  formContainer: {
+  noAgendaContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
   },
-  formTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 10,
+  noAgendaText: {
+    fontSize: 16,
     fontFamily: 'Poppins-Regular',
-  },
-  input: {
-    marginBottom: 10,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    backgroundColor:'#fff',
   },
   agendaContainer: {
     padding: 20,
   },
   agendaTitle: {
     fontSize: 14,
-    fontWeight: 'bold',
     marginBottom: 10,
     fontFamily: 'Poppins-Regular',
-    backgroundColor:'#FFFF',
+    backgroundColor: '#FFFF',
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingVertical: 6,
     borderRadius: 10,
+    textAlign: 'center',
   },
   agendaItem: {
     marginBottom: 10,
@@ -253,6 +236,49 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     color: '#8F9BB3',
     paddingLeft: 14,
+  },
+  floatingButton: {
+    position: 'absolute',
+    width: 60,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 20,
+    bottom: 20,
+    backgroundColor: 'orange',
+    borderRadius: 30,
+    elevation: 8,
+    zIndex: 1000,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContent: {
+    width: width * 0.9,
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+  },
+  formTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    fontFamily: 'Poppins-Regular',
+  },
+  input: {
+    marginBottom: 10,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    backgroundColor: '#fff',
+  },
+  iconPlus: {
+    fontSize: 32,
+    color: '#fff',
   },
 });
 

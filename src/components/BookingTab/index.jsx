@@ -1,10 +1,8 @@
 import React from 'react';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {View, Text, useWindowDimensions, Image, StyleSheet} from 'react-native';
-import {Aula, RuangBupati, RuangCC, RuangSekda} from '../../assets';
-
+import {View, Text, useWindowDimensions, StyleSheet} from 'react-native';
+import {Aula, RuangCC} from '../../assets';
 import {useNavigation} from '@react-navigation/native';
-
 import ListBooking from '../ListBooking';
 
 const renderTabBar = props => (
@@ -23,7 +21,8 @@ const renderTabBar = props => (
       borderBottomColor: '#F2F2F2',
     }}
     tabStyle={{width: 'auto'}}
-    renderLabel={({route, focused, color}) => (
+    scrollEnabled={true}
+    renderLabel={({route, focused}) => (
       <Text
         style={{
           fontFamily: 'Poppins-Medium',
@@ -36,29 +35,46 @@ const renderTabBar = props => (
   />
 );
 
-const InProgress = () => {
-  const navigation = useNavigation();
-  return (
-    <View style={styles.page}>
-      <ListBooking image={Aula} />
-      <ListBooking image={RuangCC} />
-      <ListBooking image={RuangCC} />
-    </View>
-  );
-};
+const Pending = () => (
+  <View style={styles.page}>
+    <ListBooking image={Aula} />
+    <ListBooking image={RuangCC} />
+    <ListBooking image={RuangCC} />
+  </View>
+);
 
-const PastBooking = () => {
-  const navigation = useNavigation();
-  return (
-    <View style={styles.page}>
-      <ListBooking image={Aula} />
-    </View>
-  );
-};
+const InProgress = () => (
+  <View style={styles.page}>
+    <ListBooking image={Aula} />
+    <ListBooking image={RuangCC} />
+    <ListBooking image={RuangCC} />
+  </View>
+);
+
+const Cancelled = () => (
+  <View style={styles.page}>
+    <ListBooking image={Aula} />
+  </View>
+);
+
+const Decline = () => (
+  <View style={styles.page}>
+    <ListBooking image={Aula} />
+  </View>
+);
+
+const Finish = () => (
+  <View style={styles.page}>
+    <ListBooking image={Aula} />
+  </View>
+);
 
 const renderScene = SceneMap({
-  1: InProgress,
-  2: PastBooking,
+  1: Pending,
+  2: InProgress,
+  3: Cancelled,
+  4: Decline,
+  5: Finish,
 });
 
 const BookingTab = () => {
@@ -66,9 +82,13 @@ const BookingTab = () => {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: '1', title: 'In Progress'},
-    {key: '2', title: 'Past Booking'},
+    {key: '1', title: 'Pending'},
+    {key: '2', title: 'In Progress'},
+    {key: '3', title: 'Cancelled'},
+    {key: '4', title: 'Decline'},
+    {key: '5', title: 'Finish'},
   ]);
+
   return (
     <TabView
       renderTabBar={renderTabBar}

@@ -3,7 +3,7 @@ import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 import Rating from '../Rating';
 
-const RoomCard = ({image, name, location, rating, onPress}) => {
+const RoomCard = ({image, name, location, rating, number, onPress}) => {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
       <View style={styles.container}>

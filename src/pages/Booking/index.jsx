@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {BookingTab} from '../../components';
+import {BookingTab, EmptyBooking} from '../../components';
 
 const Booking = () => {
+  const [isEmpty] = useState(false);
+
   return (
     <View style={styles.pageContainer}>
       <View style={styles.headerContainer}>
@@ -14,7 +16,7 @@ const Booking = () => {
         </View>
       </View>
       <View style={styles.pageTab}>
-        <BookingTab />
+        {isEmpty ? <EmptyBooking /> : <BookingTab />}
       </View>
     </View>
   );
@@ -30,6 +32,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#020202',
+  },
+  subTitle: {
+    fontSize: 16,
+    color: '#8D92A3',
   },
   pageTab: {
     flex: 1,

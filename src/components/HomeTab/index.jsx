@@ -48,18 +48,18 @@ const RoomList = ({rooms}) => {
 
   return (
     <View style={styles.page}>
-      {rooms.map(room => {
-        const imageArray = JSON.parse(room.image);
+      {rooms.map(itemRoom => {
+        const imageArray = JSON.parse(itemRoom.image);
         const secondImage = imageArray[1];
 
         return (
           <ListRoom
-            key={room.id}
+            key={itemRoom.id}
             image={{uri: secondImage}}
-            name={room.name}
-            rating={room.rate}
-            location={room.location}
-            onPress={() => navigation.navigate('RoomDetail', {room})}
+            name={itemRoom.name}
+            rating={itemRoom.rate}
+            location={itemRoom.location}
+            onPress={() => navigation.navigate('RoomDetail', {itemRoom})}
           />
         );
       })}
