@@ -1,22 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-  Modal,
-  Dimensions,
-  Image,
-} from 'react-native';
+import {View, ScrollView, Dimensions} from 'react-native';
 import axios from 'axios';
-import {LocaleConfig, Calendar} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 import {useDispatch} from 'react-redux';
-import {Button, Header} from '../../components';
-import {EmptyImg, ICTime} from '../../assets';
+import {AddButton, AgendaList, AgendaModal, Header, NoAgenda} from '../../components';
 import {setLoading} from '../../redux/reducers/globalSlice';
-import '../../config/Calender';
 import {API_HOST} from '../../config';
 import {getData, ShowMessage} from '../../utilities';
 
@@ -24,38 +12,40 @@ const {width} = Dimensions.get('window');
 
 const AgendaCalendar = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const {item} = route.params; // Ruangan yang dipilih
-  const [agendaData, setAgendaData] = useState({});
-  const [selectedDate, setSelectedDate] = useState('');
+  const {item} = route.params; // Mendapatkan data ruangan yang dipilih dari route params
+  const [agendaData, setAgendaData] = useState({}); // State untuk menyimpan data agenda
+  const [selectedDate, setSelectedDate] = useState(''); // State untuk menyimpan tanggal yang dipilih
   const [newAgenda, setNewAgenda] = useState({
     startTime: '',
     endTime: '',
     activity: '',
     peminjam: '',
-  });
-  const [modalVisible, setModalVisible] = useState(false);
+  }); // State untuk menyimpan data agenda baru
+  const [modalVisible, setModalVisible] = useState(false); // State untuk mengatur visibilitas modal
 
+  // Effect untuk mengambil data agenda saat komponen dimuat
   useEffect(() => {
     const fetchAgendaData = async () => {
       try {
-        dispatch(setLoading({isLoading: true}));
-        const tokenData = await getData('token');
+        dispatch(setLoading({isLoading: true})); // Mengaktifkan loading
+        const tokenData = await getData('token'); // Mengambil token dari storage
         const token = tokenData?.value;
 
+        // Mengambil data agenda dari API
         const response = await axios.get(`${API_HOST.url}/agendas`, {
           headers: {
             Authorization: token,
           },
         });
 
-        console.log('Room ID yang dipilih:', item.id); // Tambahkan log di sini
-
-        console.log('Data agenda dari API:', response.data.data); // Cetak data dari API
+        // Harus dihapus nanti
+        console.log('Room ID yang dipilih:', item.id); // Log ID ruangan yang dipilih
+        console.log('Data agenda dari API:', response.data.data); // Log data agenda dari API
         const data = response.data.data;
 
         // Filter data berdasarkan room_id yang dipilih
         const filteredData = data.filter(agenda => agenda.room_id === item.id);
-        console.log('Data agenda setelah filter:', filteredData); // Cetak data setelah filter
+        console.log('Data agenda setelah filter:', filteredData); // Log data agenda setelah filter
 
         // Format data sesuai dengan tanggal
         const formattedData = filteredData.reduce((acc, agenda) => {
@@ -67,40 +57,44 @@ const AgendaCalendar = ({navigation, route}) => {
           return acc;
         }, {});
 
-        console.log('Data agenda yang sudah diformat:', formattedData); // Cetak data setelah diformat
+        console.log('Data agenda yang sudah diformat:', formattedData); // Log data agenda setelah diformat
 
         setAgendaData(formattedData); // Mengatur data ke state lokal
       } catch (error) {
         console.log(error);
-        ShowMessage('Failed to load agenda data', 'danger');
+        ShowMessage('Failed to load agenda data', 'danger'); // Menampilkan pesan error jika gagal memuat data
       } finally {
-        dispatch(setLoading({isLoading: false}));
+        dispatch(setLoading({isLoading: false})); // Mematikan loading
       }
     };
 
-    fetchAgendaData();
-  }, [dispatch, item.id]); // Pastikan item.id terdeteksi jika terjadi perubahan
+    fetchAgendaData(); // Memanggil fungsi untuk mengambil data
+  }, [dispatch, item.id]); // Dependencies: fetch ulang jika dispatch atau item.id berubah
 
+  // Fungsi untuk menangani klik pada hari tertentu di kalender
   const handleDayPress = day => {
-    setSelectedDate(day.dateString);
+    setSelectedDate(day.dateString); // Mengatur tanggal yang dipilih
   };
 
+  // Fungsi untuk menambah agenda baru
   const handleAddAgenda = () => {
     const updatedAgenda = {...agendaData};
     if (!updatedAgenda[selectedDate]) {
       updatedAgenda[selectedDate] = [];
     }
-    updatedAgenda[selectedDate].push(newAgenda);
-    setAgendaData(updatedAgenda);
-    setNewAgenda({startTime: '', endTime: '', activity: '', peminjam: ''});
-    setModalVisible(false);
+    updatedAgenda[selectedDate].push(newAgenda); // Menambahkan agenda baru ke tanggal yang dipilih
+    setAgendaData(updatedAgenda); // Mengatur agenda data yang diperbarui
+    setNewAgenda({startTime: '', endTime: '', activity: '', peminjam: ''}); // Mengatur ulang data agenda baru
+    setModalVisible(false); // Menutup modal
   };
 
+  // Menandai tanggal-tanggal yang memiliki agenda
   const markedDates = {};
   for (const date in agendaData) {
     markedDates[date] = {marked: true, selected: true, selectedColor: 'orange'};
   }
 
+  // Menandai tanggal yang sedang dipilih
   if (selectedDate !== '') {
     markedDates[selectedDate] = {
       marked: true,
@@ -112,209 +106,43 @@ const AgendaCalendar = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <ScrollView>
-        <View style={styles.container}>
+        <View style={{flex: 1}}>
+          {/* Header dengan judul dan tombol kembali */}
           <Header
             title="Date"
             subTitle="Select Date"
             onPress={() => navigation.goBack()}
           />
+          {/* Kalender untuk memilih tanggal */}
           <Calendar
             onDayPress={handleDayPress}
             markedDates={markedDates}
             style={{marginTop: 14}}
           />
+          {/* Menampilkan pesan jika tidak ada agenda untuk tanggal yang dipilih */}
           {!agendaData[selectedDate] && (
-            <View style={styles.noAgendaContainer}>
-              <Image source={EmptyImg} style={styles.noAgendaImage} />
-              <Text style={styles.noAgendaText}>
-                There is no agenda for today's date.
-              </Text>
-            </View>
+           <NoAgenda />
           )}
+          {/* Menampilkan daftar agenda jika ada agenda untuk tanggal yang dipilih */}
           {selectedDate && agendaData[selectedDate] && (
-            <View style={styles.agendaContainer}>
-              <Text style={styles.agendaTitle}>Room : {item.name}</Text>
-              {agendaData[selectedDate].map((agenda, index) => (
-                <View key={index} style={styles.agendaItem}>
-                  <View style={styles.timeContainer}>
-                    <ICTime />
-                    <Text style={styles.time}>
-                      {agenda.waktu_mulai} - {agenda.waktu_selesai}
-                    </Text>
-                  </View>
-                  <View style={styles.activityContainer}>
-                    <Text style={styles.activity}>{agenda.activities}</Text>
-                    <Text style={styles.peminjam}>{agenda.user.instansi}</Text>
-                  </View>
-                </View>
-              ))}
-            </View>
+             <AgendaList selectedDate={selectedDate} agendaData={agendaData} item={item} />
           )}
         </View>
       </ScrollView>
-      <TouchableOpacity
-        style={styles.floatingButton}
-        onPress={() => setModalVisible(true)}>
-        <Text style={styles.iconPlus}>+</Text>
-      </TouchableOpacity>
 
-      <Modal
+      {/* Tombol untuk membuka modal tambah agenda */}
+      <AddButton onPress={() => setModalVisible(true)} />
+
+      {/* Modal untuk menambah agenda baru */}
+      <AgendaModal
         visible={modalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={() => setModalVisible(false)}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.formTitle}>Add New</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Start Time"
-              value={newAgenda.startTime}
-              onChangeText={text =>
-                setNewAgenda({...newAgenda, startTime: text})
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="End Time"
-              value={newAgenda.endTime}
-              onChangeText={text => setNewAgenda({...newAgenda, endTime: text})}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Activity"
-              value={newAgenda.activity}
-              onChangeText={text =>
-                setNewAgenda({...newAgenda, activity: text})
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Peminjam"
-              value={newAgenda.peminjam}
-              onChangeText={text =>
-                setNewAgenda({...newAgenda, peminjam: text})
-              }
-            />
-            <Button title="Submit" type="primary" onPress={handleAddAgenda} />
-            <Button
-              title="Cancel"
-              type="secondary"
-              onPress={() => setModalVisible(false)}
-            />
-          </View>
-        </View>
-      </Modal>
+        onClose={() => setModalVisible(false)}
+        newAgenda={newAgenda}
+        setNewAgenda={setNewAgenda}
+        onSubmit={handleAddAgenda}
+      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  noAgendaContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  noAgendaImage: {
-    width: 250, // Atur ukuran gambar sesuai kebutuhan
-    height: 250,
-    marginBottom: 4,
-  },
-  noAgendaText: {
-    fontSize: 14,
-    fontFamily: 'Poppins-Regular',
-  },
-  agendaContainer: {
-    padding: 20,
-  },
-  agendaTitle: {
-    fontSize: 12,
-    marginBottom: 10,
-    fontFamily: 'Poppins-Regular',
-    backgroundColor: '#FFFF',
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    borderRadius: 10,
-    textAlign: 'center',
-  },
-  agendaItem: {
-    marginBottom: 10,
-    fontFamily: 'Poppins-Regular',
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 10,
-  },
-  activity: {
-    fontFamily: 'Poppins-Regular',
-    color: '#222B45',
-  },
-  peminjam: {
-    fontFamily: 'Poppins-Regular',
-    color: '#8F9BB3',
-  },
-  timeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  activityContainer: {
-    paddingLeft: 30,
-    justifyContent: 'space-between',
-  },
-  time: {
-    fontFamily: 'Poppins-Regular',
-    color: '#8F9BB3',
-    paddingLeft: 14,
-  },
-  floatingButton: {
-    position: 'absolute',
-    width: 60,
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 20,
-    bottom: 20,
-    backgroundColor: 'orange',
-    borderRadius: 30,
-    elevation: 8,
-    zIndex: 1000,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    width: width - 40,
-    padding: 20,
-    backgroundColor: '#FFF',
-    borderRadius: 10,
-    elevation: 10,
-  },
-  formTitle: {
-    fontSize: 18,
-    fontFamily: 'Poppins-Bold',
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 15,
-    height: 40,
-    fontFamily: 'Poppins-Regular',
-  },
-  iconPlus: {
-    fontSize: 24,
-    color: '#FFF',
-  },
-});
 
 export default AgendaCalendar;
