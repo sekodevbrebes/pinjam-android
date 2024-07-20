@@ -14,6 +14,7 @@ import {setLoading} from '../../redux/reducers/globalSlice';
 import {API_HOST} from '../../config';
 import {getData, ShowMessage} from '../../utilities';
 import '../../config/Calender';
+import useForm from '../../utilities/useForm';
 
 const {width} = Dimensions.get('window');
 
@@ -70,7 +71,12 @@ const AgendaCalendar = ({navigation, route}) => {
         setAgendaData(formattedData); // Mengatur data ke state lokal
 
         // Menetapkan tanggal hari ini
-        const todayDate = new Date().toISOString().split('T')[0];
+        const todayDate = new Date().toLocaleDateString('id-ID', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        }).split('/').reverse().join('-'); // Mengubah format menjadi YYYY-MM-DD
+        console.log('Tanggal hari ini:', todayDate); // Log untuk memastikan `todayDate` benar
         setToday(todayDate);
 
         // Mengatur tanggal yang dipilih ke hari ini jika belum ada yang dipilih
@@ -93,57 +99,66 @@ const AgendaCalendar = ({navigation, route}) => {
     setSelectedDate(day.dateString); // Mengatur tanggal yang dipilih
   };
 
+  const handleAddAgenda = () => {
+    const [form, setForm] = useForm({
+      tanggal:'',
+      waktu_mulai:'',
+      waktu_selesai:'',
+      peserta:'',
+      activities:''
+    })
+  }
   // Fungsi untuk menambah agenda baru
-  const handleAddAgenda = async () => {
-    // Validasi data agenda baru
-    if (
-      !newAgenda.startTime ||
-      !newAgenda.endTime ||
-      !newAgenda.activity ||
-      !newAgenda.peserta
-    ) {
-      ShowMessage('All fields are required', 'danger');
-      return;
-    }
+  // const handleAddAgenda = async () => {
+  //   // Validasi data agenda baru
+  //   if (
+  //     !newAgenda.startTime ||
+  //     !newAgenda.endTime ||
+  //     !newAgenda.activity ||
+  //     !newAgenda.peserta
+  //   ) {
+  //     ShowMessage('All fields are required', 'danger');
+  //     return;
+  //   }
 
-    try {
-      dispatch(setLoading({isLoading: true})); // Mengaktifkan loading
-      const tokenData = await getData('token'); // Mengambil token dari storage
-      const token = tokenData?.value;
+  //   try {
+  //     dispatch(setLoading({isLoading: true})); // Mengaktifkan loading
+  //     const tokenData = await getData('token'); // Mengambil token dari storage
+  //     const token = tokenData?.value;
 
-      // Kirimkan data agenda baru ke server
-      await axios.post(
-        `${API_HOST.url}/agendas`,
-        {
-          ...newAgenda,
-          room_id: item.id,
-          tanggal: selectedDate,
-        },
-        {
-          headers: {
-            Authorization: token,
-          },
-        },
-      );
+  //     // Kirimkan data agenda baru ke server
+  //     await axios.post(
+  //       `${API_HOST.url}/agendas`,
+  //       {
+  //         ...newAgenda,
+  //         room_id: item.id,
+  //         tanggal: selectedDate,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: token,
+  //         },
+  //       },
+  //     );
 
-      // Update state dengan agenda baru
-      const updatedAgenda = {...agendaData};
-      if (!updatedAgenda[selectedDate]) {
-        updatedAgenda[selectedDate] = [];
-      }
-      updatedAgenda[selectedDate].push(newAgenda); // Menambahkan agenda baru ke tanggal yang dipilih
-      setAgendaData(updatedAgenda); // Mengatur agenda data yang diperbarui
+  //     // Update state dengan agenda baru
+  //     const updatedAgenda = {...agendaData};
+  //     if (!updatedAgenda[selectedDate]) {
+  //       updatedAgenda[selectedDate] = [];
+  //     }
+  //     updatedAgenda[selectedDate].push(newAgenda); // Menambahkan agenda baru ke tanggal yang dipilih
+  //     setAgendaData(updatedAgenda); // Mengatur agenda data yang diperbarui
 
-      ShowMessage('Agenda added successfully', 'success'); // Menampilkan pesan sukses
-    } catch (error) {
-      console.log(error);
-      ShowMessage('Failed to add agenda', 'danger'); // Menampilkan pesan error jika gagal menambah agenda
-    } finally {
-      dispatch(setLoading({isLoading: false})); // Mematikan loading
-      setNewAgenda({startTime: '', endTime: '', activity: '', peserta: ''}); // Mengatur ulang data agenda baru
-      setModalVisible(false); // Menutup modal
-    }
-  };
+  //     ShowMessage('Agenda added successfully', 'success'); // Menampilkan pesan sukses
+  //   } catch (error) {
+  //     console.log(error);
+  //     ShowMessage('Failed to add agenda', 'danger'); // Menampilkan pesan error jika gagal menambah agenda
+  //   } finally {
+  //     dispatch(setLoading({isLoading: false})); // Mematikan loading
+  //     setNewAgenda({startTime: '', endTime: '', activity: '', peserta: ''}); // Mengatur ulang data agenda baru
+  //     setModalVisible(false); // Menutup modal
+  //   }
+  // };
 
   // Menandai tanggal-tanggal yang memiliki agenda
   const markedDates = {};

@@ -2,10 +2,7 @@ import React, {useState} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
-const TimeType = ({
-  label = 'Label Default',
-  placeholder = 'Placeholder Default',
-}) => {
+const TimeType = ({label, placeholder, ...rest}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [time, setTime] = useState('');
 
@@ -34,6 +31,7 @@ const TimeType = ({
         mode="time"
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
+        {...rest}
       />
     </View>
   );
