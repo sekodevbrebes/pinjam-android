@@ -15,6 +15,8 @@ import NoAgenda from './NoAgenda';
 import AgendaList from './AgendaList';
 import AddButton from './Button/AddButton';
 import AgendaModal from './AgendaModal';
+import TextAreaType from './Input/textarea';
+import TimeType from './Input/timepicker';
 
 export {
   Button,
@@ -34,4 +36,6 @@ export {
   AgendaList,
   AddButton,
   AgendaModal,
+  TextAreaType,
+  TimeType,
 };

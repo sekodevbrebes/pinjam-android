@@ -1,13 +1,10 @@
 import React from 'react';
-import {
-  View,
-  Modal,
-  Text,
-  TextInput,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import {View, Modal, Text, StyleSheet, Dimensions} from 'react-native';
 import Button from '../Button';
+import InputType from '../Input';
+import Gap from '../Gap';
+import TextAreaType from '../Input/textarea';
+import TimeType from '../Input/timepicker';
 
 const {width} = Dimensions.get('window');
 
@@ -20,31 +17,19 @@ const AgendaModal = ({visible, onClose, newAgenda, setNewAgenda, onSubmit}) => (
     <View style={styles.modalContainer}>
       <View style={styles.modalContent}>
         <Text style={styles.formTitle}>Add New</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Start Time"
-          value={newAgenda.startTime}
-          onChangeText={text => setNewAgenda({...newAgenda, startTime: text})}
+        <TimeType label="Start Time" placeholder="Type Start Time" />
+        <Gap height={20} />
+        <TimeType label="End Time" placeholder="Type End Time" />
+        <Gap height={20} />
+        <InputType
+          label="Participants"
+          placeholder="Type Number of Participants"
         />
-        <TextInput
-          style={styles.input}
-          placeholder="End Time"
-          value={newAgenda.endTime}
-          onChangeText={text => setNewAgenda({...newAgenda, endTime: text})}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Activity"
-          value={newAgenda.activity}
-          onChangeText={text => setNewAgenda({...newAgenda, activity: text})}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Peminjam"
-          value={newAgenda.peminjam}
-          onChangeText={text => setNewAgenda({...newAgenda, peminjam: text})}
-        />
+        <Gap height={20} />
+        <TextAreaType label="Activity" placeholder="Type Your Activity" />
+        <Gap height={40} />
         <Button title="Submit" type="primary" onPress={onSubmit} />
+        <Gap height={20} />
         <Button title="Cancel" type="secondary" onPress={onClose} />
       </View>
     </View>
@@ -67,7 +52,6 @@ const styles = StyleSheet.create({
   },
   formTitle: {
     fontSize: 18,
-    fontFamily: 'Poppins-Bold',
     marginBottom: 15,
     textAlign: 'center',
   },

@@ -3,10 +3,17 @@ import {View, ScrollView, Dimensions} from 'react-native';
 import axios from 'axios';
 import {Calendar} from 'react-native-calendars';
 import {useDispatch} from 'react-redux';
-import {AddButton, AgendaList, AgendaModal, Header, NoAgenda} from '../../components';
+import {
+  AddButton,
+  AgendaList,
+  AgendaModal,
+  Header,
+  NoAgenda,
+} from '../../components';
 import {setLoading} from '../../redux/reducers/globalSlice';
 import {API_HOST} from '../../config';
 import {getData, ShowMessage} from '../../utilities';
+import '../../config/Calender';
 
 const {width} = Dimensions.get('window');
 
@@ -19,9 +26,10 @@ const AgendaCalendar = ({navigation, route}) => {
     startTime: '',
     endTime: '',
     activity: '',
-    peminjam: '',
+    peserta: '',
   }); // State untuk menyimpan data agenda baru
   const [modalVisible, setModalVisible] = useState(false); // State untuk mengatur visibilitas modal
+  const [today, setToday] = useState(''); // State untuk tanggal hari ini
 
   // Effect untuk mengambil data agenda saat komponen dimuat
   useEffect(() => {
@@ -60,6 +68,15 @@ const AgendaCalendar = ({navigation, route}) => {
         console.log('Data agenda yang sudah diformat:', formattedData); // Log data agenda setelah diformat
 
         setAgendaData(formattedData); // Mengatur data ke state lokal
+
+        // Menetapkan tanggal hari ini
+        const todayDate = new Date().toISOString().split('T')[0];
+        setToday(todayDate);
+
+        // Mengatur tanggal yang dipilih ke hari ini jika belum ada yang dipilih
+        if (!selectedDate) {
+          setSelectedDate(todayDate);
+        }
       } catch (error) {
         console.log(error);
         ShowMessage('Failed to load agenda data', 'danger'); // Menampilkan pesan error jika gagal memuat data
@@ -77,15 +94,55 @@ const AgendaCalendar = ({navigation, route}) => {
   };
 
   // Fungsi untuk menambah agenda baru
-  const handleAddAgenda = () => {
-    const updatedAgenda = {...agendaData};
-    if (!updatedAgenda[selectedDate]) {
-      updatedAgenda[selectedDate] = [];
+  const handleAddAgenda = async () => {
+    // Validasi data agenda baru
+    if (
+      !newAgenda.startTime ||
+      !newAgenda.endTime ||
+      !newAgenda.activity ||
+      !newAgenda.peserta
+    ) {
+      ShowMessage('All fields are required', 'danger');
+      return;
     }
-    updatedAgenda[selectedDate].push(newAgenda); // Menambahkan agenda baru ke tanggal yang dipilih
-    setAgendaData(updatedAgenda); // Mengatur agenda data yang diperbarui
-    setNewAgenda({startTime: '', endTime: '', activity: '', peminjam: ''}); // Mengatur ulang data agenda baru
-    setModalVisible(false); // Menutup modal
+
+    try {
+      dispatch(setLoading({isLoading: true})); // Mengaktifkan loading
+      const tokenData = await getData('token'); // Mengambil token dari storage
+      const token = tokenData?.value;
+
+      // Kirimkan data agenda baru ke server
+      await axios.post(
+        `${API_HOST.url}/agendas`,
+        {
+          ...newAgenda,
+          room_id: item.id,
+          tanggal: selectedDate,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
+      );
+
+      // Update state dengan agenda baru
+      const updatedAgenda = {...agendaData};
+      if (!updatedAgenda[selectedDate]) {
+        updatedAgenda[selectedDate] = [];
+      }
+      updatedAgenda[selectedDate].push(newAgenda); // Menambahkan agenda baru ke tanggal yang dipilih
+      setAgendaData(updatedAgenda); // Mengatur agenda data yang diperbarui
+
+      ShowMessage('Agenda added successfully', 'success'); // Menampilkan pesan sukses
+    } catch (error) {
+      console.log(error);
+      ShowMessage('Failed to add agenda', 'danger'); // Menampilkan pesan error jika gagal menambah agenda
+    } finally {
+      dispatch(setLoading({isLoading: false})); // Mematikan loading
+      setNewAgenda({startTime: '', endTime: '', activity: '', peserta: ''}); // Mengatur ulang data agenda baru
+      setModalVisible(false); // Menutup modal
+    }
   };
 
   // Menandai tanggal-tanggal yang memiliki agenda
@@ -100,6 +157,14 @@ const AgendaCalendar = ({navigation, route}) => {
       marked: true,
       selected: true,
       selectedColor: '#08CDFE',
+    };
+  }
+
+  // Menandai tanggal hari ini
+  if (today) {
+    markedDates[today] = {
+      ...markedDates[today],
+      dotColor: 'white', // Menambahkan titik berwarna merah pada tanggal hari ini
     };
   }
 
@@ -120,12 +185,14 @@ const AgendaCalendar = ({navigation, route}) => {
             style={{marginTop: 14}}
           />
           {/* Menampilkan pesan jika tidak ada agenda untuk tanggal yang dipilih */}
-          {!agendaData[selectedDate] && (
-           <NoAgenda />
-          )}
+          {!agendaData[selectedDate] && <NoAgenda />}
           {/* Menampilkan daftar agenda jika ada agenda untuk tanggal yang dipilih */}
           {selectedDate && agendaData[selectedDate] && (
-             <AgendaList selectedDate={selectedDate} agendaData={agendaData} item={item} />
+            <AgendaList
+              selectedDate={selectedDate}
+              agendaData={agendaData}
+              item={item}
+            />
           )}
         </View>
       </ScrollView>
