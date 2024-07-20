@@ -3,7 +3,7 @@ import {StyleSheet, View, Text} from 'react-native';
 import {BookingTab, EmptyBooking} from '../../components';
 
 const Booking = () => {
-  const [isEmpty] = useState(false);
+  const [isEmpty] = useState(true);
 
   return (
     <View style={styles.pageContainer}>

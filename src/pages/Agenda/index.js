@@ -1,20 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TextInput, ScrollView, TouchableOpacity, Modal, Dimensions } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  Modal,
+  Dimensions,
+  Image,
+} from 'react-native';
 import axios from 'axios';
-import { LocaleConfig, Calendar } from 'react-native-calendars';
-import { useDispatch } from 'react-redux';
-import { Button, Header } from '../../components';
-import { ICTime } from '../../assets';
-import { setLoading } from '../../redux/reducers/globalSlice';
+import {LocaleConfig, Calendar} from 'react-native-calendars';
+import {useDispatch} from 'react-redux';
+import {Button, Header} from '../../components';
+import {EmptyImg, ICTime} from '../../assets';
+import {setLoading} from '../../redux/reducers/globalSlice';
 import '../../config/Calender';
-import { API_HOST } from '../../config';
-import { getData, ShowMessage } from '../../utilities';
+import {API_HOST} from '../../config';
+import {getData, ShowMessage} from '../../utilities';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
-const AgendaCalendar = ({ navigation, route }) => {
+const AgendaCalendar = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const { item } = route.params; // Ruangan yang dipilih
+  const {item} = route.params; // Ruangan yang dipilih
   const [agendaData, setAgendaData] = useState({});
   const [selectedDate, setSelectedDate] = useState('');
   const [newAgenda, setNewAgenda] = useState({
@@ -28,7 +38,7 @@ const AgendaCalendar = ({ navigation, route }) => {
   useEffect(() => {
     const fetchAgendaData = async () => {
       try {
-        dispatch(setLoading({ isLoading: true }));
+        dispatch(setLoading({isLoading: true}));
         const tokenData = await getData('token');
         const token = tokenData?.value;
 
@@ -39,7 +49,7 @@ const AgendaCalendar = ({ navigation, route }) => {
         });
 
         console.log('Room ID yang dipilih:', item.id); // Tambahkan log di sini
-        
+
         console.log('Data agenda dari API:', response.data.data); // Cetak data dari API
         const data = response.data.data;
 
@@ -64,7 +74,7 @@ const AgendaCalendar = ({ navigation, route }) => {
         console.log(error);
         ShowMessage('Failed to load agenda data', 'danger');
       } finally {
-        dispatch(setLoading({ isLoading: false }));
+        dispatch(setLoading({isLoading: false}));
       }
     };
 
@@ -76,27 +86,31 @@ const AgendaCalendar = ({ navigation, route }) => {
   };
 
   const handleAddAgenda = () => {
-    const updatedAgenda = { ...agendaData };
+    const updatedAgenda = {...agendaData};
     if (!updatedAgenda[selectedDate]) {
       updatedAgenda[selectedDate] = [];
     }
     updatedAgenda[selectedDate].push(newAgenda);
     setAgendaData(updatedAgenda);
-    setNewAgenda({ startTime: '', endTime: '', activity: '', peminjam: '' });
+    setNewAgenda({startTime: '', endTime: '', activity: '', peminjam: ''});
     setModalVisible(false);
   };
 
   const markedDates = {};
   for (const date in agendaData) {
-    markedDates[date] = { marked: true, selected: true, selectedColor: 'orange' };
+    markedDates[date] = {marked: true, selected: true, selectedColor: 'orange'};
   }
 
   if (selectedDate !== '') {
-    markedDates[selectedDate] = { marked: true, selected: true, selectedColor: '#08CDFE' };
+    markedDates[selectedDate] = {
+      marked: true,
+      selected: true,
+      selectedColor: '#08CDFE',
+    };
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <ScrollView>
         <View style={styles.container}>
           <Header
@@ -107,11 +121,14 @@ const AgendaCalendar = ({ navigation, route }) => {
           <Calendar
             onDayPress={handleDayPress}
             markedDates={markedDates}
-            style={{ marginTop: 14 }}
+            style={{marginTop: 14}}
           />
           {!agendaData[selectedDate] && (
             <View style={styles.noAgendaContainer}>
-              <Text style={styles.noAgendaText}>There is no agenda for today's date.</Text>
+              <Image source={EmptyImg} style={styles.noAgendaImage} />
+              <Text style={styles.noAgendaText}>
+                There is no agenda for today's date.
+              </Text>
             </View>
           )}
           {selectedDate && agendaData[selectedDate] && (
@@ -121,7 +138,9 @@ const AgendaCalendar = ({ navigation, route }) => {
                 <View key={index} style={styles.agendaItem}>
                   <View style={styles.timeContainer}>
                     <ICTime />
-                    <Text style={styles.time}>{agenda.waktu_mulai} - {agenda.waktu_selesai}</Text>
+                    <Text style={styles.time}>
+                      {agenda.waktu_mulai} - {agenda.waktu_selesai}
+                    </Text>
                   </View>
                   <View style={styles.activityContainer}>
                     <Text style={styles.activity}>{agenda.activities}</Text>
@@ -135,8 +154,7 @@ const AgendaCalendar = ({ navigation, route }) => {
       </ScrollView>
       <TouchableOpacity
         style={styles.floatingButton}
-        onPress={() => setModalVisible(true)}
-      >
+        onPress={() => setModalVisible(true)}>
         <Text style={styles.iconPlus}>+</Text>
       </TouchableOpacity>
 
@@ -144,33 +162,30 @@ const AgendaCalendar = ({ navigation, route }) => {
         visible={modalVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setModalVisible(false)}
-      >
+        onRequestClose={() => setModalVisible(false)}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.formTitle}>
-              Add New
-            </Text>
+            <Text style={styles.formTitle}>Add New</Text>
             <TextInput
               style={styles.input}
               placeholder="Start Time"
               value={newAgenda.startTime}
               onChangeText={text =>
-                setNewAgenda({ ...newAgenda, startTime: text })
+                setNewAgenda({...newAgenda, startTime: text})
               }
             />
             <TextInput
               style={styles.input}
               placeholder="End Time"
               value={newAgenda.endTime}
-              onChangeText={text => setNewAgenda({ ...newAgenda, endTime: text })}
+              onChangeText={text => setNewAgenda({...newAgenda, endTime: text})}
             />
             <TextInput
               style={styles.input}
               placeholder="Activity"
               value={newAgenda.activity}
               onChangeText={text =>
-                setNewAgenda({ ...newAgenda, activity: text })
+                setNewAgenda({...newAgenda, activity: text})
               }
             />
             <TextInput
@@ -178,11 +193,15 @@ const AgendaCalendar = ({ navigation, route }) => {
               placeholder="Peminjam"
               value={newAgenda.peminjam}
               onChangeText={text =>
-                setNewAgenda({ ...newAgenda, peminjam: text })
+                setNewAgenda({...newAgenda, peminjam: text})
               }
             />
             <Button title="Submit" type="primary" onPress={handleAddAgenda} />
-            <Button title="Cancel" type="secondary" onPress={() => setModalVisible(false)} />
+            <Button
+              title="Cancel"
+              type="secondary"
+              onPress={() => setModalVisible(false)}
+            />
           </View>
         </View>
       </Modal>
@@ -200,15 +219,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
+  noAgendaImage: {
+    width: 250, // Atur ukuran gambar sesuai kebutuhan
+    height: 250,
+    marginBottom: 4,
+  },
   noAgendaText: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Poppins-Regular',
   },
   agendaContainer: {
     padding: 20,
   },
   agendaTitle: {
-    fontSize: 14,
+    fontSize: 12,
     marginBottom: 10,
     fontFamily: 'Poppins-Regular',
     backgroundColor: '#FFFF',
