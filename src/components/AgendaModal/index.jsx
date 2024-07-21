@@ -8,7 +8,7 @@ import TimeType from '../Input/timepicker';
 
 const {width} = Dimensions.get('window');
 
-const AgendaModal = ({visible, onClose, newAgenda, setNewAgenda, onSubmit}) => (
+const AgendaModal = ({visible, onClose, onSubmit, form, setForm}) => (
   <Modal
     visible={visible}
     transparent
@@ -17,19 +17,52 @@ const AgendaModal = ({visible, onClose, newAgenda, setNewAgenda, onSubmit}) => (
     <View style={styles.modalContainer}>
       <View style={styles.modalContent}>
         <Text style={styles.formTitle}>Add New</Text>
-        <TimeType label="Start Time" placeholder="Type Start Time" />
-        <Gap height={20} />
-        <TimeType label="End Time" placeholder="Type End Time" />
-        <Gap height={20} />
+        <InputType
+          label="Date"
+          placeholder="Selected Date"
+          value={form.tanggal}
+          editable={false} // Membuat input tidak bisa diedit
+        />
+        <Gap height={12} />
+        <View style={styles.hidden}>
+          <InputType
+            label="Room ID"
+            placeholder="Room ID"
+            value={form.room_id}
+            editable={false} // Membuat input tidak bisa diedit
+          />
+        </View>
+        <Gap height={12} />
+        <TimeType
+          label="Start Time"
+          placeholder="Type Start Time"
+          value={form.waktu_mulai}
+          onChangeText={value => setForm('waktu_mulai', value)}
+        />
+        <Gap height={12} />
+        <TimeType
+          label="End Time"
+          placeholder="Type End Time"
+          value={form.waktu_selesai}
+          onChangeText={value => setForm('waktu_selesai', value)}
+        />
+        <Gap height={12} />
         <InputType
           label="Participants"
           placeholder="Type Number of Participants"
+          value={form.peserta}
+          onChangeText={value => setForm('peserta', value)}
         />
-        <Gap height={20} />
-        <TextAreaType label="Activity" placeholder="Type Your Activity" />
+        <Gap height={12} />
+        <TextAreaType
+          label="Activity"
+          placeholder="Type Your Activity"
+          value={form.activities}
+          onChangeText={value => setForm('activities', value)}
+        />
         <Gap height={40} />
         <Button title="Submit" type="primary" onPress={onSubmit} />
-        <Gap height={20} />
+        <Gap height={12} />
         <Button title="Cancel" type="secondary" onPress={onClose} />
       </View>
     </View>
@@ -63,6 +96,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     height: 40,
     fontFamily: 'Poppins-Regular',
+  },
+  hidden: {
+    display: 'none', // Properti untuk menyembunyikan input Room ID
   },
 });
 

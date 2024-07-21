@@ -1,45 +1,52 @@
 import React, {useState} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {View, Text, TextInput, StyleSheet} from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
-const TimeType = ({label, placeholder, ...rest}) => {
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [time, setTime] = useState('');
+const TimeType = ({label, placeholder, value, onChangeText}) => {
+  const [show, setShow] = useState(false);
+  const [time, setTime] = useState(new Date());
 
-  const showDatePicker = () => setDatePickerVisibility(true);
-  const hideDatePicker = () => setDatePickerVisibility(false);
-
-  const handleConfirm = date => {
-    // Format waktu dalam format 24 jam
-    const formattedTime = date.toLocaleTimeString([], {
+  const onChange = (event, selectedTime) => {
+    const currentTime = selectedTime || time;
+    setShow(false);
+    setTime(currentTime);
+    const formattedTime = currentTime.toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit',
       hour12: false,
     });
-    setTime(formattedTime);
-    hideDatePicker();
+    onChangeText(formattedTime);
   };
 
   return (
     <View>
       <Text style={styles.label}>{label}</Text>
-      <TouchableOpacity style={styles.input} onPress={showDatePicker}>
-        <Text style={styles.inputText}>{time || placeholder}</Text>
-      </TouchableOpacity>
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="time"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-        {...rest}
+      <TextInput
+        style={styles.input}
+        placeholder={placeholder}
+        value={value}
+        onFocus={() => setShow(true)}
       />
+      {show && (
+        <DateTimePicker
+          value={time}
+          mode="time"
+          is24Hour={true}
+          display="default"
+          onChange={onChange}
+        />
+      )}
     </View>
   );
 };
 
-export default TimeType;
-
 const styles = StyleSheet.create({
+  label: {
+    marginBottom: 8,
+    fontSize: 12,
+    color: '#555555',
+    fontFamily: 'Poppins-Regular',
+  },
   input: {
     height: 48,
     width: '100%',
@@ -49,15 +56,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 10,
     paddingRight: 10,
-    justifyContent: 'center',
-  },
-  inputText: {
     color: 'grey',
   },
-  label: {
-    marginBottom: 8,
-    fontSize: 18,
-    color: '#000000',
-    fontFamily: 'Poppins-Regular',
-  },
 });
+
+export default TimeType;

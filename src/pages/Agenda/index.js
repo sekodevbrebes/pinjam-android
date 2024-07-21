@@ -23,12 +23,16 @@ const AgendaCalendar = ({navigation, route}) => {
   const {item} = route.params; // Mendapatkan data ruangan yang dipilih dari route params
   const [agendaData, setAgendaData] = useState({}); // State untuk menyimpan data agenda
   const [selectedDate, setSelectedDate] = useState(''); // State untuk menyimpan tanggal yang dipilih
-  const [newAgenda, setNewAgenda] = useState({
-    startTime: '',
-    endTime: '',
-    activity: '',
+  const [form, setForm] = useForm({
+    tanggal: '',
+    waktu_mulai: '',
+    waktu_selesai: '',
     peserta: '',
-  }); // State untuk menyimpan data agenda baru
+    activities: '',
+    room_id: '',
+  });
+
+  // State untuk menyimpan data agenda baru
   const [modalVisible, setModalVisible] = useState(false); // State untuk mengatur visibilitas modal
   const [today, setToday] = useState(''); // State untuk tanggal hari ini
 
@@ -71,11 +75,15 @@ const AgendaCalendar = ({navigation, route}) => {
         setAgendaData(formattedData); // Mengatur data ke state lokal
 
         // Menetapkan tanggal hari ini
-        const todayDate = new Date().toLocaleDateString('id-ID', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-        }).split('/').reverse().join('-'); // Mengubah format menjadi YYYY-MM-DD
+        const todayDate = new Date()
+          .toLocaleDateString('id-ID', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          })
+          .split('/')
+          .reverse()
+          .join('-'); // Mengubah format menjadi YYYY-MM-DD
         console.log('Tanggal hari ini:', todayDate); // Log untuk memastikan `todayDate` benar
         setToday(todayDate);
 
@@ -97,17 +105,21 @@ const AgendaCalendar = ({navigation, route}) => {
   // Fungsi untuk menangani klik pada hari tertentu di kalender
   const handleDayPress = day => {
     setSelectedDate(day.dateString); // Mengatur tanggal yang dipilih
+    //Harus di Hapus
+    console.log('Tanggal yang dipilih:', day.dateString); // Log tanggal yang dipilih
+    setForm('tanggal', day.dateString); // Mengatur tanggal ke form
   };
 
+    // Fungsi untuk membuka modal dan mengatur room_id ke dalam form
+    const handleOpenModal = () => {
+      setForm('room_id', item.id); // Mengatur room_id ke dalam form
+      setModalVisible(true);
+    };
+  
+
   const handleAddAgenda = () => {
-    const [form, setForm] = useForm({
-      tanggal:'',
-      waktu_mulai:'',
-      waktu_selesai:'',
-      peserta:'',
-      activities:''
-    })
-  }
+    console.log('Isi Form Input : ', form);
+  };
   // Fungsi untuk menambah agenda baru
   // const handleAddAgenda = async () => {
   //   // Validasi data agenda baru
@@ -213,14 +225,15 @@ const AgendaCalendar = ({navigation, route}) => {
       </ScrollView>
 
       {/* Tombol untuk membuka modal tambah agenda */}
-      <AddButton onPress={() => setModalVisible(true)} />
+      {/* <AddButton onPress={() => setModalVisible(true)} /> */}
+      <AddButton onPress={handleOpenModal} />
 
       {/* Modal untuk menambah agenda baru */}
       <AgendaModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        newAgenda={newAgenda}
-        setNewAgenda={setNewAgenda}
+        form={form}
+        setForm={(name, value) => setForm(name, value)}
         onSubmit={handleAddAgenda}
       />
     </View>
