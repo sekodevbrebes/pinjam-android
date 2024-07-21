@@ -15,7 +15,7 @@ const AgendaList = ({selectedDate, agendaData, item}) => (
         </View>
         <View style={styles.activityContainer}>
           <Text style={styles.activity}>{agenda.activities}</Text>
-          <Text style={styles.peminjam}>{agenda.user.instansi}</Text>
+          {/* <Text style={styles.peminjam}>{agenda.user.instansi}</Text> */}
         </View>
       </View>
     ))}

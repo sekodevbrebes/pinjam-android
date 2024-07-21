@@ -32,10 +32,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   image: {
-    width: 300,
-    height: 300,
+    width: 235,
+    height: 235,
     alignSelf: 'center',
-    marginTop: 100,
+    marginTop: 150,
   },
   title: {
     fontSize: 24,

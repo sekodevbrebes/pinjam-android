@@ -15,6 +15,7 @@ import {API_HOST} from '../../config';
 import {getData, ShowMessage} from '../../utilities';
 import '../../config/Calender';
 import useForm from '../../utilities/useForm';
+import moment from 'moment';
 
 const {width} = Dimensions.get('window');
 
@@ -92,7 +93,7 @@ const AgendaCalendar = ({navigation, route}) => {
           setSelectedDate(todayDate);
         }
       } catch (error) {
-        console.log(error);
+        console.log('Error fetching agenda data:', error);
         ShowMessage('Failed to load agenda data', 'danger'); // Menampilkan pesan error jika gagal memuat data
       } finally {
         dispatch(setLoading({isLoading: false})); // Mematikan loading
@@ -105,72 +106,89 @@ const AgendaCalendar = ({navigation, route}) => {
   // Fungsi untuk menangani klik pada hari tertentu di kalender
   const handleDayPress = day => {
     setSelectedDate(day.dateString); // Mengatur tanggal yang dipilih
-    //Harus di Hapus
+    // Harus di Hapus
     console.log('Tanggal yang dipilih:', day.dateString); // Log tanggal yang dipilih
     setForm('tanggal', day.dateString); // Mengatur tanggal ke form
   };
 
-    // Fungsi untuk membuka modal dan mengatur room_id ke dalam form
-    const handleOpenModal = () => {
-      setForm('room_id', item.id); // Mengatur room_id ke dalam form
-      setModalVisible(true);
-    };
-  
-
-  const handleAddAgenda = () => {
-    console.log('Isi Form Input : ', form);
+  // Fungsi untuk membuka modal dan mengatur room_id ke dalam form
+  const handleOpenModal = () => {
+    setForm('room_id', item.id); // Mengatur room_id ke dalam form
+    setModalVisible(true);
   };
+
   // Fungsi untuk menambah agenda baru
-  // const handleAddAgenda = async () => {
-  //   // Validasi data agenda baru
-  //   if (
-  //     !newAgenda.startTime ||
-  //     !newAgenda.endTime ||
-  //     !newAgenda.activity ||
-  //     !newAgenda.peserta
-  //   ) {
-  //     ShowMessage('All fields are required', 'danger');
-  //     return;
-  //   }
+  // Fungsi untuk menambah agenda baru
+  const handleAddAgenda = async () => {
+    try {
+      console.log('Form data sebelum pengiriman:', form); // Log data form sebelum pengiriman
 
-  //   try {
-  //     dispatch(setLoading({isLoading: true})); // Mengaktifkan loading
-  //     const tokenData = await getData('token'); // Mengambil token dari storage
-  //     const token = tokenData?.value;
+      // Validasi data agenda baru
+      if (
+        !form.waktu_mulai ||
+        !form.waktu_selesai ||
+        !form.activities ||
+        !form.peserta
+      ) {
+        ShowMessage('All fields are required', 'danger');
+        return;
+      }
 
-  //     // Kirimkan data agenda baru ke server
-  //     await axios.post(
-  //       `${API_HOST.url}/agendas`,
-  //       {
-  //         ...newAgenda,
-  //         room_id: item.id,
-  //         tanggal: selectedDate,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: token,
-  //         },
-  //       },
-  //     );
+      // Format waktu_mulai dan waktu_selesai ke format HH:mm:ss
+      const formattedStartTime = moment(form.waktu_mulai, 'HH:mm').format(
+        'HH:mm:ss',
+      );
+      const formattedEndTime = moment(form.waktu_selesai, 'HH:mm').format(
+        'HH:mm:ss',
+      );
 
-  //     // Update state dengan agenda baru
-  //     const updatedAgenda = {...agendaData};
-  //     if (!updatedAgenda[selectedDate]) {
-  //       updatedAgenda[selectedDate] = [];
-  //     }
-  //     updatedAgenda[selectedDate].push(newAgenda); // Menambahkan agenda baru ke tanggal yang dipilih
-  //     setAgendaData(updatedAgenda); // Mengatur agenda data yang diperbarui
+      dispatch(setLoading({isLoading: true})); // Mengaktifkan loading
+      const tokenData = await getData('token'); // Mengambil token dari storage
+      const token = tokenData?.value;
 
-  //     ShowMessage('Agenda added successfully', 'success'); // Menampilkan pesan sukses
-  //   } catch (error) {
-  //     console.log(error);
-  //     ShowMessage('Failed to add agenda', 'danger'); // Menampilkan pesan error jika gagal menambah agenda
-  //   } finally {
-  //     dispatch(setLoading({isLoading: false})); // Mematikan loading
-  //     setNewAgenda({startTime: '', endTime: '', activity: '', peserta: ''}); // Mengatur ulang data agenda baru
-  //     setModalVisible(false); // Menutup modal
-  //   }
-  // };
+      // Kirimkan data agenda baru ke server
+      const response = await axios.post(
+        `${API_HOST.url}/agendas`,
+        {
+          ...form,
+          room_id: item.id,
+          tanggal: selectedDate,
+          waktu_mulai: formattedStartTime,
+          waktu_selesai: formattedEndTime,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
+      );
+
+      console.log('Response dari server setelah pengiriman:', response.data); // Log response dari server
+
+      // Update state dengan agenda baru
+      const updatedAgenda = {...agendaData};
+      if (!updatedAgenda[selectedDate]) {
+        updatedAgenda[selectedDate] = [];
+      }
+      updatedAgenda[selectedDate].push({
+        ...form,
+        waktu_mulai: formattedStartTime,
+        waktu_selesai: formattedEndTime,
+      }); // Menambahkan agenda baru ke tanggal yang dipilih
+      setAgendaData(updatedAgenda); // Mengatur agenda data yang diperbarui
+
+      // ShowMessage('Agenda added successfully', 'success'); // Menampilkan pesan sukses
+
+      // Navigasi ke halaman SuccessBooking
+      navigation.replace('SuccessBooking'); // Mengganti halaman saat ini dengan halaman SuccessBooking
+    } catch (error) {
+      console.log('Error adding agenda:', error); // Log error jika terjadi
+      ShowMessage('Failed to add agenda', 'danger'); // Menampilkan pesan error jika gagal menambah agenda
+    } finally {
+      dispatch(setLoading({isLoading: false})); // Mematikan loading
+      setModalVisible(false); // Menutup modal
+    }
+  };
 
   // Menandai tanggal-tanggal yang memiliki agenda
   const markedDates = {};
@@ -225,7 +243,6 @@ const AgendaCalendar = ({navigation, route}) => {
       </ScrollView>
 
       {/* Tombol untuk membuka modal tambah agenda */}
-      {/* <AddButton onPress={() => setModalVisible(true)} /> */}
       <AddButton onPress={handleOpenModal} />
 
       {/* Modal untuk menambah agenda baru */}
