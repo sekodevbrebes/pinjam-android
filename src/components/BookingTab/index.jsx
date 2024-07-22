@@ -1,18 +1,13 @@
 import React, {useEffect} from 'react';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {
-  View,
-  Text,
-  useWindowDimensions,
-  StyleSheet,
-  FlatList,
-} from 'react-native';
+import {View, Text, useWindowDimensions, StyleSheet} from 'react-native';
 import ListBooking from '../ListBooking';
 import {useDispatch, useSelector} from 'react-redux';
 import {getInProgress, getPastBooking, getPending} from '../../redux/action';
 import moment from 'moment';
 import 'moment/locale/id'; // Import locale Indonesia
 import {API_HOST_IMAGE} from '../../config';
+import {useNavigation} from '@react-navigation/native';
 
 const renderTabBar = props => (
   <TabBar
@@ -45,6 +40,7 @@ const renderTabBar = props => (
 );
 
 const InProgress = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const {inProgress} = useSelector(state => state.bookings);
 
@@ -93,6 +89,7 @@ const InProgress = () => {
             activities={booking.activities}
             status={booking.status}
             user={booking.user.name}
+            onPress={() => navigation.navigate('DetailBooking')}
           />
         );
       })}

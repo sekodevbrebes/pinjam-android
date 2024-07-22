@@ -12,6 +12,7 @@ import DetailRuangan from './RoomDetail';
 import BookingDate from './BookingDate';
 import Agenda from './Agenda';
 import SuccessBooking from './SuccessBooking';
+import DetailBooking from './DetailBooking';
 
 export {
   Splash,
@@ -28,4 +29,5 @@ export {
   BookingDate,
   Agenda,
   SuccessBooking,
+  DetailBooking,
 };

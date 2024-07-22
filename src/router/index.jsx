@@ -16,6 +16,7 @@ import {
   BookingDate,
   Agenda,
   SuccessBooking,
+  DetailBooking,
 } from '../pages';
 import {BottomNavigator} from '../components';
 
@@ -100,6 +101,11 @@ const Router = () => {
       <Stack.Screen
         name="MainApp"
         component={MainApp}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DetailBooking"
+        component={DetailBooking}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
