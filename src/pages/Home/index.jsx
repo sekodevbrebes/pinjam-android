@@ -46,6 +46,8 @@ const Home = ({navigation}) => {
                 const imageArray = JSON.parse(itemRoom.image); // Mengubah string JSON menjadi array
                 const firstImage = imageArray[0]; // Mengambil elemen pertama dari array URL gambar
 
+                console.log('gambar apa: ', firstImage); //
+
                 return (
                   <RoomCard
                     key={itemRoom.id}

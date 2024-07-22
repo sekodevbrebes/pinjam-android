@@ -1,19 +1,45 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
 
-const ListBooking = ({onPress, image}) => {
+const ListBooking = ({
+  onPress,
+  image,
+  name,
+  tanggal,
+  activities,
+  status,
+  user,
+}) => {
+  const getStatusStyle = status => {
+    switch (status) {
+      case 'Pending':
+        return styles.statusPending;
+      case 'Accept':
+        return styles.statusAccept;
+      case 'Decline':
+        return styles.statusDecline;
+      case 'Cancelled':
+        return styles.statusCancelled;
+      default:
+        return styles.statusDefault;
+    }
+  };
+
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
       <View style={styles.imagecontainer}>
         <Image source={image} style={styles.imagelist} />
         <View style={styles.textContainer}>
-          <Text style={styles.title}>Aula</Text>
-          <Text style={styles.status}>Status : Disetujui</Text>
-          <Text style={styles.date}>Rabu, 25 Juni 2024</Text>
-          <Text style={styles.activity}>
-            Sosialisasi Perbub No. 16 Tahun 2024 tentang Hukuman bagi ASN
-            melanggar peraturan'
-          </Text>
+          <Text style={styles.title}>{name}</Text>
+          <View style={styles.statusContainer}>
+            <Text>Status: </Text>
+            <Text style={[styles.status, getStatusStyle(status)]}>
+              {status}
+            </Text>
+          </View>
+          <Text style={styles.date}>{tanggal}</Text>
+          <Text style={styles.activity}>{activities}</Text>
+          <Text style={styles.activity}>{user}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -40,11 +66,33 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    justifyContent: 'space-between',
+  },
+  statusContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
   },
   title: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#020202',
+    color: '#808080',
+  },
+  status: {
+    fontSize: 14,
+  },
+  statusPending: {
+    color: 'orange',
+  },
+  statusAccept: {
+    color: 'green',
+  },
+  statusDecline: {
+    color: 'red',
+  },
+  statusCancelled: {
+    color: 'blue',
+  },
+  statusDefault: {
+    color: 'black',
   },
 });

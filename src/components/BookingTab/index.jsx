@@ -1,9 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {View, Text, useWindowDimensions, StyleSheet} from 'react-native';
-import {Aula, RuangCC} from '../../assets';
-import {useNavigation} from '@react-navigation/native';
+import {
+  View,
+  Text,
+  useWindowDimensions,
+  StyleSheet,
+  FlatList,
+} from 'react-native';
 import ListBooking from '../ListBooking';
+import {useDispatch, useSelector} from 'react-redux';
+import {getInProgress, getPastBooking, getPending} from '../../redux/action';
+import moment from 'moment';
+import 'moment/locale/id'; // Import locale Indonesia
+import {API_HOST_IMAGE} from '../../config';
 
 const renderTabBar = props => (
   <TabBar
@@ -35,46 +44,121 @@ const renderTabBar = props => (
   />
 );
 
-const Pending = () => (
-  <View style={styles.page}>
-    <ListBooking image={Aula} />
-    <ListBooking image={RuangCC} />
-    <ListBooking image={RuangCC} />
-  </View>
-);
+const InProgress = () => {
+  const dispatch = useDispatch();
+  const {inProgress} = useSelector(state => state.bookings);
 
-const InProgress = () => (
-  <View style={styles.page}>
-    <ListBooking image={Aula} />
-    <ListBooking image={RuangCC} />
-    <ListBooking image={RuangCC} />
-  </View>
-);
+  useEffect(() => {
+    dispatch(getInProgress());
+  }, [dispatch]);
 
-const Cancelled = () => (
-  <View style={styles.page}>
-    <ListBooking image={Aula} />
-  </View>
-);
+  useEffect(() => {
+    console.log('State InProgress setelah update:', inProgress); // Log state setelah update
+  }, [inProgress]);
 
-const Decline = () => (
-  <View style={styles.page}>
-    <ListBooking image={Aula} />
-  </View>
-);
+  if (Array.isArray(InProgress)) {
+    console.log('InProgress adalah array:', inProgress);
+  } else {
+    console.log('InProgress bukan array');
+  }
 
-const Finish = () => (
-  <View style={styles.page}>
-    <ListBooking image={Aula} />
-  </View>
-);
+  return (
+    <View style={styles.page}>
+      {inProgress.map(booking => {
+        // Mengubah string JSON menjadi array URL gambar
+        const imageArray = JSON.parse(booking.room.image);
+        // Mengambil elemen pertama dari array URL gambar
+        const imageURL = imageArray[0];
+
+        // Pastikan URL gambar valid dan tidak mengandung pengulangan
+        const cleanedImageURL = imageURL.split('storage/').pop(); // Mengambil bagian setelah 'storage/'
+
+        // Menyesuaikan URL gambar dengan domain yang sesuai
+        const domain = `${API_HOST_IMAGE}`;
+        const fullImageURL = `${domain}/storage/${cleanedImageURL}`;
+
+        console.log('dapat gambar :', fullImageURL);
+
+        // Mengubah format tanggal
+        const formattedDate = moment(booking.tanggal)
+          .locale('id')
+          .format('dddd, D MMMM YYYY');
+
+        return (
+          <ListBooking
+            key={booking.id}
+            name={booking.room.name}
+            tanggal={formattedDate}
+            image={{uri: fullImageURL}}
+            activities={booking.activities}
+            status={booking.status}
+            user={booking.user.name}
+          />
+        );
+      })}
+    </View>
+  );
+};
+
+const PastBooking = () => {
+  const dispatch = useDispatch();
+  const {pastBookings} = useSelector(state => state.bookings);
+
+  useEffect(() => {
+    dispatch(getPastBooking());
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log('State InProgress setelah update:', pastBookings); // Log state setelah update
+  }, [pastBookings]);
+
+  if (Array.isArray(InProgress)) {
+    console.log('pastBookings adalah array:', pastBookings);
+  } else {
+    console.log('pastBookings bukan array');
+  }
+
+  return (
+    <View style={styles.page}>
+      {pastBookings.map(booking => {
+        // Mengubah string JSON menjadi array URL gambar
+        const imageArray = JSON.parse(booking.room.image);
+        // Mengambil elemen pertama dari array URL gambar
+        const imageURL = imageArray[0];
+
+        // Pastikan URL gambar valid dan tidak mengandung pengulangan
+        const cleanedImageURL = imageURL.split('storage/').pop(); // Mengambil bagian setelah 'storage/'
+
+        // Menyesuaikan URL gambar dengan domain yang sesuai
+        const domain = `${API_HOST_IMAGE}`;
+        const fullImageURL = `${domain}/storage/${cleanedImageURL}`;
+
+        console.log('dapat gambar :', fullImageURL);
+
+        // Mengubah format tanggal
+        const formattedDate = moment(booking.tanggal)
+          .locale('id')
+          .format('dddd, D MMMM YYYY');
+
+        return (
+          <ListBooking
+            key={booking.id}
+            name={booking.room.name}
+            tanggal={formattedDate}
+            image={{uri: fullImageURL}}
+            activities={booking.activities}
+            status={booking.status}
+            user={booking.user.name}
+          />
+        );
+      })}
+    </View>
+  );
+};
 
 const renderScene = SceneMap({
-  1: Pending,
-  2: InProgress,
-  3: Cancelled,
-  4: Decline,
-  5: Finish,
+  1: InProgress,
+  2: PastBooking,
 });
 
 const BookingTab = () => {
@@ -82,11 +166,8 @@ const BookingTab = () => {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: '1', title: 'Pending'},
-    {key: '2', title: 'In Progress'},
-    {key: '3', title: 'Cancelled'},
-    {key: '4', title: 'Decline'},
-    {key: '5', title: 'Finish'},
+    {key: '1', title: 'InProgress'},
+    {key: '2', title: 'Past Booking'},
   ]);
 
   return (
