@@ -19,7 +19,7 @@ const Splash = ({navigation}) => {
           navigation.replace('GetStarted');
         }
       });
-    }, 2500);
+    }, 1000);
   }, []);
 
   return (

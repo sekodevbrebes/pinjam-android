@@ -193,7 +193,7 @@ const AgendaCalendar = ({navigation, route}) => {
   // Menandai tanggal-tanggal yang memiliki agenda
   const markedDates = {};
   for (const date in agendaData) {
-    markedDates[date] = {marked: true, selected: true, selectedColor: 'orange'};
+    markedDates[date] = {marked: true, selected: true, selectedColor: 'grey'};
   }
 
   // Menandai tanggal yang sedang dipilih

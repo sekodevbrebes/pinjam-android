@@ -39,6 +39,7 @@ const DetailRuangan = ({navigation, route}) => {
           item: {
             id: itemRoom.id,
             name: name,
+            instansi: itemRoom.instansi,
           },
           userProfile, // Menyertakan userProfile yang telah diambil
         };

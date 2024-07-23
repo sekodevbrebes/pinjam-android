@@ -27,19 +27,21 @@ const ListBooking = ({
 
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
-      <View style={styles.imagecontainer}>
-        <Image source={image} style={styles.imagelist} />
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{name}</Text>
-          <View style={styles.statusContainer}>
-            <Text>Status: </Text>
-            <Text style={[styles.status, getStatusStyle(status)]}>
-              {status}
-            </Text>
+      <View style={styles.card}>
+        <View style={styles.imagecontainer}>
+          <Image source={image} style={styles.imagelist} />
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>{name}</Text>
+            <View style={styles.statusContainer}>
+              <Text>Status: </Text>
+              <Text style={[styles.status, getStatusStyle(status)]}>
+                {status}
+              </Text>
+            </View>
+            <Text style={styles.date}>{tanggal}</Text>
+            <Text style={styles.activity}>{activities}</Text>
+            <Text style={styles.user}>{user}</Text>
           </View>
-          <Text style={styles.date}>{tanggal}</Text>
-          <Text style={styles.activity}>{activities}</Text>
-          <Text style={styles.activity}>{user}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -49,13 +51,23 @@ const ListBooking = ({
 export default ListBooking;
 
 const styles = StyleSheet.create({
-  imagecontainer: {
-    flex: 1,
+  card: {
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    padding: 14,
   },
   imagecontainer: {
     flexDirection: 'row',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
   },
   imagelist: {
     width: 100,
@@ -66,6 +78,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
+    justifyContent: 'center',
   },
   statusContainer: {
     flexDirection: 'row',
@@ -94,5 +107,19 @@ const styles = StyleSheet.create({
   },
   statusDefault: {
     color: 'black',
+  },
+  date: {
+    fontSize: 14,
+    color: '#8D92A3',
+  },
+  activity: {
+    fontSize: 14,
+    fontFamily: 'Poppin-regular',
+    fontStyle: 'italic',
+    color: '#8D92A3',
+  },
+  user: {
+    fontSize: 14,
+    color: '#8D92A3',
   },
 });
