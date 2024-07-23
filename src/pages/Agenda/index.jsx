@@ -183,7 +183,7 @@ const AgendaCalendar = ({navigation, route}) => {
       navigation.replace('SuccessBooking'); // Mengganti halaman saat ini dengan halaman SuccessBooking
     } catch (error) {
       console.log('Error adding agenda:', error); // Log error jika terjadi
-      ShowMessage('Failed to add agenda', 'danger'); // Menampilkan pesan error jika gagal menambah agenda
+      ShowMessage(error.response.data.message, 'danger', 5000); // Menampilkan pesan error jika gagal menambah agenda
     } finally {
       dispatch(setLoading({isLoading: false})); // Mematikan loading
       setModalVisible(false); // Menutup modal

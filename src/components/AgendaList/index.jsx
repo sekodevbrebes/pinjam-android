@@ -4,7 +4,7 @@ import {ICTime} from '../../assets';
 
 const AgendaList = ({selectedDate, agendaData, item}) => (
   <View style={styles.agendaContainer}>
-    <Text style={styles.agendaTitle}>Room : {item.name}</Text>
+    <Text style={styles.agendaTitle}>Tempat : {item.name}</Text>
     {agendaData[selectedDate].map((agenda, index) => (
       <View key={index} style={styles.agendaItem}>
         <View style={styles.timeContainer}>

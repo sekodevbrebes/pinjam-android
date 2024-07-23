@@ -3,7 +3,7 @@ import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import {View, Text, useWindowDimensions, StyleSheet} from 'react-native';
 import ListBooking from '../ListBooking';
 import {useDispatch, useSelector} from 'react-redux';
-import {getInProgress, getPastBooking, getPending} from '../../redux/action';
+import {getInProgress, getPastBooking} from '../../redux/action';
 import moment from 'moment';
 import 'moment/locale/id'; // Import locale Indonesia
 import {API_HOST_IMAGE} from '../../config';
@@ -81,16 +81,17 @@ const InProgress = () => {
           .format('dddd, D MMMM YYYY');
 
         return (
-          <ListBooking
-            key={booking.id}
-            name={booking.room.name}
-            tanggal={formattedDate}
-            image={{uri: fullImageURL}}
-            activities={booking.activities}
-            status={booking.status}
-            user={booking.user.name}
-            onPress={() => navigation.navigate('DetailBooking')}
-          />
+          <View style={styles.cardContainer} key={booking.id}>
+            <ListBooking
+              name={booking.room.name}
+              tanggal={formattedDate}
+              image={{uri: fullImageURL}}
+              activities={booking.activities}
+              status={booking.status}
+              user={booking.user.name}
+              onPress={() => navigation.navigate('DetailBooking')}
+            />
+          </View>
         );
       })}
     </View>
@@ -138,15 +139,16 @@ const PastBooking = () => {
           .format('dddd, D MMMM YYYY');
 
         return (
-          <ListBooking
-            key={booking.id}
-            name={booking.room.name}
-            tanggal={formattedDate}
-            image={{uri: fullImageURL}}
-            activities={booking.activities}
-            status={booking.status}
-            user={booking.user.name}
-          />
+          <View style={styles.cardContainer} key={booking.id}>
+            <ListBooking
+              name={booking.room.name}
+              tanggal={formattedDate}
+              image={{uri: fullImageURL}}
+              activities={booking.activities}
+              status={booking.status}
+              user={booking.user.name}
+            />
+          </View>
         );
       })}
     </View>
@@ -182,5 +184,11 @@ const BookingTab = () => {
 export default BookingTab;
 
 const styles = StyleSheet.create({
-  page: {flex: 1},
+  page: {
+    flex: 1,
+    paddingTop: 12, // Menambahkan padding atas pada halaman
+  },
+  cardContainer: {
+    marginBottom: 10, // Menambahkan margin bawah pada setiap kartu
+  },
 });
