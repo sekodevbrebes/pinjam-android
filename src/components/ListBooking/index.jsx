@@ -20,6 +20,8 @@ const ListBooking = ({
         return styles.statusDecline;
       case 'Cancelled':
         return styles.statusCancelled;
+      case 'Finish': // Tambahkan case baru untuk status 'Finish'
+        return styles.statusFinish;
       default:
         return styles.statusDefault;
     }
@@ -40,7 +42,6 @@ const ListBooking = ({
             </View>
             <Text style={styles.date}>{tanggal}</Text>
             <Text style={styles.activity}>{activities}</Text>
-            <Text style={styles.user}>{user}</Text>
           </View>
         </View>
       </View>
@@ -53,7 +54,7 @@ export default ListBooking;
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#FFF',
-    borderRadius: 8,
+    borderRadius: 6,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -61,10 +62,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
-    marginVertical: 8,
+    elevation: 2,
+    marginVertical: 6,
     marginHorizontal: 16,
-    padding: 14,
+    padding: 12,
   },
   imagecontainer: {
     flexDirection: 'row',
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
   imagelist: {
     width: 100,
     height: 100,
-    borderRadius: 10,
+    borderRadius: 6,
     overflow: 'hidden',
     marginRight: 12,
   },
@@ -83,7 +84,6 @@ const styles = StyleSheet.create({
   statusContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5,
   },
   title: {
     fontSize: 16,
@@ -103,7 +103,10 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   statusCancelled: {
-    color: 'blue',
+    color: '#fd46c7', // Perbaiki kode warna dari '##fd46c7' menjadi '#fd46c7'
+  },
+  statusFinish: {
+    color: '#465dfd', // Tambahkan warna ungu untuk status 'Finish'
   },
   statusDefault: {
     color: 'black',

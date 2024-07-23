@@ -1,13 +1,13 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {StyleSheet, View, Text, ScrollView, RefreshControl} from 'react-native';
 import {BookingTab, EmptyBooking} from '../../components';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getInProgress} from '../../redux/action';
 
 const Booking = () => {
-  const [isEmpty, setIsEmpty] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
+  const inProgress = useSelector(state => state.bookings.inProgress); // Ambil data inProgress dari state
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -18,6 +18,14 @@ const Booking = () => {
   useEffect(() => {
     dispatch(getInProgress());
   }, [dispatch]);
+
+  const isEmpty = inProgress.length === 0; // Tentukan apakah data kosong
+
+  // Debugging
+  useEffect(() => {
+    console.log('In Progress data:', inProgress);
+    console.log('Is Empty:', isEmpty);
+  }, [inProgress, isEmpty]);
 
   return (
     <View style={styles.pageContainer}>
