@@ -2,6 +2,13 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {ICTime} from '../../assets';
 
+const formatTime = timeString => {
+  const [hours, minutes] = timeString.split(':');
+  const time = new Date();
+  time.setHours(hours, minutes, 0, 0);
+  return time.toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'});
+};
+
 const AgendaList = ({selectedDate, agendaData, item}) => (
   <View style={styles.agendaContainer}>
     <Text style={styles.agendaTitle}>Tempat : {item.name}</Text>
@@ -10,7 +17,8 @@ const AgendaList = ({selectedDate, agendaData, item}) => (
         <View style={styles.timeContainer}>
           <ICTime />
           <Text style={styles.time}>
-            {agenda.waktu_mulai} - {agenda.waktu_selesai}
+            {formatTime(agenda.waktu_mulai)} -{' '}
+            {formatTime(agenda.waktu_selesai)} WIB
           </Text>
         </View>
         <View style={styles.activityContainer}>

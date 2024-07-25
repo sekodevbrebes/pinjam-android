@@ -41,8 +41,8 @@ const SigIn = ({navigation}) => {
         navigation.navigate('MainApp');
       })
       .catch(response => {
-        ShowMessage(response.response.data.message, 'danger');
-        console.log('error', response.response.data.message);
+        ShowMessage(response.message, 'danger');
+        console.log('error', response.message);
         dispatch(setLoading({isLoading: false}));
       });
   };

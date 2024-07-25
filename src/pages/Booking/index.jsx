@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {StyleSheet, View, Text, ScrollView, RefreshControl} from 'react-native';
-import {BookingTab, EmptyBooking} from '../../components';
+import {BookingTab, EmptyBooking, Header} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import {getInProgress} from '../../redux/action';
 
-const Booking = () => {
+const Booking = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
   const inProgress = useSelector(state => state.bookings.inProgress); // Ambil data inProgress dari state
@@ -34,11 +34,12 @@ const Booking = () => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <View style={styles.headerContainer}>
-          <Text style={styles.title}>Your Booking</Text>
-          <Text style={styles.subTitle}>
-            This is a list of your submissions
-          </Text>
+        <View>
+          <Header
+            title="Your Booking"
+            subTitle="This is a list of your submissions"
+            onPress={() => navigation.goBack()}
+          />
         </View>
         <View style={styles.pageTab}>
           {isEmpty ? <EmptyBooking /> : <BookingTab />}

@@ -8,6 +8,8 @@ const ListBooking = ({
   tanggal,
   activities,
   status,
+  waktu_mulai,
+  waktu_selesai,
   user,
 }) => {
   const getStatusStyle = status => {
@@ -41,6 +43,9 @@ const ListBooking = ({
               </Text>
             </View>
             <Text style={styles.date}>{tanggal}</Text>
+            {/* <Text style={styles.date}>
+              {waktu_mulai} - {waktu_selesai} WIB
+            </Text> */}
             <Text style={styles.activity}>{activities}</Text>
           </View>
         </View>

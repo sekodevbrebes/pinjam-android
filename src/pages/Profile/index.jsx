@@ -1,19 +1,30 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, Image} from 'react-native';
 import {ProfilUser} from '../../assets';
 import {ProfileTab} from '../../components';
+import {getData} from '../../utilities';
 
 const Profile = () => {
+  const [userProfile, setUserProfile] = useState({});
+  useEffect(() => {
+    getData('userProfile').then(response => {
+      console.log('User Profile Data:', response); // Tambahkan console.log di sini
+      setUserProfile(response);
+    });
+  }, []);
   return (
     <View style={styles.page}>
       <View style={styles.ContentProfile}>
         <View style={styles.photo}>
           <View style={styles.borderPhoto}>
-            <Image source={ProfilUser} style={styles.photoContainer} />
+            <Image
+              source={{uri: userProfile.image}}
+              style={styles.photoContainer}
+            />
           </View>
         </View>
-        <Text style={styles.name}>Sus Hardianto</Text>
-        <Text style={styles.instansi}>DP3KB Kabupaten Brebes</Text>
+        <Text style={styles.name}>{userProfile.name}</Text>
+        <Text style={styles.instansi}>{userProfile.instansi}</Text>
       </View>
       <View style={styles.contentContainer}>
         <ProfileTab />

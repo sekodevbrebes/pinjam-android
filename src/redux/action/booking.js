@@ -44,11 +44,18 @@ export const getInProgress = () => dispatch => {
           const pendingData = Array.isArray(pendingResponse.data.data) ? pendingResponse.data.data : [];
           const acceptData = Array.isArray(acceptResponse.data.data) ? acceptResponse.data.data : [];
 
-          // Filter data Accept berdasarkan tanggal booking
-          const today = new Date(); // Tanggal hari ini
+          const now = new Date(); // Waktu saat ini
+
+          // Filter data Accept berdasarkan tanggal booking dan waktu_mulai/waktu_selesai
           const filteredAcceptData = acceptData.filter(item => {
-            const bookingDate = new Date(item.tanggal); // Menggunakan field tanggal
-            return bookingDate >= today; // Hanya menyertakan booking yang belum lewat
+            const bookingDate = new Date(item.tanggal);
+            const waktuMulai = new Date(`${item.tanggal}T${item.waktu_mulai}`);
+            const waktuSelesai = new Date(`${item.tanggal}T${item.waktu_selesai}`);
+            // Periksa jika booking sedang berlangsung
+            if (bookingDate.toDateString() === now.toDateString() && now >= waktuMulai && now <= waktuSelesai) {
+              item.status = 'Ongoing'; // Ubah status menjadi Ongoing
+            }
+            return bookingDate >= now; // Hanya menyertakan booking yang belum lewat
           });
 
           // Gabungkan data dan urutkan
@@ -62,6 +69,7 @@ export const getInProgress = () => dispatch => {
       });
   });
 };
+
 
 export const getPastBooking = () => dispatch => {
   getData('token').then(resToken => {

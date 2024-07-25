@@ -80,16 +80,22 @@ const InProgress = () => {
           .locale('id')
           .format('dddd, D MMMM YYYY');
 
+        // Mengubah format waktu
+        const formattedWaktuMulai = booking.waktu_mulai.slice(0, 5); // Mengambil bagian jam dan menit
+        const formattedWaktuSelesai = booking.waktu_selesai.slice(0, 5); // Mengambil bagian jam dan menit
+
         return (
           <View style={styles.cardContainer} key={booking.id}>
             <ListBooking
               name={booking.room.name}
               tanggal={formattedDate}
+              // waktu_mulai={formattedWaktuMulai}
+              // waktu_selesai={formattedWaktuSelesai}
               image={{uri: fullImageURL}}
               activities={booking.activities}
               status={booking.status}
               user={booking.user.name}
-              onPress={() => navigation.navigate('DetailBooking')}
+              onPress={() => navigation.navigate('DetailBooking', booking)}
             />
           </View>
         );
@@ -99,6 +105,7 @@ const InProgress = () => {
 };
 
 const PastBooking = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const {pastBookings} = useSelector(state => state.bookings);
 
@@ -147,6 +154,7 @@ const PastBooking = () => {
               activities={booking.activities}
               status={booking.status}
               user={booking.user.name}
+              onPress={() => navigation.navigate('DetailBooking', booking)}
             />
           </View>
         );
