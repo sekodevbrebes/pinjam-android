@@ -9,15 +9,14 @@ import {
   Image,
 } from 'react-native';
 import {Button, Gap, Header, InputType} from '../../components';
-import {Link} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import useForm from '../../utilities/useForm';
 import {setRegister} from '../../redux/reducers/registerSlice';
 import {
   setPhoto as setImage,
   setUploadStatus,
 } from '../../redux/reducers/photoSlice';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import {ShowMessage} from '../../utilities';
 
 const SignUp = ({navigation}) => {
@@ -37,7 +36,7 @@ const SignUp = ({navigation}) => {
 
   // Fungsi untuk menangani submit form
   const onSubmit = () => {
-    console.log('form : ', form);
+    console.log('Form Data: ', form);
 
     // Validasi form
     if (
@@ -70,36 +69,94 @@ const SignUp = ({navigation}) => {
     navigation.navigate('SignUpAddress');
   };
 
+  // Fungsi untuk memilih foto dari galeri atau kamera
+  const choosePhotoSource = () => {
+    Alert.alert(
+      'Select Photo',
+      'Choose a photo from the gallery or take a new one',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Choose from Gallery',
+          onPress: () => addPhotoFromGallery(),
+        },
+        {
+          text: 'Take a Photo',
+          onPress: () => addPhotoFromCamera(),
+        },
+      ],
+      {cancelable: true},
+    );
+  };
+
   // Fungsi untuk membuka galeri dan menambahkan foto
-  const addPhoto = () => {
+  const addPhotoFromGallery = () => {
+    console.log('Opening gallery...');
     launchImageLibrary(
       {
         quality: 0.5,
         maxHeight: 200,
         maxWidth: 200,
-        includeBase64: false, // Menggunakan base64 untuk menyimpan foto
-        mediaType: 'photo', // Memilih gambar saja
+        includeBase64: false,
+        mediaType: 'photo',
       },
       response => {
-        console.log('Response: ', response);
-        // Jika pengguna membatalkan pemilihan foto
-        if (response.didCancel || response.error) {
+        console.log('Gallery Response: ', response);
+        if (response.didCancel) {
           ShowMessage('User cancelled Upload', 'danger');
-
-          // Jika terjadi error saat memilih foto
         } else if (response.error) {
           ShowMessage('Upload Error');
-        } else {
-          // Menyimpan uri foto yang dipilih ke state photo
+        } else if (response.assets && response.assets.length > 0) {
           const source = {uri: response.assets[0].uri};
           const dataImage = {
             uri: response.assets[0].uri,
             type: response.assets[0].type,
             name: response.assets[0].fileName,
           };
+          console.log('Selected Image Data: ', dataImage);
           setPhoto(source);
           dispatch(setImage(dataImage));
           dispatch(setUploadStatus({isUploadPhoto: true}));
+        } else {
+          ShowMessage('No image selected', 'danger');
+        }
+      },
+    );
+  };
+
+  // Fungsi untuk membuka kamera dan menambahkan foto
+  const addPhotoFromCamera = () => {
+    console.log('Opening camera...');
+    launchCamera(
+      {
+        quality: 0.5,
+        maxHeight: 200,
+        maxWidth: 200,
+        includeBase64: false,
+        mediaType: 'photo',
+      },
+      response => {
+        console.log('Camera Response: ', response);
+        if (response.didCancel) {
+          ShowMessage('User cancelled Camera', 'danger');
+        } else if (response.error) {
+          ShowMessage('Camera Error');
+        } else if (response.assets && response.assets.length > 0) {
+          const source = {uri: response.assets[0].uri};
+          const dataImage = {
+            uri: response.assets[0].uri,
+            type: response.assets[0].type,
+            name: response.assets[0].fileName,
+          };
+          console.log('Captured Image Data: ', dataImage);
+          setPhoto(source);
+          dispatch(setImage(dataImage));
+          dispatch(setUploadStatus({isUploadPhoto: true}));
+        } else {
+          ShowMessage('No image captured', 'danger');
         }
       },
     );
@@ -118,7 +175,7 @@ const SignUp = ({navigation}) => {
         <View style={styles.container}>
           {/* Placeholder untuk menambahkan foto */}
           <View style={styles.photo}>
-            <TouchableOpacity onPress={addPhoto}>
+            <TouchableOpacity onPress={choosePhotoSource}>
               <View style={styles.borderPhoto}>
                 {photo ? (
                   // Menampilkan foto yang dipilih
@@ -212,8 +269,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   photoContainer: {
-    width: 90,
-    height: 90,
+    width: 95,
+    height: 95,
     borderRadius: 45,
     backgroundColor: '#F0F0F0',
   },
@@ -226,7 +283,7 @@ const styles = StyleSheet.create({
     width: 110,
     height: 110,
     borderRadius: 110,
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: '#8D92A3',
     borderStyle: 'dashed',
     justifyContent: 'center',

@@ -3366,11 +3366,12 @@ __metadata:
     react-native: 0.74.1
     react-native-calendars: ^1.1305.0
     react-native-flash-message: ^0.4.2
-    react-native-image-picker: ^7.1.2
+    react-native-image-picker: latest
     react-native-image-slider-box: ^2.0.7
     react-native-modal: ^13.0.1
     react-native-modal-datetime-picker: ^17.1.0
     react-native-pager-view: ^6.3.1
+    react-native-permissions: ^4.1.5
     react-native-safe-area-context: ^4.10.1
     react-native-screens: ^3.31.1
     react-native-snap-carousel: ^3.9.1
@@ -10075,7 +10076,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-image-picker@npm:^7.1.2":
+"react-native-image-picker@npm:latest":
   version: 7.1.2
   resolution: "react-native-image-picker@npm:7.1.2"
   peerDependencies:
@@ -10135,6 +10136,20 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: ef83fb53350d7b4c262a8c4d4bf6fbee8f8941e56469135463a47d496ff8fd43f7efe52d02c3a583427800fc88c96a9bf8e601a45a6e671834d5fffe9541e3e4
+  languageName: node
+  linkType: hard
+
+"react-native-permissions@npm:^4.1.5":
+  version: 4.1.5
+  resolution: "react-native-permissions@npm:4.1.5"
+  peerDependencies:
+    react: ">=18.1.0"
+    react-native: ">=0.70.0"
+    react-native-windows: ">=0.70.0"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: dc4b366a0f561a47f032c027eb703a2be45e801788b915ed583e38f617eea23656eb63a77b17fb3a663fe3199b2ec25788f799e751421634e35a64f5258feed9
   languageName: node
   linkType: hard
 

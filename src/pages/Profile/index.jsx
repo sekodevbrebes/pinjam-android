@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   borderPhoto: {
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: '#8D92A3',
     width: 110,
     height: 110,
@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   photoContainer: {
-    width: 90,
-    height: 90,
+    width: 95,
+    height: 95,
     borderRadius: 45,
     backgroundColor: '#F0F0F0',
     padding: 24,

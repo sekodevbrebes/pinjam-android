@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {View} from 'react-native';
 import moment from 'moment';
 import 'moment/locale/id'; // Import locale bahasa Indonesia
 import {Header, ListDetail} from '../../components';
@@ -24,8 +24,6 @@ const DetailBooking = ({route, navigation}) => {
     'HH:mm:ss',
   ).format('HH:mm');
 
-  console.log('Dapat Data Dari :', booking);
-
   return (
     <View>
       <Header
@@ -34,7 +32,6 @@ const DetailBooking = ({route, navigation}) => {
         onPress={() => navigation.goBack()}
       />
       <View>
-        {/* Tampilkan detail booking */}
         <ListDetail
           name={booking.room.name}
           created_at={formattedCreatedAt}
@@ -44,12 +41,11 @@ const DetailBooking = ({route, navigation}) => {
           status={booking.status}
           waktu_mulai={formattedWaktuMulai}
           waktu_selesai={formattedWaktuSelesai}
+          roomId={booking.room.id}
         />
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default DetailBooking;

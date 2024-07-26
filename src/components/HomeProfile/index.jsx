@@ -14,7 +14,6 @@ const HomeProfile = () => {
       setName(response.name);
       setInstansi(response.instansi);
       setPhoto({uri: response.image});
-      console.log('Dapat Gambar Profil apal', {uri: response.image});
     });
   }, []);
 
