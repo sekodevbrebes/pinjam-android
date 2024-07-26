@@ -13,14 +13,15 @@ const HomeProfile = () => {
       console.log('Hasil Local Storage', response);
       setName(response.name);
       setInstansi(response.instansi);
-      setPhoto({uri: response.profile_photo_url});
+      setPhoto({uri: response.image});
+      console.log('Dapat Gambar Profil apal', {uri: response.image});
     });
   }, []);
 
   return (
     <View style={styles.profilContainer}>
       {/* Gambar mau disesuaikan biar dinamis */}
-      <Image source={ProfilUser} style={styles.profil} />
+      <Image source={photo} style={styles.profil} />
       <View>
         <Text style={styles.halo}>
           Halo, <Text style={styles.name}>{name}</Text>

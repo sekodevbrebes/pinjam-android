@@ -1,4 +1,4 @@
-import SuccessImg from './success-signup.png';
+import SuccessImg from './profil-kosong.jpg';
 import ProfilUser from './profil.jpg';
 import Aula from './ruang-aula.jpeg';
 import RuangSekda from './ruang-sekda.jpeg';

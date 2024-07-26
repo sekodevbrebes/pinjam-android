@@ -1,11 +1,19 @@
 import React from 'react';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {View, Text, useWindowDimensions, StyleSheet} from 'react-native';
+import {View, Text, useWindowDimensions, StyleSheet, Image} from 'react-native';
 import ListRoom from '../ListRoom';
 import {useSelector} from 'react-redux';
 import {createSelector} from 'reselect'; // Import createSelector from reselect
-
 import {useNavigation} from '@react-navigation/native';
+
+// URL untuk avatar online dengan inisial nama
+const getDefaultAvatar = name => {
+  const initials = name
+    .split(' ')
+    .map(word => word[0])
+    .join('');
+  return `https://ui-avatars.com/api/?name=${initials}`;
+};
 
 const renderTabBar = props => (
   <TabBar
@@ -51,11 +59,14 @@ const RoomList = ({rooms}) => {
       {rooms.map(itemRoom => {
         const imageArray = JSON.parse(itemRoom.image);
         const secondImage = imageArray[1];
+        const imageUri = secondImage
+          ? {uri: secondImage}
+          : {uri: getDefaultAvatar(itemRoom.name)};
 
         return (
           <ListRoom
             key={itemRoom.id}
-            image={{uri: secondImage}}
+            image={imageUri}
             name={itemRoom.name}
             rating={itemRoom.rate}
             location={itemRoom.location}

@@ -73,7 +73,7 @@ const InProgress = () => {
         const domain = `${API_HOST_IMAGE}`;
         const fullImageURL = `${domain}/storage/${cleanedImageURL}`;
 
-        console.log('dapat gambar :', fullImageURL);
+        console.log('dapat gambar apa? :', fullImageURL);
 
         // Mengubah format tanggal
         const formattedDate = moment(booking.tanggal)

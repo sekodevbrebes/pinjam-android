@@ -83,7 +83,7 @@ const ListRoom = ({
           <Text style={styles.value}>{peserta} People</Text>
         </View>
 
-        <View style={styles.textRow}>
+        <View style={styles.textRowBottom}>
           <Text style={styles.label}>Activity:</Text>
           <Text style={styles.value} numberOfLines={0}>
             {Activity}
@@ -144,6 +144,11 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    paddingVertical: 10,
+  },
+  textRowBottom: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingVertical: 10,
   },
   label: {

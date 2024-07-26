@@ -99,6 +99,10 @@ export const getPastBooking = () => dispatch => {
           const declineData = Array.isArray(declineResponse.data.data) ? declineResponse.data.data : [];
           const acceptData = Array.isArray(acceptResponse.data.data) ? acceptResponse.data.data : [];
 
+          console.log('Cancelled Data:', cancelledData);
+          console.log('Decline Data:', declineData);
+          console.log('Accept Data:', acceptData);
+
           const today = new Date(); // Tanggal hari ini
 
           // Filter data Accept berdasarkan tanggal booking
@@ -107,12 +111,17 @@ export const getPastBooking = () => dispatch => {
             return bookingDate < today; // Menyertakan booking yang sudah lewat
           });
 
+          console.log('Past Accept Data:', pastAcceptData);
+
           // Gabungkan data dan ubah status Accept menjadi Finish untuk display
           const combinedData = [
             ...cancelledData,
             ...declineData,
             ...pastAcceptData.map(item => ({ ...item, status: 'Finish' })) // Ubah status menjadi Finish untuk tampilan
           ].sort((a, b) => b.id - a.id); // Urutan dari id terbesar ke terkecil
+
+          console.log('Combined Data:', combinedData);
+
           dispatch(setPastBookings(combinedData)); // Dispatch dengan payload dari API
         }),
       )
