@@ -46,11 +46,14 @@ const AgendaCalendar = ({navigation, route}) => {
         const token = tokenData?.value;
 
         // Mengambil data agenda dari API
-        const response = await axios.get(`${API_HOST.url}/agendas`, {
-          headers: {
-            Authorization: token,
+        const response = await axios.get(
+          `${API_HOST.url}/agendas?status=Pending,Accept&all_users=true`,
+          {
+            headers: {
+              Authorization: token,
+            },
           },
-        });
+        );
 
         // Harus dihapus nanti
         console.log('Room ID yang dipilih:', item.id); // Log ID ruangan yang dipilih

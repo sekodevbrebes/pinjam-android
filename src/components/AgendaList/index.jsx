@@ -24,10 +24,19 @@ const AgendaList = ({selectedDate, agendaData, item}) => (
         <View style={styles.activityContainer}>
           <Text style={styles.activity}>{agenda.activities}</Text>
           <Text style={styles.peminjam}>
-            {agenda.user?.instansi || 'Instansi tidak ditemukan'}
+            Instansi : {agenda.user?.instansi || 'Instansi tidak ditemukan'}
           </Text>
-          <Text style={styles.peminjam}>
-            Status : <Text style={styles.status}>{agenda.status}</Text>
+          <Text style={styles.status}>
+            Status :{' '}
+            <Text
+              style={[
+                styles.status,
+                agenda.status === 'Pending'
+                  ? styles.statusPending
+                  : styles.statusAccept,
+              ]}>
+              {agenda.status}
+            </Text>
           </Text>
         </View>
       </View>
@@ -66,6 +75,7 @@ const styles = StyleSheet.create({
   peminjam: {
     fontFamily: 'Poppins-Regular',
     color: '#8F9BB3',
+    textDecorationLine: 'underline',
   },
   timeContainer: {
     flexDirection: 'row',
@@ -81,7 +91,14 @@ const styles = StyleSheet.create({
     paddingLeft: 14,
   },
   status: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-Regular',
+    color: '#8F9BB3',
+    lineHeight: 24,
+  },
+  statusPending: {
+    color: 'orange',
+  },
+  statusAccept: {
     color: 'blue',
   },
 });
