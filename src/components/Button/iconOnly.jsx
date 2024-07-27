@@ -27,17 +27,14 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 50,
-    height: 50,
-    borderRadius: 50,
+    width: 40,
+    height: 40,
+    borderRadius: 100,
     backgroundColor: 'orange',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
 });

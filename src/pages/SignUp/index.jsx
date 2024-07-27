@@ -17,7 +17,7 @@ import {
   setUploadStatus,
 } from '../../redux/reducers/photoSlice';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
-import {ShowMessage} from '../../utilities';
+import {showMessage} from '../../utilities';
 
 const SignUp = ({navigation}) => {
   // Inisialisasi state form menggunakan custom hook useForm
@@ -45,20 +45,20 @@ const SignUp = ({navigation}) => {
       !form.password ||
       !form.password_confirmation
     ) {
-      ShowMessage('Please fill in all fields', 'danger');
+      showMessage('Please fill in all fields', 'danger');
       return;
     }
 
     // Validasi format email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(form.email)) {
-      ShowMessage('Invalid email format', 'danger');
+      showMessage('Invalid email format', 'danger');
       return;
     }
 
     // Memeriksa apakah password dan password_confirmation sama
     if (form.password !== form.password_confirmation) {
-      ShowMessage('Passwords do not match', 'danger');
+      showMessage('Passwords do not match', 'danger');
       return;
     }
 
@@ -106,9 +106,9 @@ const SignUp = ({navigation}) => {
       response => {
         console.log('Gallery Response: ', response);
         if (response.didCancel) {
-          ShowMessage('User cancelled Upload', 'danger');
+          showMessage('User cancelled Upload', 'danger');
         } else if (response.error) {
-          ShowMessage('Upload Error');
+          showMessage('Upload Error');
         } else if (response.assets && response.assets.length > 0) {
           const source = {uri: response.assets[0].uri};
           const dataImage = {
@@ -121,7 +121,7 @@ const SignUp = ({navigation}) => {
           dispatch(setImage(dataImage));
           dispatch(setUploadStatus({isUploadPhoto: true}));
         } else {
-          ShowMessage('No image selected', 'danger');
+          showMessage('No image selected', 'danger');
         }
       },
     );
@@ -141,9 +141,9 @@ const SignUp = ({navigation}) => {
       response => {
         console.log('Camera Response: ', response);
         if (response.didCancel) {
-          ShowMessage('User cancelled Camera', 'danger');
+          showMessage('User cancelled Camera', 'danger');
         } else if (response.error) {
-          ShowMessage('Camera Error');
+          showMessage('Camera Error');
         } else if (response.assets && response.assets.length > 0) {
           const source = {uri: response.assets[0].uri};
           const dataImage = {
@@ -156,7 +156,7 @@ const SignUp = ({navigation}) => {
           dispatch(setImage(dataImage));
           dispatch(setUploadStatus({isUploadPhoto: true}));
         } else {
-          ShowMessage('No image captured', 'danger');
+          showMessage('No image captured', 'danger');
         }
       },
     );

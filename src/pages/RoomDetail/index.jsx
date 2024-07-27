@@ -39,7 +39,6 @@ const DetailRuangan = ({navigation, route}) => {
           item: {
             id: itemRoom.id,
             name: name,
-            instansi: itemRoom.instansi,
           },
           userProfile, // Menyertakan userProfile yang telah diambil
         };
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
   },
   listFacility: {
     margin: 14,
-    paddingBottom: 24,
+    paddingBottom: 8,
   },
   facilityItem: {
     marginBottom: 4, // Menambahkan jarak antar baris

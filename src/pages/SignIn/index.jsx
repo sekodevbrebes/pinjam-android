@@ -6,7 +6,7 @@ import useForm from '../../utilities/useForm';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import {setLoading} from '../../redux/reducers/globalSlice';
-import {getData, ShowMessage, storeData} from '../../utilities';
+import {getData, showMessage, storeData} from '../../utilities';
 import {API_HOST} from '../../config';
 
 const SigIn = ({navigation}) => {
@@ -21,7 +21,7 @@ const SigIn = ({navigation}) => {
 
   const onSubmit = () => {
     if (!form.email || !form.password) {
-      ShowMessage('Please fill in all fields', 'danger');
+      showMessage('Please fill in all fields', 'danger');
       return;
     }
 
@@ -41,7 +41,7 @@ const SigIn = ({navigation}) => {
         navigation.navigate('MainApp');
       })
       .catch(response => {
-        ShowMessage(response.message, 'danger');
+        showMessage(response.message, 'danger');
         console.log('error', response.message);
         dispatch(setLoading({isLoading: false}));
       });
