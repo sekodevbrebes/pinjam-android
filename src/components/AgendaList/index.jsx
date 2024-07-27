@@ -26,6 +26,9 @@ const AgendaList = ({selectedDate, agendaData, item}) => (
           <Text style={styles.peminjam}>
             {agenda.user?.instansi || 'Instansi tidak ditemukan'}
           </Text>
+          <Text style={styles.peminjam}>
+            Status : <Text style={styles.status}>{agenda.status}</Text>
+          </Text>
         </View>
       </View>
     ))}
@@ -37,8 +40,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   agendaTitle: {
-    fontSize: 12,
+    fontSize: 14,
     marginBottom: 10,
+    fontWeight: 'bold',
     fontFamily: 'Poppins-Regular',
     backgroundColor: '#FFFF',
     paddingHorizontal: 16,
@@ -56,7 +60,8 @@ const styles = StyleSheet.create({
   },
   activity: {
     fontFamily: 'Poppins-Regular',
-    color: '#222B45',
+    color: '#8F9BB3',
+    lineHeight: 24,
   },
   peminjam: {
     fontFamily: 'Poppins-Regular',
@@ -74,6 +79,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     color: '#8F9BB3',
     paddingLeft: 14,
+  },
+  status: {
+    fontFamily: 'Poppins-Medium',
+    color: 'blue',
   },
 });
 

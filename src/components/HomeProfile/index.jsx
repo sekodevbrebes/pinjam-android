@@ -4,22 +4,34 @@ import {getData} from '../../utilities';
 import {ProfilUser} from '../../assets';
 
 const HomeProfile = () => {
-  const [photo, setPhoto] = useState(ProfilUser); //mau disesuaikan lagi
+  const [photo, setPhoto] = useState(ProfilUser);
   const [name, setName] = useState('');
   const [instansi, setInstansi] = useState('');
 
   useEffect(() => {
     getData('userProfile').then(response => {
       console.log('Hasil Local Storage', response);
+
       setName(response.name);
       setInstansi(response.instansi);
-      setPhoto({uri: response.image});
+
+      let profilePhotoURL = response.image || response.profile_photo_url;
+
+      // Jika URL tidak valid, gunakan URL default
+      if (!profilePhotoURL || !profilePhotoURL.includes('http')) {
+        profilePhotoURL = `https://ui-avatars.com/api/?name=${response.name
+          .split(' ')
+          .map(n => n[0])
+          .join('+')}&background=random`;
+      }
+
+      setPhoto({uri: profilePhotoURL});
+      console.log('Profile Photo URL:', profilePhotoURL);
     });
   }, []);
 
   return (
     <View style={styles.profilContainer}>
-      {/* Gambar mau disesuaikan biar dinamis */}
       <Image source={photo} style={styles.profil} />
       <View>
         <Text style={styles.halo}>

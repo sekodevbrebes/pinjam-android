@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
-
+import FastImage from 'react-native-fast-image';
 import Rating from '../Rating';
 
 const RoomCard = ({
@@ -18,10 +18,16 @@ const RoomCard = ({
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
       <View style={styles.container}>
-        <Image
+        <FastImage
+          source={image} // Gantilah 'source' dengan uri jika image berupa URL
+          style={[styles.image, isLongText && styles.fullWidth]}
+          resizeMode={FastImage.resizeMode.cover} // Menyusun ulang mode gambar seperti 'cover'
+        />
+
+        {/* <Image
           source={image}
           style={[styles.image, isLongText && styles.fullWidth]}
-        />
+        /> */}
         <View style={styles.content}>
           <Text style={styles.title} numberOfLines={1}>
             {name}

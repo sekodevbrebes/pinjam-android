@@ -1,12 +1,17 @@
 import React from 'react';
-import {View, StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import Rating from '../Rating';
 
 const ListRoom = ({image, onPress, rating, name, location}) => {
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
       <View style={styles.pageContainer}>
-        <Image source={image} style={styles.imagelist} />
+        <FastImage
+          source={image} // Gantilah 'source' dengan uri jika image berupa URL
+          style={styles.imagelist}
+          resizeMode={FastImage.resizeMode.cover} // Menyusun ulang mode gambar seperti 'cover'
+        />
         <View style={styles.contentContainer}>
           <View>
             <Text style={styles.title}>{name}</Text>

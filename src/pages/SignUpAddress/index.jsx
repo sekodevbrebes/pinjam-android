@@ -3,15 +3,13 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, InputType} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import useForm from '../../utilities/useForm';
-import axios from 'axios';
+
 import {setLoading} from '../../redux/reducers/globalSlice';
 import {ShowMessage, storeData} from '../../utilities';
-import {
-  setRegister,
-  clearRegisterState,
-} from '../../redux/reducers/registerSlice';
+
 import {setPhoto, setUploadStatus} from '../../redux/reducers/photoSlice';
 import {API_HOST} from '../../config';
+import {signUpAction} from '../../redux/action';
 
 const SignUpAddress = ({navigation}) => {
   const dispatch = useDispatch();
@@ -51,64 +49,7 @@ const SignUpAddress = ({navigation}) => {
     };
 
     dispatch(setLoading({isLoading: true}));
-
-    axios
-      // .post('http://10.0.2.2:8000/api/register', data)
-      .post(`${API_HOST.url}/register`, data)
-      .then(response => {
-        const profile = response.data.user;
-        const token = `${response.data.token_type} ${response.data.access_token}`;
-
-        storeData('tokenData', {value: token});
-
-        console.log('Data Sukse :', response.data);
-        if (photo.isUploadPhoto) {
-          const photoForUpload = new FormData();
-          photoForUpload.append('image', {
-            uri: photo.uri,
-            type: photo.type,
-            name: photo.name,
-          });
-
-          axios
-            .post(`${API_HOST.url}/user/photo`, photoForUpload, {
-              headers: {
-                Authorization: token,
-                'Content-Type': 'multipart/form-data',
-              },
-            })
-            .then(resUpload => {
-              console.log('Photo Sukses :', resUpload);
-              profile.profile_photo_url = `http://10.0.2.2:8000/storage/${resUpload.data.data[0]}`;
-              storeData('userProfile', profile);
-              dispatch(setLoading({isLoading: false}));
-              // ShowMessage('Register Success');
-              navigation.reset({index: 0, routes: [{name: ''}]});
-            })
-            .catch(err => {
-              dispatch(setLoading({isLoading: false}));
-              console.log('Eroor Upload', err);
-              navigation.reset({
-                index: 0,
-                routes: [{name: 'SignUpSuccess'}],
-              });
-            });
-        } else {
-          storeData('userProfile', profile);
-          dispatch(setLoading({isLoading: false}));
-          // ShowMessage('Register Success');
-          navigation.reset({
-            index: 0,
-            routes: [{name: 'SignUpSuccess'}],
-          });
-        }
-        dispatch(clearRegisterState());
-        dispatch(setUploadStatus(false));
-      })
-      .catch(error => {
-        dispatch(setLoading({isLoading: false}));
-        ShowMessage(error.response.data.message, 'danger');
-      });
+    dispatch(signUpAction(data, photo, navigation));
   };
 
   return (
