@@ -50,6 +50,11 @@ const AgendaCalendar = ({navigation, route}) => {
       const data = response.data.data;
       const filteredData = data.filter(agenda => agenda.room_id === item.id);
 
+      // Sort the filtered data by waktu_mulai in ascending order
+      filteredData.sort((a, b) =>
+        moment(a.waktu_mulai, 'HH:mm').diff(moment(b.waktu_mulai, 'HH:mm')),
+      );
+
       const formattedData = filteredData.reduce((acc, agenda) => {
         const date = agenda.tanggal;
         if (!acc[date]) acc[date] = [];
@@ -139,6 +144,12 @@ const AgendaCalendar = ({navigation, route}) => {
         waktu_mulai: formattedStartTime,
         waktu_selesai: formattedEndTime,
       });
+
+      // Sort the updated agenda by waktu_mulai in ascending order
+      updatedAgenda[selectedDate].sort((a, b) =>
+        moment(a.waktu_mulai, 'HH:mm').diff(moment(b.waktu_mulai, 'HH:mm')),
+      );
+
       setAgendaData(updatedAgenda);
 
       navigation.replace('SuccessBooking');

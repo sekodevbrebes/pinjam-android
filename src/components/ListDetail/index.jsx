@@ -89,7 +89,10 @@ const ListRoom = ({
         </View>
       </View>
 
-      {status !== 'Finish' || !isPastActivityDate ? (
+      {status !== 'Finish' &&
+      status !== 'Cancelled' &&
+      status !== 'Decline' &&
+      !isPastActivityDate ? (
         <TouchableOpacity style={styles.button} onPress={onPress}>
           <Text style={styles.buttonText}>Batalkan Pemesanan Saya</Text>
         </TouchableOpacity>
