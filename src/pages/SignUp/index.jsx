@@ -62,6 +62,12 @@ const SignUp = ({navigation}) => {
       return;
     }
 
+    // Validasi apakah foto telah diisi
+    if (!photo) {
+      showMessage('Please add a photo', 'danger');
+      return;
+    }
+
     // Dispatch aksi register dengan data form
     dispatch(setRegister(form));
 
@@ -232,7 +238,7 @@ const SignUp = ({navigation}) => {
             Sudah Punya Akun?{' '}
             <Text
               style={styles.login}
-              onPress={() => navigation.navigate('SigIn')}>
+              onPress={() => navigation.navigate('SignIn')}>
               Login
             </Text>
           </Text>

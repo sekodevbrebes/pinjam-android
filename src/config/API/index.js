@@ -1,8 +1,8 @@
 export const API_HOST = {
-    url:'https://6579-103-47-132-27.ngrok-free.app/api'
+    url:'https://fcc5-43-252-105-171.ngrok-free.app/api'
 };
 
-export const API_HOST_IMAGE = 'https://6579-103-47-132-27.ngrok-free.app'
+export const API_HOST_IMAGE = 'https://fcc5-43-252-105-171.ngrok-free.app'
 
 
 // export const API_HOST = {

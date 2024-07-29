@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ShowMessage, storeData } from '../../utilities';
+import { showMessage, storeData } from '../../utilities';
 import { API_HOST } from '../../config';
 import { setUploadStatus } from '../reducers/photoSlice';
 import { setLoading } from '../reducers/globalSlice';
@@ -77,6 +77,6 @@ export const signUpAction = (data, photo, navigation) => async (dispatch) => {
     } catch (error) {
         dispatch(setLoading({ isLoading: false }));
         console.log('Error:', error); // Debug error
-        ShowMessage(error.message || 'Gagal registrasi', 'danger');
+        showMessage(error.message || 'Gagal registrasi', 'danger');
     }
 };

@@ -7,6 +7,8 @@ import {Header, ListDetail} from '../../components';
 const DetailBooking = ({route, navigation}) => {
   const booking = route.params;
 
+  console.log('Isi Dari Booking :', booking);
+
   // Format tanggal
   const formattedTanggal = moment(booking.tanggal)
     .locale('id')
@@ -33,6 +35,7 @@ const DetailBooking = ({route, navigation}) => {
       />
       <View>
         <ListDetail
+          id={booking.id}
           name={booking.room.name}
           created_at={formattedCreatedAt}
           tanggal={formattedTanggal}
@@ -42,6 +45,7 @@ const DetailBooking = ({route, navigation}) => {
           waktu_mulai={formattedWaktuMulai}
           waktu_selesai={formattedWaktuSelesai}
           roomId={booking.room.id}
+          alasan={booking.reason}
         />
       </View>
     </View>

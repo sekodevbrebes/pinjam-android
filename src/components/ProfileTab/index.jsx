@@ -60,7 +60,6 @@ const About = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.page}>
-      <ListAccount name="Rate App" />
       <ListAccount name="Help Center" />
       <ListAccount name="Privacy & Policy" />
       <ListAccount name="Terms & Conditions" />
