@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import useForm from '../../utilities/useForm';
 
 import {setLoading} from '../../redux/reducers/globalSlice';
-import {ShowMessage, storeData} from '../../utilities';
+import {showMessage, storeData} from '../../utilities';
 
 import {setPhoto, setUploadStatus} from '../../redux/reducers/photoSlice';
 import {API_HOST} from '../../config';
@@ -33,14 +33,14 @@ const SignUpAddress = ({navigation}) => {
   const onSubmit = () => {
     // Validasi form
     if (!form.instansi || !form.alamat || !form.telephone) {
-      ShowMessage('Please fill in all fields', 'danger');
+      showMessage('Please fill in all fields', 'danger');
       return;
     }
 
     // Validasi nomor telepon hanya berupa angka
     const phoneRegex = /^[0-9]+$/;
     if (!phoneRegex.test(form.telephone)) {
-      ShowMessage('Phone number should contain only numbers', 'danger');
+      showMessage('Phone number should contain only numbers', 'danger');
       return;
     }
     const data = {
