@@ -43,7 +43,6 @@ const TermsAndConditions = ({navigation}) => {
           <Text style={styles.bold}>Tempat</Text>: Ruangan atau lokasi yang
           dapat dipinjam melalui aplikasi ini.
         </Text>
-
         <Text style={styles.heading}>3. Pendaftaran dan Akun Pengguna</Text>
         <Text style={styles.content}>
           3.1. Untuk menggunakan Aplikasi SiKPT, Anda harus mendaftar dan
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginVertical: 12,
-    color: '#333',
+    color: '#3498db',
     fontFamily: 'Poppins-Bold',
   },
   content: {

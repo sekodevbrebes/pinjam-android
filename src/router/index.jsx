@@ -19,6 +19,7 @@ import {
   DetailBooking,
 } from '../pages';
 import {BottomNavigator, Tos} from '../components';
+import HelpCenter from '../pages/Helpcenter';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -106,6 +107,11 @@ const Router = () => {
       <Stack.Screen
         name="DetailBooking"
         component={DetailBooking}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="HelpCenter"
+        component={HelpCenter}
         options={{headerShown: false}}
       />
       <Stack.Screen name="Tos" component={Tos} options={{headerShown: false}} />

@@ -20,6 +20,7 @@ import TimeType from './Input/timepicker';
 import ListDetail from './ListDetail';
 import AgendaItem from './AgendaItem';
 import Tos from '../pages/Tos';
+import HelpCenter from '../pages/Helpcenter';
 
 export {
   Button,
@@ -44,4 +45,5 @@ export {
   ListDetail,
   AgendaItem,
   Tos,
+  HelpCenter,
 };

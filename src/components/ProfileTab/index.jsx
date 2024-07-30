@@ -59,7 +59,10 @@ const About = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.page}>
-      <ListAccount name="Help Center" />
+      <ListAccount
+        name="Help Center"
+        onPress={() => navigation.navigate('HelpCenter')}
+      />
       <ListAccount
         name="Terms & Conditions"
         onPress={() => navigation.navigate('Tos')}
