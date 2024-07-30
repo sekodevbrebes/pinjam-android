@@ -13,6 +13,7 @@ import BookingDate from './BookingDate';
 import Agenda from './Agenda';
 import SuccessBooking from './SuccessBooking';
 import DetailBooking from './DetailBooking';
+import EditProfile from './Profile/editProfile';
 
 export {
   Splash,
@@ -30,4 +31,5 @@ export {
   Agenda,
   SuccessBooking,
   DetailBooking,
+  EditProfile,
 };

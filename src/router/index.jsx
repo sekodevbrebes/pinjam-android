@@ -17,6 +17,7 @@ import {
   Agenda,
   SuccessBooking,
   DetailBooking,
+  EditProfile,
 } from '../pages';
 import {BottomNavigator, Tos} from '../components';
 import HelpCenter from '../pages/Helpcenter';
@@ -112,6 +113,11 @@ const Router = () => {
       <Stack.Screen
         name="HelpCenter"
         component={HelpCenter}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="editProfile"
+        component={EditProfile}
         options={{headerShown: false}}
       />
       <Stack.Screen name="Tos" component={Tos} options={{headerShown: false}} />

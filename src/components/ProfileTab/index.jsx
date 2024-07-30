@@ -49,7 +49,10 @@ const Account = () => {
 
   return (
     <View style={styles.page}>
-      <ListAccount name="Edit Profile" />
+      <ListAccount
+        name="Edit Profile"
+        onPress={() => navigation.navigate('editProfile')}
+      />
       <ListAccount name="Sign Out" onPress={signOut} />
     </View>
   );
