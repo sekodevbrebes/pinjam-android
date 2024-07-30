@@ -56,12 +56,6 @@ export const signUpAction = (data, photo, navigation) => async (dispatch) => {
             });
 
             console.log('Photo Upload Sukses:', resUpload); // Debug photo upload response
-
-            if (resUpload.data && resUpload.data.data && resUpload.data.data[0]) {
-                profile.profile_photo_url = `${API_HOST.url}/storage/${resUpload.data.data[0]}`;
-            } else {
-                throw new Error("Invalid photo upload response");
-            }
         }
 
         await storeData('userProfile', profile);

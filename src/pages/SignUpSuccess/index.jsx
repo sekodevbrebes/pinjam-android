@@ -10,15 +10,14 @@ const SignUpSuccess = ({navigation}) => {
       <Image style={styles.image} source={SuccessRegisteration} />
       <Text style={styles.title}>Registration successful</Text>
       <Text style={styles.subtitle}>
-        Now you can start {'\n'} borrowing a place for activities
+        To start using the application, please log in first and then submit a
+        request.
       </Text>
       <Button
         style={styles.button}
-        title="Home"
+        title="Sign In"
         type="primary"
-        onPress={() =>
-          navigation.reset({index: 0, routes: [{name: 'MainApp'}]})
-        }
+        onPress={() => navigation.replace('SigIn')}
       />
     </View>
   );

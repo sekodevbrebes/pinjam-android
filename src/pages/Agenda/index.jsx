@@ -10,6 +10,7 @@ import {
   Header,
   NoAgenda,
 } from '../../components';
+import '../../config/Calender';
 import {setLoading} from '../../redux/reducers/globalSlice';
 import {API_HOST} from '../../config';
 import {getData, showMessage} from '../../utilities';

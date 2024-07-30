@@ -3,12 +3,8 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, InputType} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import useForm from '../../utilities/useForm';
-
 import {setLoading} from '../../redux/reducers/globalSlice';
-import {showMessage, storeData} from '../../utilities';
-
-import {setPhoto, setUploadStatus} from '../../redux/reducers/photoSlice';
-import {API_HOST} from '../../config';
+import {showMessage} from '../../utilities';
 import {signUpAction} from '../../redux/action';
 
 const SignUpAddress = ({navigation}) => {

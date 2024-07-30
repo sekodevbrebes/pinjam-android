@@ -19,6 +19,7 @@ import TextAreaType from './Input/textarea';
 import TimeType from './Input/timepicker';
 import ListDetail from './ListDetail';
 import AgendaItem from './AgendaItem';
+import Tos from '../pages/Tos';
 
 export {
   Button,
@@ -42,4 +43,5 @@ export {
   TimeType,
   ListDetail,
   AgendaItem,
+  Tos,
 };

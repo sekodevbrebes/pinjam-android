@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Dimensions,
   Modal,
-  Alert,
 } from 'react-native';
 import axios from 'axios';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
@@ -52,7 +51,7 @@ const ListRoom = ({
   // Fungsi untuk membatalkan booking dan mengirim alasan
   const onCancel = async () => {
     if (!reason) {
-      showMessage('Alasan pembatalan harus diisi.', 'danger');
+      showMessage('Alasan pembatalan harus diisi.', 'danger', 'top');
       return;
     }
 
@@ -209,7 +208,7 @@ const ListRoom = ({
                 label="Masukkan alasan pembatalan:"
                 placeholder="Alasan Pembatalan"
                 value={reason}
-                onChangeText={setCancellationReason}
+                onChangeText={setReason}
               />
             </View>
 

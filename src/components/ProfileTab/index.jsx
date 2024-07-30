@@ -1,9 +1,6 @@
 import React from 'react';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {View, Text, useWindowDimensions, Image, StyleSheet} from 'react-native';
-import {Aula, RuangBupati, RuangCC, RuangSekda} from '../../assets';
-import ListRoom from '../ListRoom';
-
+import {View, Text, useWindowDimensions, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import ListAccount from '../ListAccount';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,7 +11,6 @@ const renderTabBar = props => (
     indicatorStyle={{
       backgroundColor: '#020202',
       height: 2,
-      width: 0.2,
     }}
     style={{
       backgroundColor: 'white',
@@ -39,18 +35,21 @@ const renderTabBar = props => (
 
 const Account = () => {
   const navigation = useNavigation();
-  const signOut = () => {
-    AsyncStorage.multiRemove(['userProfile', 'token']).then(() => {
+  const signOut = async () => {
+    try {
+      await AsyncStorage.multiRemove(['userProfile', 'token']);
       navigation.reset({
         index: 0,
         routes: [{name: 'GetStarted'}],
       });
-    });
+    } catch (error) {
+      console.error('Failed to sign out:', error);
+    }
   };
+
   return (
     <View style={styles.page}>
       <ListAccount name="Edit Profile" />
-      <ListAccount name="Unit Kerja" />
       <ListAccount name="Sign Out" onPress={signOut} />
     </View>
   );
@@ -61,8 +60,10 @@ const About = () => {
   return (
     <View style={styles.page}>
       <ListAccount name="Help Center" />
-      <ListAccount name="Privacy & Policy" />
-      <ListAccount name="Terms & Conditions" />
+      <ListAccount
+        name="Terms & Conditions"
+        onPress={() => navigation.navigate('Tos')}
+      />
     </View>
   );
 };
@@ -80,6 +81,7 @@ const ProfileTab = () => {
     {key: '1', title: 'Account'},
     {key: '2', title: 'About'},
   ]);
+
   return (
     <TabView
       renderTabBar={renderTabBar}

@@ -238,7 +238,7 @@ const SignUp = ({navigation}) => {
             Sudah Punya Akun?{' '}
             <Text
               style={styles.login}
-              onPress={() => navigation.navigate('SignIn')}>
+              onPress={() => navigation.navigate('SigIn')}>
               Login
             </Text>
           </Text>

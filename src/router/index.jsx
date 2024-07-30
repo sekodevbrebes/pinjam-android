@@ -18,7 +18,7 @@ import {
   SuccessBooking,
   DetailBooking,
 } from '../pages';
-import {BottomNavigator} from '../components';
+import {BottomNavigator, Tos} from '../components';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -108,6 +108,7 @@ const Router = () => {
         component={DetailBooking}
         options={{headerShown: false}}
       />
+      <Stack.Screen name="Tos" component={Tos} options={{headerShown: false}} />
     </Stack.Navigator>
   );
 };
