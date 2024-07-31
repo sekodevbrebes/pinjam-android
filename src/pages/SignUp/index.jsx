@@ -36,8 +36,6 @@ const SignUp = ({navigation}) => {
 
   // Fungsi untuk menangani submit form
   const onSubmit = () => {
-    console.log('Form Data: ', form);
-
     // Validasi form
     if (
       !form.name ||
@@ -100,7 +98,6 @@ const SignUp = ({navigation}) => {
 
   // Fungsi untuk membuka galeri dan menambahkan foto
   const addPhotoFromGallery = () => {
-    console.log('Opening gallery...');
     launchImageLibrary(
       {
         quality: 0.5,
@@ -110,7 +107,6 @@ const SignUp = ({navigation}) => {
         mediaType: 'photo',
       },
       response => {
-        console.log('Gallery Response: ', response);
         if (response.didCancel) {
           showMessage('User cancelled Upload', 'danger');
         } else if (response.error) {
@@ -122,7 +118,7 @@ const SignUp = ({navigation}) => {
             type: response.assets[0].type,
             name: response.assets[0].fileName,
           };
-          console.log('Selected Image Data: ', dataImage);
+
           setPhoto(source);
           dispatch(setImage(dataImage));
           dispatch(setUploadStatus({isUploadPhoto: true}));
@@ -135,7 +131,6 @@ const SignUp = ({navigation}) => {
 
   // Fungsi untuk membuka kamera dan menambahkan foto
   const addPhotoFromCamera = () => {
-    console.log('Opening camera...');
     launchCamera(
       {
         quality: 0.5,
@@ -145,7 +140,6 @@ const SignUp = ({navigation}) => {
         mediaType: 'photo',
       },
       response => {
-        console.log('Camera Response: ', response);
         if (response.didCancel) {
           showMessage('User cancelled Camera', 'danger');
         } else if (response.error) {
@@ -157,7 +151,7 @@ const SignUp = ({navigation}) => {
             type: response.assets[0].type,
             name: response.assets[0].fileName,
           };
-          console.log('Captured Image Data: ', dataImage);
+
           setPhoto(source);
           dispatch(setImage(dataImage));
           dispatch(setUploadStatus({isUploadPhoto: true}));

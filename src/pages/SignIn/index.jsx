@@ -6,7 +6,7 @@ import useForm from '../../utilities/useForm';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import {setLoading} from '../../redux/reducers/globalSlice';
-import {getData, showMessage, storeData} from '../../utilities';
+import {showMessage, storeData} from '../../utilities';
 import {API_HOST} from '../../config';
 
 const SigIn = ({navigation}) => {
@@ -42,7 +42,7 @@ const SigIn = ({navigation}) => {
       })
       .catch(response => {
         showMessage(response.message, 'danger');
-        console.log('error', response.message);
+
         dispatch(setLoading({isLoading: false}));
       });
   };

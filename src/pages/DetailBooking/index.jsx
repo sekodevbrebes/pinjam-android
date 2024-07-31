@@ -7,8 +7,6 @@ import {Header, ListDetail} from '../../components';
 const DetailBooking = ({route, navigation}) => {
   const booking = route.params;
 
-  console.log('Isi Dari Booking :', booking);
-
   // Format tanggal
   const formattedTanggal = moment(booking.tanggal)
     .locale('id')

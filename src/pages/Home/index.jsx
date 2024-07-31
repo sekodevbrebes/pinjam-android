@@ -20,13 +20,10 @@ const Home = ({navigation}) => {
     axios
       .get(`${API_HOST.url}/rooms`)
       .then(response => {
-        console.log('response tampil room :', response.data.data);
         const data = response.data.data;
         dispatch(setHome(data)); // Mengirim data ke Redux state
       })
-      .catch(error => {
-        console.log(error);
-      })
+      .catch(error => {})
       .finally(() => {
         dispatch(setLoading(false)); // Set loading menjadi false setelah fetch data selesai
       });
@@ -45,8 +42,6 @@ const Home = ({navigation}) => {
                 // Parsing array URL gambar dan mengambil URL gambar pertama
                 const imageArray = JSON.parse(itemRoom.image); // Mengubah string JSON menjadi array
                 const firstImage = imageArray[0]; // Mengambil elemen pertama dari array URL gambar
-
-                console.log('gambar apa: ', firstImage); //
 
                 return (
                   <RoomCard

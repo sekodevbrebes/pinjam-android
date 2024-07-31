@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginVertical: 12,
+    marginVertical: 14,
     color: '#3498db',
     fontFamily: 'Poppins-Bold',
   },
@@ -164,8 +164,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 14,
+
     fontFamily: 'Poppins-Regular',
   },
 });

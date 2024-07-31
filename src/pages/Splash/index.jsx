@@ -7,7 +7,6 @@ const Splash = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
       getData('token').then(response => {
-        console.log('Masih ada Token :', response);
         if (response) {
           // Mengatur ulang stack navigasi untuk memastikan pengguna tidak dapat kembali
           navigation.reset({

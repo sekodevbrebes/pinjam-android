@@ -22,13 +22,10 @@ const DetailRuangan = ({navigation, route}) => {
     .map(item => item.replace(/<\/?li>/g, '')); // Menghapus tag <li> dan </li>
 
   // Console log untuk menampilkan nilai params di console
-  console.log('Nilai Param : ', itemRoom);
 
   useEffect(() => {
     // Mengambil data 'userProfile' saat komponen dimount
-    getData('userProfile').then(response => {
-      console.log('Profile : ', response);
-    });
+    getData('userProfile').then(response => {});
   }, []);
 
   const onBooking = () => {
@@ -43,13 +40,10 @@ const DetailRuangan = ({navigation, route}) => {
           userProfile, // Menyertakan userProfile yang telah diambil
         };
 
-        console.log('Data for Booking : ', data);
         // Di sini Anda dapat melanjutkan logika booking dengan menggunakan data
-
         navigation.navigate('Agenda', data);
       })
       .catch(error => {
-        console.error('Error fetching userProfile: ', error);
         // Menghandle kasus jika pengambilan data userProfile gagal
       });
   };

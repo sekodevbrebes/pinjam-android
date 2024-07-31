@@ -22,10 +22,7 @@ const Booking = ({navigation}) => {
   const isEmpty = inProgress.length === 0; // Tentukan apakah data kosong
 
   // Debugging
-  useEffect(() => {
-    console.log('In Progress data:', inProgress);
-    console.log('Is Empty:', isEmpty);
-  }, [inProgress, isEmpty]);
+  useEffect(() => {}, [inProgress, isEmpty]);
 
   return (
     <View style={styles.pageContainer}>

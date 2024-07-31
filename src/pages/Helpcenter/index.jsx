@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,14 +9,22 @@ import {
 import {Header} from '../../components';
 
 const HelpCenter = ({navigation}) => {
+  const scrollViewRef = useRef(null);
+
+  const scrollToBottom = () => {
+    scrollViewRef.current?.scrollToEnd({animated: true});
+  };
+
   return (
     <View style={styles.container}>
       <Header
-        title="Help Center"
-        subTitle="Pusat Bantuan"
+        title="Pusat Bantuan"
+        subTitle="Help Center"
         onPress={() => navigation.navigate('Profile')}
       />
-      <ScrollView contentContainerStyle={styles.contentContainer}>
+      <ScrollView
+        ref={scrollViewRef}
+        contentContainerStyle={styles.contentContainer}>
         <Text style={styles.heading}>Pusat Bantuan Aplikasi SiKPT</Text>
 
         <Text style={styles.subHeading}>
@@ -29,8 +37,10 @@ const HelpCenter = ({navigation}) => {
           {'\n'}- Buka aplikasi SiKPT.
           {'\n'}- Daftar atau masuk dengan akun Anda.
           {'\n'}- Pilih tempat yang ingin Anda pinjam.
+          {'\n'}- Pilih Waktu yang masih tersedia.
           {'\n'}- Isi formulir peminjaman dan kirim permohonan.
           {'\n'}- Tunggu konfirmasi peminjaman.
+          {'\n'}- Cek Status peminjaman.
         </Text>
 
         <Text style={styles.subHeading}>2. Proses Pendaftaran</Text>
@@ -49,9 +59,10 @@ const HelpCenter = ({navigation}) => {
           Untuk meminjam tempat melalui Aplikasi SiKPT, ikuti langkah-langkah
           berikut:
           {'\n'}- Pilih tempat yang tersedia dari daftar.
-          {'\n'}- Isi detail peminjaman, seperti tanggal, waktu, dan keperluan.
+          {'\n'}- Isi detail peminjaman, seperti tanggal, waktu, jumlah peserta
+          dan isi nama kegiatan.
           {'\n'}- Kirim permohonan peminjaman.
-          {'\n'}- Tunggu notifikasi persetujuan dari pihak pengelola.
+          {'\n'}- Tunggu persetujuan dari pihak pengelola.
         </Text>
 
         <Text style={styles.subHeading}>4. Kontak Bantuan</Text>
@@ -60,10 +71,13 @@ const HelpCenter = ({navigation}) => {
           Anda dapat menghubungi kami melalui:
           {'\n'}- Email: [setda@brebeskab.go.id]
           {'\n'}- Telepon: [0899-5900-700]
-          {'\n'}- Alamat: Sekretariat Daerah Kabupaten Brebes, Jl. Veteran No.1,
-          Brebes.
+          {'\n'}- Alamat: Sekretariat Daerah Kabupaten Brebes, Kantor
+          Pemerintahan Terpadu (KPT) Jl. Proklamasi No.77 Brebes.
         </Text>
       </ScrollView>
+      <TouchableOpacity style={styles.button} onPress={scrollToBottom}>
+        <Text style={styles.buttonText}>Scroll to Bottom</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -103,16 +117,15 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   button: {
-    backgroundColor: '#f39c12',
+    backgroundColor: 'orange',
     padding: 15,
-    borderRadius: 8,
+    borderRadius: 5,
     alignItems: 'center',
-    marginTop: 20,
+    margin: 20,
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
-    fontFamily: 'Poppins-Bold',
+    fontSize: 14,
   },
 });
 

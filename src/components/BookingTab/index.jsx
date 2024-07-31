@@ -48,14 +48,10 @@ const InProgress = () => {
     dispatch(getInProgress());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log('State InProgress setelah update:', inProgress); // Log state setelah update
-  }, [inProgress]);
+  useEffect(() => {}, [inProgress]);
 
   if (Array.isArray(InProgress)) {
-    console.log('InProgress adalah array:', inProgress);
   } else {
-    console.log('InProgress bukan array');
   }
 
   return (
@@ -72,8 +68,6 @@ const InProgress = () => {
         // Menyesuaikan URL gambar dengan domain yang sesuai
         const domain = `${API_HOST_IMAGE}`;
         const fullImageURL = `${domain}/storage/${cleanedImageURL}`;
-
-        console.log('dapat gambar apa? :', fullImageURL);
 
         // Mengubah format tanggal
         const formattedDate = moment(booking.tanggal)

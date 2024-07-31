@@ -1,4 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {
+  createSlice
+} from '@reduxjs/toolkit';
 
 // Inisialisasi state awal
 const initialState = {
@@ -18,7 +20,7 @@ const bookingSlice = createSlice({
     },
     // Reducer untuk mengubah state 'inProgress'
     setInProgress: (state, action) => {
-      console.log('Payload diterima di reducer:', action.payload); // Log payload diterima di reducer
+
       state.inProgress = Array.isArray(action.payload) ? action.payload : [];
     },
     // Reducer untuk mengubah state 'pastBookings'
@@ -29,7 +31,12 @@ const bookingSlice = createSlice({
 });
 
 // Ekspor actions
-export const { setPendingBooking, setBookings, setInProgress, setPastBookings } = bookingSlice.actions;
+export const {
+  setPendingBooking,
+  setBookings,
+  setInProgress,
+  setPastBookings
+} = bookingSlice.actions;
 
 // Ekspor reducer dari slice 'booking'
 export default bookingSlice.reducer;

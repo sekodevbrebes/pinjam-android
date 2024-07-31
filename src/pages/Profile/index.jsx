@@ -8,7 +8,6 @@ const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
   useEffect(() => {
     getData('userProfile').then(response => {
-      console.log('User Profile Data:', response); // Tambahkan console.log di sini
       setUserProfile(response);
     });
   }, []);
