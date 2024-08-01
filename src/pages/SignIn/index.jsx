@@ -1,18 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
 import {Logo} from '../../assets';
 import {Button, Gap, InputType} from '../../components';
 import useForm from '../../utilities/useForm';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import axios from 'axios';
 import {setLoading} from '../../redux/reducers/globalSlice';
 import {showMessage, storeData} from '../../utilities';
 import {API_HOST} from '../../config';
 
 const SigIn = ({navigation}) => {
-  const dispatch = useDispatch(); // Dapatkan dispatch dari react-redux
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
 
   const [form, setForm] = useForm({
     email: '',
@@ -21,15 +19,16 @@ const SigIn = ({navigation}) => {
 
   const onSubmit = () => {
     if (!form.email || !form.password) {
-      showMessage('Please fill in all fields', 'danger');
+      showMessage('Silahkan isi semua !', 'danger');
       return;
     }
 
     dispatch(setLoading({isLoading: true}));
     axios
-      // .post('http://10.0.2.2:8000/api/login', form)
       .post(`${API_HOST.url}/login`, form)
       .then(response => {
+        console.log('Response:', response); // Log response dari API
+
         const profile = response.data.user;
         const token = `${response.data.token_type} ${response.data.access_token}`;
 
@@ -37,11 +36,21 @@ const SigIn = ({navigation}) => {
 
         storeData('token', {value: token});
         storeData('userProfile', profile);
-        // navigation.reset({index: 0, routes: [{name: 'MainApp'}]});
         navigation.navigate('MainApp');
       })
-      .catch(response => {
-        showMessage(response.message, 'danger');
+      .catch(error => {
+        console.log('Error:', error); // Log error untuk debugging
+        console.log('Error Response:', error.response); // Log response error dari API
+
+        let errorMessage = 'An error occurred';
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          errorMessage = error.response.data.message;
+        }
+        showMessage(errorMessage, 'danger');
 
         dispatch(setLoading({isLoading: false}));
       });

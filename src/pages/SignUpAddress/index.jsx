@@ -29,7 +29,7 @@ const SignUpAddress = ({navigation}) => {
   const onSubmit = () => {
     // Validasi form
     if (!form.instansi || !form.alamat || !form.telephone) {
-      showMessage('Please fill in all fields', 'danger');
+      showMessage('Silahkan isi semua !', 'danger');
       return;
     }
 

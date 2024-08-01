@@ -2331,6 +2331,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/cli-tools@npm:^13.6.9":
+  version: 13.6.9
+  resolution: "@react-native-community/cli-tools@npm:13.6.9"
+  dependencies:
+    appdirsjs: ^1.2.4
+    chalk: ^4.1.2
+    execa: ^5.0.0
+    find-up: ^5.0.0
+    mime: ^2.4.1
+    node-fetch: ^2.6.0
+    open: ^6.2.0
+    ora: ^5.4.1
+    semver: ^7.5.2
+    shell-quote: ^1.7.3
+    sudo-prompt: ^9.0.0
+  checksum: dc5ee921480a03249b408544146737a0674aa6259d797672a5f369d337a2775ec62fb986fcf62fe554992605305b75a220609db8eea9f6b75d97241a4dd79ad3
+  languageName: node
+  linkType: hard
+
 "@react-native-community/cli-types@npm:13.6.6":
   version: 13.6.6
   resolution: "@react-native-community/cli-types@npm:13.6.6"
@@ -2390,6 +2409,32 @@ __metadata:
     react: ">=16"
     react-native: ">=0.57"
   checksum: 880059020709ce856c448657c2d67a905f2ebcd3f42c1c4d344d732761cb2de98efb600172df5591d943f562393dbca42802e8a903b974aa2b038b441c5718fb
+  languageName: node
+  linkType: hard
+
+"@react-native-vector-icons/common@npm:^0.0.1-alpha.11":
+  version: 0.0.1-alpha.11
+  resolution: "@react-native-vector-icons/common@npm:0.0.1-alpha.11"
+  dependencies:
+    "@react-native-community/cli-tools": ^13.6.9
+    prop-types: ^15.8.1
+    yargs: ^17.7.2
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 8034165a65302be2f1ce7c51279b72ba3fc6b9a6cfa47ddf94b10f20d7085610a9faadf50e9a461edc4a1e3567dbe6e45fb5a1e86a426695ec3bae60e057108d
+  languageName: node
+  linkType: hard
+
+"@react-native-vector-icons/fontawesome@npm:^4.7.0-alpha.16":
+  version: 4.7.0-alpha.16
+  resolution: "@react-native-vector-icons/fontawesome@npm:4.7.0-alpha.16"
+  dependencies:
+    "@react-native-vector-icons/common": ^0.0.1-alpha.11
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 82dcbad6fea4e9b14f2fad75e9afc877848cc61f96d351779c0a7a1fd62906a38d2066db937c4115d529f074354e8a44166b2654dbb94c2a9427a163e24e7a17
   languageName: node
   linkType: hard
 
@@ -3354,6 +3399,7 @@ __metadata:
     "@react-native-async-storage/async-storage": ^1.23.1
     "@react-native-community/datetimepicker": ^8.1.0
     "@react-native-masked-view/masked-view": ^0.3.1
+    "@react-native-vector-icons/fontawesome": ^4.7.0-alpha.16
     "@react-native/babel-preset": 0.74.83
     "@react-native/eslint-config": 0.74.83
     "@react-native/metro-config": 0.74.83
@@ -12649,7 +12695,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs@npm:^17.3.1, yargs@npm:^17.6.2":
+"yargs@npm:^17.3.1, yargs@npm:^17.6.2, yargs@npm:^17.7.2":
   version: 17.7.2
   resolution: "yargs@npm:17.7.2"
   dependencies:

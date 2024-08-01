@@ -18,7 +18,7 @@ const Splash = ({navigation}) => {
           navigation.replace('GetStarted');
         }
       });
-    }, 1000);
+    }, 5000);
   }, []);
 
   return (

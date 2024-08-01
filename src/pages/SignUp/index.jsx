@@ -43,26 +43,26 @@ const SignUp = ({navigation}) => {
       !form.password ||
       !form.password_confirmation
     ) {
-      showMessage('Please fill in all fields', 'danger');
+      showMessage('Silahkan isi semua !', 'danger');
       return;
     }
 
     // Validasi format email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(form.email)) {
-      showMessage('Invalid email format', 'danger');
+      showMessage('Format Email Tidak Benar', 'danger');
       return;
     }
 
     // Memeriksa apakah password dan password_confirmation sama
     if (form.password !== form.password_confirmation) {
-      showMessage('Passwords do not match', 'danger');
+      showMessage('Password Tidak Sesuai', 'danger');
       return;
     }
 
     // Validasi apakah foto telah diisi
     if (!photo) {
-      showMessage('Please add a photo', 'danger');
+      showMessage('Tambahkan Foto', 'danger');
       return;
     }
 
@@ -76,19 +76,19 @@ const SignUp = ({navigation}) => {
   // Fungsi untuk memilih foto dari galeri atau kamera
   const choosePhotoSource = () => {
     Alert.alert(
-      'Select Photo',
-      'Choose a photo from the gallery or take a new one',
+      'Pilih Foto',
+      'Pilih foto dari galeri atau ambil foto baru',
       [
         {
           text: 'Cancel',
           style: 'cancel',
         },
         {
-          text: 'Choose from Gallery',
+          text: 'Pilih dari Gallery',
           onPress: () => addPhotoFromGallery(),
         },
         {
-          text: 'Take a Photo',
+          text: 'dari Camera',
           onPress: () => addPhotoFromCamera(),
         },
       ],
@@ -192,7 +192,7 @@ const SignUp = ({navigation}) => {
 
           {/* Input untuk Nama Lengkap */}
           <InputType
-            label="Full Name"
+            label="Nama Lengkap"
             placeholder="Type Your Full Name"
             value={form.name}
             onChangeText={value => setForm('name', value)}
