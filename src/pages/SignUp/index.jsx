@@ -18,9 +18,9 @@ import {
 } from '../../redux/reducers/photoSlice';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import {showMessage} from '../../utilities';
+import {IcEyeOff, IcEyeOn} from '../../assets';
 
 const SignUp = ({navigation}) => {
-  // Inisialisasi state form menggunakan custom hook useForm
   const [form, setForm] = useForm({
     name: '',
     email: '',
@@ -28,15 +28,21 @@ const SignUp = ({navigation}) => {
     password_confirmation: '',
   });
 
-  // Inisialisasi state untuk menyimpan foto yang dipilih
   const [photo, setPhoto] = useState(null);
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [secureTextEntryConfirm, setSecureTextEntryConfirm] = useState(true);
 
-  // Inisialisasi dispatch
   const dispatch = useDispatch();
 
-  // Fungsi untuk menangani submit form
+  const toggleSecureTextEntry = () => {
+    setSecureTextEntry(!secureTextEntry);
+  };
+
+  const toggleSecureTextEntryConfirm = () => {
+    setSecureTextEntryConfirm(!secureTextEntryConfirm);
+  };
+
   const onSubmit = () => {
-    // Validasi form
     if (
       !form.name ||
       !form.email ||
@@ -47,33 +53,26 @@ const SignUp = ({navigation}) => {
       return;
     }
 
-    // Validasi format email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(form.email)) {
       showMessage('Format Email Tidak Benar', 'danger');
       return;
     }
 
-    // Memeriksa apakah password dan password_confirmation sama
     if (form.password !== form.password_confirmation) {
       showMessage('Password Tidak Sesuai', 'danger');
       return;
     }
 
-    // Validasi apakah foto telah diisi
     if (!photo) {
       showMessage('Tambahkan Foto', 'danger');
       return;
     }
 
-    // Dispatch aksi register dengan data form
     dispatch(setRegister(form));
-
-    // Navigasi ke layar SignUpAddress jika validasi berhasil
     navigation.navigate('SignUpAddress');
   };
 
-  // Fungsi untuk memilih foto dari galeri atau kamera
   const choosePhotoSource = () => {
     Alert.alert(
       'Pilih Foto',
@@ -96,7 +95,6 @@ const SignUp = ({navigation}) => {
     );
   };
 
-  // Fungsi untuk membuka galeri dan menambahkan foto
   const addPhotoFromGallery = () => {
     launchImageLibrary(
       {
@@ -129,7 +127,6 @@ const SignUp = ({navigation}) => {
     );
   };
 
-  // Fungsi untuk membuka kamera dan menambahkan foto
   const addPhotoFromCamera = () => {
     launchCamera(
       {
@@ -165,7 +162,6 @@ const SignUp = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.page}>
-        {/* Komponen Header dengan judul dan subjudul */}
         <Header
           title="Sign Up"
           subTitle="Register dan Ajukan Permohonan"
@@ -173,15 +169,12 @@ const SignUp = ({navigation}) => {
         />
 
         <View style={styles.container}>
-          {/* Placeholder untuk menambahkan foto */}
           <View style={styles.photo}>
             <TouchableOpacity onPress={choosePhotoSource}>
               <View style={styles.borderPhoto}>
                 {photo ? (
-                  // Menampilkan foto yang dipilih
                   <Image source={photo} style={styles.photoContainer} />
                 ) : (
-                  // Menampilkan teks Add Photo jika belum ada foto yang dipilih
                   <View style={styles.photoContainer}>
                     <Text style={styles.textPhoto}>Add Photo</Text>
                   </View>
@@ -190,44 +183,60 @@ const SignUp = ({navigation}) => {
             </TouchableOpacity>
           </View>
 
-          {/* Input untuk Nama Lengkap */}
           <InputType
             label="Nama Lengkap"
-            placeholder="Type Your Full Name"
+            placeholder="Masukan Nama Lengkap"
             value={form.name}
             onChangeText={value => setForm('name', value)}
           />
           <Gap height={20} />
-          {/* Input untuk Alamat Email */}
           <InputType
             label="Email Address"
-            placeholder="Type Your Email Address"
+            placeholder="Masukan Email"
             value={form.email}
             onChangeText={value => setForm('email', value)}
           />
           <Gap height={20} />
-          {/* Input untuk Password */}
-          <InputType
-            label="Password"
-            placeholder="Type Your Password"
-            value={form.password}
-            onChangeText={value => setForm('password', value)}
-            secureTextEntry
-          />
+          <View style={styles.inputPasswordContainer}>
+            <InputType
+              label="Password"
+              placeholder="Masukan Password"
+              value={form.password}
+              onChangeText={value => setForm('password', value)}
+              secureTextEntry={secureTextEntry}
+            />
+            <TouchableOpacity
+              onPress={toggleSecureTextEntry}
+              style={styles.showHideButton}>
+              {secureTextEntry ? (
+                <IcEyeOn style={styles.icon} />
+              ) : (
+                <IcEyeOff style={styles.icon} />
+              )}
+            </TouchableOpacity>
+          </View>
           <Gap height={20} />
-          {/* Input untuk Konfirmasi Password */}
-          <InputType
-            label="Confirm Password"
-            placeholder="Confirm Your Password"
-            value={form.password_confirmation}
-            onChangeText={value => setForm('password_confirmation', value)}
-            secureTextEntry
-          />
+          <View style={styles.inputPasswordContainer}>
+            <InputType
+              label="Confirm Password"
+              placeholder="Ketik Ulang Password"
+              value={form.password_confirmation}
+              onChangeText={value => setForm('password_confirmation', value)}
+              secureTextEntry={secureTextEntryConfirm}
+            />
+            <TouchableOpacity
+              onPress={toggleSecureTextEntryConfirm}
+              style={styles.showHideButton}>
+              {secureTextEntryConfirm ? (
+                <IcEyeOn style={styles.icon} />
+              ) : (
+                <IcEyeOff style={styles.icon} />
+              )}
+            </TouchableOpacity>
+          </View>
           <Gap height={24} />
-          {/* Tombol Continue untuk submit form */}
           <Button title="Continue" type="primary" onPress={onSubmit} />
           <Gap height={18} />
-          {/* Teks footer dengan navigasi ke layar Sign In */}
           <Text style={styles.footer}>
             Sudah Punya Akun?{' '}
             <Text
@@ -293,5 +302,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 28,
     marginBottom: 16,
+  },
+  inputPasswordContainer: {
+    position: 'relative',
+  },
+  showHideButton: {
+    position: 'absolute',
+    right: 10,
+    top: 40, // Sesuaikan dengan posisi input
+  },
+  icon: {
+    width: 24, // Sesuaikan ukuran icon
+    height: 24, // Sesuaikan ukuran icon
   },
 });

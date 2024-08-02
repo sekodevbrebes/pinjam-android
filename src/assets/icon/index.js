@@ -12,6 +12,8 @@ import IcStarOn from './star-on.svg'
 import IcStarOff from './star-off.svg'
 import ICTime from './time.svg'
 import ICNext from './arrow_right.svg'
+import IcEyeOff from './eye-off.svg'
+import IcEyeOn from './eye.svg'
 
 export {
     BackButton,
@@ -26,5 +28,7 @@ export {
     IcStarOff,
     BackButtonLight,
     ICTime,
-    ICNext
+    ICNext,
+    IcEyeOff,
+    IcEyeOn
 }

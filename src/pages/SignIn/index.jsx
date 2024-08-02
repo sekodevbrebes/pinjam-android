@@ -1,6 +1,13 @@
-import React from 'react';
-import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
-import {Logo} from '../../assets';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import {IcEyeOff, IcEyeOn, Logo} from '../../assets';
 import {Button, Gap, InputType} from '../../components';
 import useForm from '../../utilities/useForm';
 import {useDispatch} from 'react-redux';
@@ -16,6 +23,12 @@ const SigIn = ({navigation}) => {
     email: '',
     password: '',
   });
+
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+  const toggleSecureTextEntry = () => {
+    setSecureTextEntry(!secureTextEntry);
+  };
 
   const onSubmit = () => {
     if (!form.email || !form.password) {
@@ -71,13 +84,24 @@ const SigIn = ({navigation}) => {
           onChangeText={value => setForm('email', value)}
         />
         <Gap height={36} />
-        <InputType
-          label="Password :"
-          placeholder="Type Your Password"
-          value={form.password}
-          onChangeText={value => setForm('password', value)}
-          secureTextEntry
-        />
+        <View style={styles.inputPasswordContainer}>
+          <InputType
+            label="Password :"
+            placeholder="Type Your Password"
+            value={form.password}
+            onChangeText={value => setForm('password', value)}
+            secureTextEntry={secureTextEntry}
+          />
+          <TouchableOpacity
+            onPress={toggleSecureTextEntry}
+            style={styles.showHideButton}>
+            {secureTextEntry ? (
+              <IcEyeOn style={styles.icon} />
+            ) : (
+              <IcEyeOff style={styles.icon} />
+            )}
+          </TouchableOpacity>
+        </View>
         <Gap height={36} />
         <Button title="Sign In" type="primary" onPress={onSubmit} />
         <View style={{height: 20}} />
@@ -111,5 +135,17 @@ const styles = StyleSheet.create({
     marginBottom: 60,
     fontFamily: 'Poppins-Regular',
     color: '#000000',
+  },
+  inputPasswordContainer: {
+    position: 'relative',
+  },
+  showHideButton: {
+    position: 'absolute',
+    right: 10,
+    top: 40, // Sesuaikan dengan posisi input
+  },
+  icon: {
+    width: 24, // Sesuaikan ukuran icon
+    height: 24, // Sesuaikan ukuran icon
   },
 });

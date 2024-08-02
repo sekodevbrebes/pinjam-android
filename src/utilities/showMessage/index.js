@@ -3,9 +3,9 @@ import { showMessage as showToast } from 'react-native-flash-message';
 export const showMessage = (message, type = 'success', position = 'center') => {
   const commonStyles = {
     floating: true, // Membuat pesan muncul mengambang
-    duration: 4000, // Durasi pesan dalam milidetik
+    duration: 2000, // Durasi pesan dalam milidetik
     icon: type, // Menampilkan ikon sesuai tipe pesan
-    titleStyle: { fontSize: 16, fontWeight: 'bold' },
+    titleStyle: { fontSize: 16 },
     textStyle: { fontSize: 14 },
     style: { padding: 20, borderRadius: 8 
     },
