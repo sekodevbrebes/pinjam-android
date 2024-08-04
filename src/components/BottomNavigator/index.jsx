@@ -43,17 +43,6 @@ const BottomNavigator = ({state, descriptors, navigation}) => {
             onPress={onPress}
             onLongPress={onLongPress}
           />
-          // <TouchableOpacity
-          //   key={index}
-          //   accessibilityRole="button"
-          //   accessibilityState={isFocused ? {selected: true} : {}}
-          //   accessibilityLabel={options.tabBarAccessibilityLabel}
-          //   testID={options.tabBarTestID}
-          //   onPress={onPress}
-          //   onLongPress={onLongPress}>
-          //   {/* <Icon label={label} /> */}
-          //   {/* <Text style={styles.text(focus)}>{label}</Text> */}
-          // </TouchableOpacity>
         );
       })}
     </View>

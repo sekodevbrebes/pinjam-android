@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Modal} from 'react-native';
-
 import AgendaItem from '../AgendaItem';
 import ModalContent from '../AgendaModal/modalContent';
 
 const AgendaList = ({selectedDate, agendaData, item}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedAgenda, setSelectedAgenda] = useState(null);
+  const [updatedAgendaData, setUpdatedAgendaData] = useState(agendaData);
 
   const handleOpenModal = agenda => {
     setSelectedAgenda(agenda);
@@ -18,10 +18,20 @@ const AgendaList = ({selectedDate, agendaData, item}) => {
     setSelectedAgenda(null);
   };
 
+  const handleUpdateAgenda = updatedStatus => {
+    const updatedData = {...updatedAgendaData};
+    updatedData[selectedDate] = updatedData[selectedDate].map(agenda =>
+      agenda.id === selectedAgenda.id
+        ? {...agenda, status: updatedStatus}
+        : agenda,
+    );
+    setUpdatedAgendaData(updatedData);
+  };
+
   return (
     <View style={styles.agendaContainer}>
       <Text style={styles.agendaTitle}>Tempat {item.name}</Text>
-      {agendaData[selectedDate].map((agenda, index) => (
+      {updatedAgendaData[selectedDate].map((agenda, index) => (
         <AgendaItem
           key={index}
           agenda={agenda}
@@ -39,6 +49,7 @@ const AgendaList = ({selectedDate, agendaData, item}) => {
                 item={item}
                 agenda={selectedAgenda}
                 onClose={handleCloseModal}
+                onUpdateAgenda={handleUpdateAgenda} // Pass handleUpdateAgenda to ModalContent
               />
             )}
           </View>

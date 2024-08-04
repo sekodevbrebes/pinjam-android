@@ -23,21 +23,6 @@ const TabItem = ({title, active, onPress, onLongPress}) => {
     }
   };
 
-  //   const Icon = () => {
-  //     if (title === 'Home') {
-  //       <IcHomeOn />;
-  //     } else {
-  //       <IcHomeOff />;
-  //     }
-  //     if (title === 'Booking') {
-  //       return active ? <IcBookingOn /> : <IcBookingOff />;
-  //     }
-  //     if (title === 'Profile') {
-  //       return active ? <IcProfileOn /> : <IcProfileOff />;
-  //     }
-  //     return <IcHomeOn />;
-  //   };
-
   return (
     <TouchableOpacity
       style={styles.container}

@@ -1,17 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
 
-const ListBooking = ({
-  onPress,
-  image,
-  name,
-  tanggal,
-  activities,
-  status,
-  waktu_mulai,
-  waktu_selesai,
-  user,
-}) => {
+const ListBooking = ({onPress, image, name, tanggal, activities, status}) => {
   const getStatusStyle = status => {
     switch (status) {
       case 'Pending':

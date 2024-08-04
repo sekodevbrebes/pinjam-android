@@ -25,7 +25,8 @@ export default Button;
 
 const styles = StyleSheet.create({
   container: type => ({
-    backgroundColor: type === 'primary' ? 'orange' : '#F0F0F0',
+    backgroundColor:
+      type === 'primary' ? 'orange' : type === 'danger' ? '#00BFFF' : '#F0F0F0',
     padding: 10,
     borderRadius: 10,
     height: 50,
@@ -33,7 +34,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   }),
   text: type => ({
-    color: type === 'primary' ? 'white' : '#000000',
+    color:
+      type === 'primary' ? 'white' : type === 'danger' ? 'white' : '#000000',
     fontSize: 16,
   }),
 });
