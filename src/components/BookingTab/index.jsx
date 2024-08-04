@@ -5,7 +5,7 @@ import ListBooking from '../ListBooking';
 import {useDispatch, useSelector} from 'react-redux';
 import {getInProgress, getPastBooking} from '../../redux/action';
 import moment from 'moment';
-import 'moment/locale/id'; // Import locale Indonesia
+import 'moment/locale/id';
 import {API_HOST_IMAGE} from '../../config';
 import {useNavigation} from '@react-navigation/native';
 
@@ -57,34 +57,21 @@ const InProgress = () => {
   return (
     <View style={styles.page}>
       {inProgress.map(booking => {
-        // Mengubah string JSON menjadi array URL gambar
         const imageArray = JSON.parse(booking.room.image);
-        // Mengambil elemen pertama dari array URL gambar
         const imageURL = imageArray[0];
-
-        // Pastikan URL gambar valid dan tidak mengandung pengulangan
-        const cleanedImageURL = imageURL.split('storage/').pop(); // Mengambil bagian setelah 'storage/'
-
-        // Menyesuaikan URL gambar dengan domain yang sesuai
+        const cleanedImageURL = imageURL.split('storage/').pop();
         const domain = `${API_HOST_IMAGE}`;
         const fullImageURL = `${domain}/storage/${cleanedImageURL}`;
 
-        // Mengubah format tanggal
         const formattedDate = moment(booking.tanggal)
           .locale('id')
           .format('dddd, D MMMM YYYY');
-
-        // Mengubah format waktu
-        const formattedWaktuMulai = booking.waktu_mulai.slice(0, 5); // Mengambil bagian jam dan menit
-        const formattedWaktuSelesai = booking.waktu_selesai.slice(0, 5); // Mengambil bagian jam dan menit
 
         return (
           <View style={styles.cardContainer} key={booking.id}>
             <ListBooking
               name={booking.room.name}
               tanggal={formattedDate}
-              // waktu_mulai={formattedWaktuMulai}
-              // waktu_selesai={formattedWaktuSelesai}
               image={{uri: fullImageURL}}
               activities={booking.activities}
               status={booking.status}
@@ -108,7 +95,7 @@ const PastBooking = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log('State InProgress setelah update:', pastBookings); // Log state setelah update
+    console.log('State InProgress setelah update:', pastBookings);
   }, [pastBookings]);
 
   if (Array.isArray(InProgress)) {
@@ -120,21 +107,11 @@ const PastBooking = () => {
   return (
     <View style={styles.page}>
       {pastBookings.map(booking => {
-        // Mengubah string JSON menjadi array URL gambar
         const imageArray = JSON.parse(booking.room.image);
-        // Mengambil elemen pertama dari array URL gambar
         const imageURL = imageArray[0];
-
-        // Pastikan URL gambar valid dan tidak mengandung pengulangan
-        const cleanedImageURL = imageURL.split('storage/').pop(); // Mengambil bagian setelah 'storage/'
-
-        // Menyesuaikan URL gambar dengan domain yang sesuai
+        const cleanedImageURL = imageURL.split('storage/').pop();
         const domain = `${API_HOST_IMAGE}`;
         const fullImageURL = `${domain}/storage/${cleanedImageURL}`;
-
-        console.log('dapat gambar :', fullImageURL);
-
-        // Mengubah format tanggal
         const formattedDate = moment(booking.tanggal)
           .locale('id')
           .format('dddd, D MMMM YYYY');
@@ -188,9 +165,9 @@ export default BookingTab;
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    paddingTop: 12, // Menambahkan padding atas pada halaman
+    paddingTop: 12,
   },
   cardContainer: {
-    marginBottom: 10, // Menambahkan margin bawah pada setiap kartu
+    marginBottom: 10,
   },
 });

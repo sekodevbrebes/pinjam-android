@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   fullWidth: {
-    width: '100%', // Mengubah ukuran gambar jika teks panjang
+    width: '100%',
   },
   content: {
     padding: 12,
@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#020202',
-    flexShrink: 1, // Memastikan teks membungkus dalam kontainer
+    flexShrink: 1,
   },
   desc: {
     fontSize: 14,
     color: '#6B6B6B',
-    flexShrink: 1, // Memastikan teks membungkus dalam kontainer
+    flexShrink: 1,
   },
   starContainer: {
     flexDirection: 'row',

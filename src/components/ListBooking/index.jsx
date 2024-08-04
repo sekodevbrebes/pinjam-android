@@ -33,9 +33,6 @@ const ListBooking = ({onPress, image, name, tanggal, activities, status}) => {
               </Text>
             </View>
             <Text style={styles.date}>{tanggal}</Text>
-            {/* <Text style={styles.date}>
-              {waktu_mulai} - {waktu_selesai} WIB
-            </Text> */}
             <Text style={styles.activity}>{activities}</Text>
           </View>
         </View>
@@ -98,10 +95,10 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   statusCancelled: {
-    color: '#fd46c7', // Perbaiki kode warna dari '##fd46c7' menjadi '#fd46c7'
+    color: '#fd46c7',
   },
   statusFinish: {
-    color: '#465dfd', // Tambahkan warna ungu untuk status 'Finish'
+    color: '#465dfd',
   },
   statusDefault: {
     color: 'black',

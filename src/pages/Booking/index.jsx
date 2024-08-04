@@ -19,9 +19,8 @@ const Booking = ({navigation}) => {
     dispatch(getInProgress());
   }, [dispatch]);
 
-  const isEmpty = inProgress.length === 0; // Tentukan apakah data kosong
+  const isEmpty = inProgress.length === 0;
 
-  // Debugging
   useEffect(() => {}, [inProgress, isEmpty]);
 
   return (

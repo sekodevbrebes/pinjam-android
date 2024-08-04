@@ -51,7 +51,6 @@ const AgendaCalendar = ({navigation, route}) => {
       const data = response.data.data;
       const filteredData = data.filter(agenda => agenda.room_id === item.id);
 
-      // Sort the filtered data by waktu_mulai in ascending order
       filteredData.sort((a, b) =>
         moment(a.waktu_mulai, 'HH:mm').diff(moment(b.waktu_mulai, 'HH:mm')),
       );

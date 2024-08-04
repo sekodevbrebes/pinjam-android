@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import TabItem from '../TabItem';
 
 const BottomNavigator = ({state, descriptors, navigation}) => {

@@ -49,7 +49,7 @@ const AgendaList = ({selectedDate, agendaData, item}) => {
                 item={item}
                 agenda={selectedAgenda}
                 onClose={handleCloseModal}
-                onUpdateAgenda={handleUpdateAgenda} // Pass handleUpdateAgenda to ModalContent
+                onUpdateAgenda={handleUpdateAgenda}
               />
             )}
           </View>

@@ -19,7 +19,6 @@ const SignUpAddress = ({navigation}) => {
   });
 
   const onChangeTelephone = value => {
-    // Hanya memperbolehkan angka
     const phoneRegex = /^[0-9]*$/;
     if (phoneRegex.test(value)) {
       setForm('telephone', value);
@@ -27,13 +26,11 @@ const SignUpAddress = ({navigation}) => {
   };
 
   const onSubmit = () => {
-    // Validasi form
     if (!form.instansi || !form.alamat || !form.telephone) {
       showMessage('Silahkan isi semua !', 'danger');
       return;
     }
 
-    // Validasi nomor telepon hanya berupa angka
     const phoneRegex = /^[0-9]+$/;
     if (!phoneRegex.test(form.telephone)) {
       showMessage('Phone number should contain only numbers', 'danger');

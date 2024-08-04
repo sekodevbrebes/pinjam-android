@@ -61,12 +61,7 @@ export default function BookingDate({navigation}) {
       <View>
         <View>
           <Text style={{fontSize: 24}}>{selected}</Text>
-          {/* <Text>{dateString}</Text>
-          <Text>{day}</Text>
-          <Text>{month}</Text>
-          <Text>{year}</Text>
-          <Text>{timestamp}</Text>
-          <Text>{dateString}</Text> */}
+          
         </View>
       </View>
     </View>

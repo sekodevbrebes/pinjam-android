@@ -8,9 +8,9 @@ const ListRoom = ({image, onPress, rating, name, location}) => {
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
       <View style={styles.pageContainer}>
         <FastImage
-          source={image} // Gantilah 'source' dengan uri jika image berupa URL
+          source={image}
           style={styles.imagelist}
-          resizeMode={FastImage.resizeMode.cover} // Menyusun ulang mode gambar seperti 'cover'
+          resizeMode={FastImage.resizeMode.cover}
         />
         <View style={styles.contentContainer}>
           <View>

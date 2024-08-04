@@ -1,9 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import rootReducer from './reducers'; // Impor rootReducer yang sudah didefinisikan
+import rootReducer from './reducers'; 
 
-// Konfigurasi store Redux
 const store = configureStore({
-  reducer: rootReducer, // Menggunakan rootReducer sebagai reducer utama
+  reducer: rootReducer, 
 });
 
 export default store;

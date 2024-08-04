@@ -17,7 +17,7 @@ const Profile = () => {
         <View style={styles.photo}>
           <View style={styles.borderPhoto}>
             <Image
-              source={userProfile.image ? {uri: userProfile.image} : ProfilUser} // Gunakan gambar default jika userProfile.image null atau undefined
+              source={userProfile.image ? {uri: userProfile.image} : ProfilUser}
               style={styles.photoContainer}
             />
           </View>

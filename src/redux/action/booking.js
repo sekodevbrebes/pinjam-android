@@ -6,7 +6,7 @@ import {
   setInProgress,
   setPastBookings,
 } from '../reducers/bookingSlice';
-import {showMessage} from '../../utilities'; // Misalnya, jika Anda memiliki utilitas showMessage
+import {showMessage} from '../../utilities'; 
 
 export const getBooking = () => dispatch => {
   getData('token').then(resToken => {
@@ -17,14 +17,14 @@ export const getBooking = () => dispatch => {
         },
       })
       .then(response => {
-        const sortedData = response.data.data.sort((a, b) => b.id - a.id); // Urutan dari id terbesar ke terkecil
+        const sortedData = response.data.data.sort((a, b) => b.id - a.id);
         dispatch(setBookings(sortedData));
       })
       .catch(err => {
         console.error('Error fetching bookings:', err);
         showMessage(
           'Terjadi kesalahan saat mengambil data booking. Silakan coba lagi nanti.',
-        ); // Menampilkan notifikasi kepada pengguna
+        ); 
       });
   });
 };
@@ -54,38 +54,36 @@ export const getInProgress = () => dispatch => {
             ? acceptResponse.data.data
             : [];
 
-          const now = new Date(); // Waktu saat ini
+          const now = new Date();
 
-          // Filter data Accept berdasarkan tanggal booking dan waktu_mulai/waktu_selesai
           const filteredAcceptData = acceptData.filter(item => {
             const bookingDate = new Date(item.tanggal);
             const waktuMulai = new Date(`${item.tanggal}T${item.waktu_mulai}`);
             const waktuSelesai = new Date(
               `${item.tanggal}T${item.waktu_selesai}`,
             );
-            // Periksa jika booking sedang berlangsung
+  
             if (
               bookingDate.toDateString() === now.toDateString() &&
               now >= waktuMulai &&
               now <= waktuSelesai
             ) {
-              item.status = 'Ongoing'; // Ubah status menjadi Ongoing
+              item.status = 'Ongoing'; 
             }
-            return bookingDate >= now; // Hanya menyertakan booking yang belum lewat
+            return bookingDate >= now; 
           });
-
-          // Gabungkan data dan urutkan
+    
           const combinedData = [...pendingData, ...filteredAcceptData].sort(
             (a, b) => b.id - a.id,
-          ); // Urutan dari id terbesar ke terkecil
-          dispatch(setInProgress(combinedData)); // Dispatch dengan payload dari API
+          ); 
+          dispatch(setInProgress(combinedData));
         }),
       )
       .catch(err => {
         console.error('Error fetching in-progress bookings:', err);
         showMessage(
           'Terjadi kesalahan saat mengambil data booking yang sedang diproses. Silakan coba lagi nanti.',
-        ); // Menampilkan notifikasi kepada pengguna
+        );
       });
   });
 };
@@ -127,31 +125,26 @@ export const getPastBooking = () => dispatch => {
             ? acceptResponse.data.data
             : [];
 
-          const today = new Date(); // Tanggal hari ini
+          const today = new Date(); 
 
-          // Filter data Accept berdasarkan tanggal booking
           const pastAcceptData = acceptData.filter(item => {
-            const bookingDate = new Date(item.tanggal); // Menggunakan field tanggal
-            return bookingDate < today; // Menyertakan booking yang sudah lewat
+            const bookingDate = new Date(item.tanggal);
+            return bookingDate < today; 
           });
 
-          // Gabungkan data dan ubah status Accept menjadi Finish untuk display
           const combinedData = [
             ...cancelledData,
             ...declineData,
-            ...pastAcceptData.map(item => ({...item, status: 'Finish'})), // Ubah status menjadi Finish untuk tampilan
-          ].sort((a, b) => b.id - a.id); // Urutan dari id terbesar ke terkecil
-
-        
-
-          dispatch(setPastBookings(combinedData)); // Dispatch dengan payload dari API
+            ...pastAcceptData.map(item => ({...item, status: 'Finish'})), 
+          ].sort((a, b) => b.id - a.id); 
+          dispatch(setPastBookings(combinedData)); 
         }),
       )
       .catch(err => {
         console.error('Error fetching past bookings:', err);
         showMessage(
           'Terjadi kesalahan saat mengambil data booking yang sudah lewat. Silakan coba lagi nanti.',
-        ); // Menampilkan notifikasi kepada pengguna
+        ); 
       });
   });
 };

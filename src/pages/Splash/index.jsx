@@ -8,13 +8,11 @@ const Splash = ({navigation}) => {
     setTimeout(() => {
       getData('token').then(response => {
         if (response) {
-          // Mengatur ulang stack navigasi untuk memastikan pengguna tidak dapat kembali
           navigation.reset({
             index: 0,
             routes: [{name: 'MainApp'}],
           });
         } else {
-          // Menggantikan layar saat ini dengan 'GetStarted' sehingga pengguna tidak dapat kembali
           navigation.replace('GetStarted');
         }
       });

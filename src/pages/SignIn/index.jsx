@@ -40,7 +40,7 @@ const SigIn = ({navigation}) => {
     axios
       .post(`${API_HOST.url}/login`, form)
       .then(response => {
-        console.log('Response:', response); // Log response dari API
+        console.log('Response:', response);
 
         const profile = response.data.user;
         const token = `${response.data.token_type} ${response.data.access_token}`;
