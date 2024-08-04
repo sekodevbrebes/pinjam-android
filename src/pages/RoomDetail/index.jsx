@@ -1,5 +1,13 @@
-import React, {useEffect} from 'react';
-import {Text, StyleSheet, View, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  Text,
+  StyleSheet,
+  View,
+  ScrollView,
+  Modal,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import Rating from '../../components/Rating';
 import {Gap, SlideShow, Button} from '../../components';
@@ -21,15 +29,14 @@ const DetailRuangan = ({navigation, route}) => {
     .split('</li><li>') // Memisahkan berdasarkan tag </li><li>
     .map(item => item.replace(/<\/?li>/g, '')); // Menghapus tag <li> dan </li>
 
-  // Console log untuk menampilkan nilai params di console
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
-    // Mengambil data 'userProfile' saat komponen dimount
     getData('userProfile').then(response => {});
   }, []);
 
   const onBooking = () => {
-    // Menyiapkan data untuk proses booking
     getData('userProfile')
       .then(userProfile => {
         const data = {
@@ -37,22 +44,27 @@ const DetailRuangan = ({navigation, route}) => {
             id: itemRoom.id,
             name: name,
           },
-          userProfile, // Menyertakan userProfile yang telah diambil
+          userProfile,
         };
-
-        // Di sini Anda dapat melanjutkan logika booking dengan menggunakan data
         navigation.navigate('Agenda', data);
       })
-      .catch(error => {
-        // Menghandle kasus jika pengambilan data userProfile gagal
-      });
+      .catch(error => {});
+  };
+
+  const openModal = imgUrl => {
+    setSelectedImage(imgUrl);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedImage(null);
   };
 
   return (
     <View style={styles.page}>
       <ScrollView>
         <View style={styles.container}>
-          {/* Menampilkan gambar-gambar dalam swiper dengan autoplay */}
           <SwiperFlatList
             autoplay
             autoplayDelay={2}
@@ -60,8 +72,9 @@ const DetailRuangan = ({navigation, route}) => {
             index={0}
             showPagination>
             {images.map((imgUrl, index) => (
-              // Menggunakan komponen SlideShow untuk menampilkan gambar
-              <SlideShow key={index} image={{uri: imgUrl}} />
+              <TouchableOpacity key={index} onPress={() => openModal(imgUrl)}>
+                <SlideShow image={{uri: imgUrl}} />
+              </TouchableOpacity>
             ))}
           </SwiperFlatList>
         </View>
@@ -69,30 +82,24 @@ const DetailRuangan = ({navigation, route}) => {
         <View style={styles.contentContainer}>
           <View style={styles.content}>
             <View>
-              {/* Menampilkan nama ruangan */}
               <Text style={styles.title}>{name}</Text>
-              {/* Menampilkan rating ruangan */}
               <Rating number={rate} />
             </View>
             <Gap height={12} />
             <View>
-              {/* Menampilkan lokasi ruangan */}
               <Text style={styles.subTitle}>Location </Text>
               <Text>{location}</Text>
             </View>
             <Gap height={12} />
             <View>
-              {/* Menampilkan kapasitas ruangan */}
               <Text style={styles.subTitle}>Capacity</Text>
               <Text>{capacity} orang</Text>
             </View>
             <Gap height={12} />
             <View>
-              {/* Menampilkan fasilitas ruangan dalam bentuk list item berangkaian */}
               <Text style={styles.subTitle}>Facility :</Text>
               <View style={styles.listFacility}>
                 {facilitiesArray.map((facility, index) => (
-                  // Menampilkan setiap fasilitas dengan nomor urut
                   <Text key={index} style={styles.facilityItem}>
                     {index + 1}. {facility}
                   </Text>
@@ -102,11 +109,22 @@ const DetailRuangan = ({navigation, route}) => {
           </View>
 
           <View style={{paddingHorizontal: 40}}>
-            {/* Tombol untuk melakukan booking yang mengarahkan ke halaman Agenda */}
             <Button title="Book Now" type="primary" onPress={onBooking} />
           </View>
         </View>
       </ScrollView>
+
+      {selectedImage && (
+        <Modal visible={modalVisible} transparent={true}>
+          <View style={styles.modalBackground}>
+            <TouchableOpacity
+              style={styles.modalContainer}
+              onPress={closeModal}>
+              <Image source={{uri: selectedImage}} style={styles.fullImage} />
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 };
@@ -147,6 +165,21 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   facilityItem: {
-    marginBottom: 4, // Menambahkan jarak antar baris
+    marginBottom: 4,
+  },
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    width: '90%',
+    height: '90%',
+  },
+  fullImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
 });
