@@ -13,21 +13,14 @@ import Rating from '../../components/Rating';
 import {Gap, SlideShow, Button} from '../../components';
 import {getData} from '../../utilities';
 
-// Komponen DetailRuangan menerima props navigation dan route
 const DetailRuangan = ({navigation, route}) => {
-  // Mengambil parameter itemRoom dari route.params
   const {itemRoom} = route.params;
-  // Destructuring itemRoom untuk mendapatkan detail ruangan
   const {name, location, capacity, facility, image, rate} = itemRoom;
-
-  // Parsing URL gambar dari string JSON menjadi array
   const images = JSON.parse(image);
-
-  // Mengubah string fasilitas menjadi array dengan memisahkan berdasarkan tag <li>
   const facilitiesArray = facility
-    .replace(/<\/?ol>/g, '') // Menghapus tag <ol> dan </ol>
-    .split('</li><li>') // Memisahkan berdasarkan tag </li><li>
-    .map(item => item.replace(/<\/?li>/g, '')); // Menghapus tag <li> dan </li>
+    .replace(/<\/?ol>/g, '')
+    .split('</li><li>')
+    .map(item => item.replace(/<\/?li>/g, ''));
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
