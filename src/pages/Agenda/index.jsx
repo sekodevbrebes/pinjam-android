@@ -109,7 +109,7 @@ const AgendaCalendar = ({navigation, route}) => {
         !form.activities ||
         !form.peserta
       ) {
-        showMessage('All fields are required', 'danger');
+        showMessage('Pastikan semua sudah diisi', 'danger');
         return;
       }
 

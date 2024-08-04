@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     fontFamily: 'Poppins-Regular',
+    textAlign: 'center',
   },
   table: {
     width: '100%',

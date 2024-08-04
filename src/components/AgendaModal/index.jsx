@@ -15,6 +15,14 @@ const AgendaModal = ({visible, onClose, onSubmit, form, setForm}) => {
   const formattedDate = moment(form.tanggal).locale('id').format('D MMMM YYYY');
   const mysqlFormattedDate = moment(form.tanggal).format('YYYY-MM-DD'); // Format MySQL
 
+  const onChangePeserta = value => {
+    // Hanya memperbolehkan angka
+    const numberRegex = /^[0-9]*$/;
+    if (numberRegex.test(value)) {
+      setForm('peserta', value);
+    }
+  };
+
   return (
     <Modal
       visible={visible}
@@ -41,29 +49,29 @@ const AgendaModal = ({visible, onClose, onSubmit, form, setForm}) => {
           </View>
           <Gap height={12} />
           <TimeType
-            label="Start Time"
-            placeholder="Type Start Time"
+            label="Waktu Mulai"
+            placeholder="Pilih waktu mulai"
             value={form.waktu_mulai}
             onChangeText={value => setForm('waktu_mulai', value)}
           />
           <Gap height={12} />
           <TimeType
-            label="End Time"
-            placeholder="Type End Time"
+            label="Waktu Selesai"
+            placeholder="Pilih waktu selesai"
             value={form.waktu_selesai}
             onChangeText={value => setForm('waktu_selesai', value)}
           />
           <Gap height={12} />
           <InputType
-            label="Participants"
-            placeholder="Type Number of Participants"
+            label="Jumlah Peserta"
+            placeholder="Masukan Jumlah Peserta"
             value={form.peserta}
-            onChangeText={value => setForm('peserta', value)}
+            onChangeText={onChangePeserta}
           />
           <Gap height={12} />
           <TextAreaType
-            label="Activity"
-            placeholder="Type Your Activity"
+            label="Nama Kegiatan"
+            placeholder="Masukan Nama Kegiatan"
             value={form.activities}
             onChangeText={value => setForm('activities', value)}
           />
