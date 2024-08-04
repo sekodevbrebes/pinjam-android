@@ -46,12 +46,8 @@ const ModalContent = ({item, agenda, onClose, onUpdateAgenda}) => {
                   headers: {Authorization: resToken.value},
                 },
               )
-              .then(() => {
-                console.log('Decline reason updated');
-              })
-              .catch(error => {
-                console.error('Error updating decline reason:', error);
-              });
+              .then(() => {})
+              .catch(error => {});
           }
           onClose();
         })
