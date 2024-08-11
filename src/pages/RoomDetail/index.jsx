@@ -12,6 +12,7 @@ import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import Rating from '../../components/Rating';
 import {Gap, SlideShow, Button} from '../../components';
 import {getData} from '../../utilities';
+import {ProfilUser} from '../../assets';
 
 const DetailRuangan = ({navigation, route}) => {
   const {itemRoom} = route.params;
@@ -24,6 +25,7 @@ const DetailRuangan = ({navigation, route}) => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [activeSection, setActiveSection] = useState('facility'); // Default to 'facility'
 
   useEffect(() => {
     getData('userProfile').then(response => {});
@@ -54,9 +56,80 @@ const DetailRuangan = ({navigation, route}) => {
     setSelectedImage(null);
   };
 
+  const renderActiveSection = () => {
+    switch (activeSection) {
+      case 'review':
+        return (
+          <View>
+            <View style={styles.sectionContent}>
+              <View style={styles.reviewProfile}>
+                <Image source={ProfilUser} style={styles.reviewProfileImage} />
+              </View>
+              <Text style={styles.textReview}>
+                Review Content Here Review Content HereReview Content HereReview
+              </Text>
+            </View>
+            <Gap height={12} />
+            <View style={styles.sectionContent}>
+              <View style={styles.reviewProfile}>
+                <Image source={ProfilUser} style={styles.reviewProfileImage} />
+              </View>
+              <Text style={styles.textReview}>
+                Review Content Here Review Content HereReview Content HereReview
+              </Text>
+            </View>
+            <Gap height={12} />
+            <View style={styles.sectionContent}>
+              <View style={styles.reviewProfile}>
+                <Image source={ProfilUser} style={styles.reviewProfileImage} />
+              </View>
+              <Text style={styles.textReview}>
+                Review Content Here Review Content HereReview Content HereReview
+              </Text>
+            </View>
+            <Gap height={12} />
+            <View style={styles.sectionContent}>
+              <View style={styles.reviewProfile}>
+                <Image source={ProfilUser} style={styles.reviewProfileImage} />
+              </View>
+              <Text style={styles.textReview}>
+                Review Content Here Review Content HereReview Content HereReview
+              </Text>
+            </View>
+          </View>
+        );
+      case 'contact':
+        return (
+          <View style={styles.sectionContent}>
+            <View style={styles.textContact}>
+              <Text style={styles.contactText}>Phone: +62899-5900-700</Text>
+              <Text style={styles.contactText}>
+                Email: setda@brebeskab.go.id
+              </Text>
+              <Text style={styles.contactText}>
+                Jl. Proklamasi No. 77 KPT Brebes
+              </Text>
+            </View>
+          </View>
+        );
+      default:
+        return (
+          <View style={styles.listContainer}>
+            <View style={styles.listFacility}>
+              {facilitiesArray.map((facility, index) => (
+                <Text key={index} style={styles.facilityItem}>
+                  {index + 1}. {facility}
+                </Text>
+              ))}
+            </View>
+          </View>
+        );
+    }
+  };
+
   return (
     <View style={styles.page}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
           <SwiperFlatList
             autoplay
@@ -84,28 +157,38 @@ const DetailRuangan = ({navigation, route}) => {
               <Text>{location}</Text>
             </View>
             <Gap height={12} />
-            <View>
-              <Text style={styles.subTitle}>Capacity</Text>
-              <Text>{capacity} orang</Text>
+            <View style={styles.btnContain}>
+              <Button
+                title="Fasilitas"
+                type={activeSection === 'facility' ? 'primary' : 'tertiary'}
+                style={styles.button}
+                onPress={() => setActiveSection('facility')}
+              />
+              <Gap width={10} />
+              <Button
+                title="Review"
+                type={activeSection === 'review' ? 'primary' : 'tertiary'}
+                style={styles.button}
+                onPress={() => setActiveSection('review')}
+              />
+              <Gap width={10} />
+              <Button
+                title="Contact"
+                type={activeSection === 'contact' ? 'primary' : 'tertiary'}
+                style={styles.button}
+                onPress={() => setActiveSection('contact')}
+              />
             </View>
-            <Gap height={12} />
-            <View>
-              <Text style={styles.subTitle}>Facility :</Text>
-              <View style={styles.listFacility}>
-                {facilitiesArray.map((facility, index) => (
-                  <Text key={index} style={styles.facilityItem}>
-                    {index + 1}. {facility}
-                  </Text>
-                ))}
-              </View>
-            </View>
-          </View>
 
-          <View style={{paddingHorizontal: 40}}>
-            <Button title="Book Now" type="primary" onPress={onBooking} />
+            <Gap height={12} />
+            {renderActiveSection()}
           </View>
         </View>
       </ScrollView>
+
+      <View style={styles.bookNowContainer}>
+        <Button title="Book Now" type="primary" onPress={onBooking} />
+      </View>
 
       {selectedImage && (
         <Modal visible={modalVisible} transparent={true}>
@@ -129,8 +212,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   content: {
-    backgroundColor: 'white',
+    backgroundColor: '#F0F0F0',
     flex: 1,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
@@ -140,7 +227,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    paddingBottom: 40,
+    paddingBottom: 80, // Add padding to avoid overlap with the fixed button
   },
   title: {
     fontSize: 24,
@@ -160,6 +247,12 @@ const styles = StyleSheet.create({
   facilityItem: {
     marginBottom: 4,
   },
+  listContainer: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 10,
+  },
   modalBackground: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -174,5 +267,46 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
+  },
+  btnContain: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    width: '100%',
+  },
+  button: {
+    height: 40,
+    width: 100,
+    borderRadius: 50,
+  },
+  sectionContent: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    flexDirection: 'row',
+    fontSize: 16,
+    color: '#000',
+    padding: 10,
+  },
+  textReview: {
+    fontSize: 14,
+    paddingRight: 50,
+  },
+  reviewProfileImage: {
+    width: 35,
+    height: 35,
+    borderRadius: 20,
+    overflow: 'hidden',
+    backgroundColor: '#ddd',
+    marginRight: 10,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
+  bookNowContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 24,
+    paddingBottom: 24,
   },
 });

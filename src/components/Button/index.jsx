@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import IconOnly from './iconOnly';
 
-const Button = ({type, title, onPress, icon}) => {
+const Button = ({type, title, onPress, icon, style}) => {
   if (type === 'icon-only') {
     return (
       <IconOnly
@@ -14,7 +14,7 @@ const Button = ({type, title, onPress, icon}) => {
   }
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
-      <View style={styles.container(type)}>
+      <View style={[styles.container(type), style]}>
         <Text style={styles.text(type)}>{title}</Text>
       </View>
     </TouchableOpacity>
@@ -26,7 +26,13 @@ export default Button;
 const styles = StyleSheet.create({
   container: type => ({
     backgroundColor:
-      type === 'primary' ? 'orange' : type === 'danger' ? '#00BFFF' : '#F0F0F0',
+      type === 'primary'
+        ? 'orange'
+        : type === 'danger'
+        ? '#00BFFF'
+        : type === 'tertiary'
+        ? '#FFFFFF'
+        : '#F0F0F0', // Tipe 'tertiary' dengan background putih
     padding: 10,
     borderRadius: 10,
     height: 50,
@@ -34,8 +40,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   }),
   text: type => ({
-    color:
-      type === 'primary' ? 'white' : type === 'danger' ? 'white' : '#000000',
+    color: type === 'primary' || type === 'danger' ? 'white' : '#000000', // Teks hitam untuk 'tertiary'
     fontSize: 16,
   }),
 });

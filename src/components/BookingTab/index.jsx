@@ -134,9 +134,12 @@ const PastBooking = () => {
   );
 };
 
+const DataBooking = () => {};
+
 const renderScene = SceneMap({
   1: InProgress,
   2: PastBooking,
+  3: DataBooking,
 });
 
 const BookingTab = () => {
@@ -146,6 +149,7 @@ const BookingTab = () => {
   const [routes] = React.useState([
     {key: '1', title: 'InProgress'},
     {key: '2', title: 'Past Booking'},
+    {key: '3', title: 'Data Booking'},
   ]);
 
   return (
