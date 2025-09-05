@@ -82,10 +82,7 @@ const ModalContent = ({ item, agenda, onClose, onUpdateAgenda }) => {
 
   return (
     <ScrollView>
-      <View style={styles.header}>
       <Text style={styles.modalTitle}>Detail Booking</Text>
-    </View>
-
       <View style={styles.table}>
         <TableRow label="Nama" value={item.name} striped />
         <TableRow label="Kegiatan" value={agenda.activities} />
@@ -227,7 +224,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontFamily: 'Poppins-Regular',
     textAlign: 'center',
-
   },
   table: {
     width: '100%',
@@ -237,6 +233,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 9,
     paddingHorizontal: 12,
+   
   },
   tableRowStriped: {
     backgroundColor: '#F5F5F5',

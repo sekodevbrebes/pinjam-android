@@ -1,5 +1,5 @@
-import React, {useEffect, useState, useMemo} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useEffect, useState, useCallback} from 'react';
+import {View, ScrollView, Dimensions, StyleSheet} from 'react-native';
 import axios from 'axios';
 import {Calendar} from 'react-native-calendars';
 import {useDispatch} from 'react-redux';
@@ -17,17 +17,13 @@ import {getData, showMessage} from '../../utilities';
 import useForm from '../../utilities/useForm';
 import moment from 'moment';
 
+const {width} = Dimensions.get('window');
+
 const AgendaCalendar = ({navigation, route}) => {
   const dispatch = useDispatch();
   const {item} = route.params;
-
   const [agendaData, setAgendaData] = useState({});
   const [selectedDate, setSelectedDate] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
-  const [today, setToday] = useState(moment().format('YYYY-MM-DD'));
-  const [token, setToken] = useState(null);
-
-  // form input
   const [form, setForm] = useForm({
     tanggal: '',
     waktu_mulai: '',
@@ -36,31 +32,29 @@ const AgendaCalendar = ({navigation, route}) => {
     activities: '',
     room_id: '',
   });
+  const [modalVisible, setModalVisible] = useState(false);
+  const [today, setToday] = useState('');
 
-  // ambil token sekali saja
-  useEffect(() => {
-    getData('token').then(data => setToken(data?.value));
-  }, []);
-
-  // ambil data agenda
-  const fetchAgendaData = async () => {
-    if (!token) return;
+  const fetchAgendaData = useCallback(async () => {
     try {
       dispatch(setLoading({isLoading: true}));
+      const tokenData = await getData('token');
+      const token = tokenData?.value;
+
       const response = await axios.get(
         `${API_HOST.url}/agendas?status=Pending,Accept&all_users=true`,
-        {headers: {Authorization: token}},
+        {
+          headers: {Authorization: token},
+        },
       );
 
       const data = response.data.data;
       const filteredData = data.filter(agenda => agenda.room_id === item.id);
 
-      // urutkan per waktu mulai
       filteredData.sort((a, b) =>
         moment(a.waktu_mulai, 'HH:mm').diff(moment(b.waktu_mulai, 'HH:mm')),
       );
 
-      // format per tanggal
       const formattedData = filteredData.reduce((acc, agenda) => {
         const date = agenda.tanggal;
         if (!acc[date]) acc[date] = [];
@@ -73,22 +67,28 @@ const AgendaCalendar = ({navigation, route}) => {
 
       setAgendaData(formattedData);
 
-      // kalau belum ada selectedDate → set ke hari ini
-      if (!selectedDate) setSelectedDate(today);
+      const todayDate = new Date()
+        .toLocaleDateString('id-ID', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        })
+        .split('/')
+        .reverse()
+        .join('-');
+      setToday(todayDate);
+
+      if (!selectedDate) setSelectedDate(todayDate);
     } catch (error) {
-      showMessage(
-        error.response?.data?.message || 'Failed to load agenda data',
-        'danger',
-      );
+      showMessage('Failed to load agenda data', 'danger');
     } finally {
       dispatch(setLoading({isLoading: false}));
     }
-  };
+  }, [dispatch, item.id, selectedDate]);
 
-  // panggil fetch hanya sekali saat item berubah atau token siap
   useEffect(() => {
-    if (token) fetchAgendaData();
-  }, [item.id, token]);
+    fetchAgendaData();
+  }, [fetchAgendaData]);
 
   const handleDayPress = day => {
     setSelectedDate(day.dateString);
@@ -96,11 +96,8 @@ const AgendaCalendar = ({navigation, route}) => {
   };
 
   const handleOpenModal = () => {
-  const defaultDate = selectedDate || today; // ✅ kalau ada selectedDate pakai itu, kalau kosong pakai today
-  setForm('room_id', item.id);
-  setForm('tanggal', defaultDate);  // ✅ tanggal ikut pilihan, atau hari ini
-  setSelectedDate(defaultDate);     // supaya konsisten juga di kalender
-  setModalVisible(true);
+    setForm('room_id', item.id);
+    setModalVisible(true);
   };
 
   const handleAddAgenda = async () => {
@@ -123,8 +120,10 @@ const AgendaCalendar = ({navigation, route}) => {
       );
 
       dispatch(setLoading({isLoading: true}));
+      const tokenData = await getData('token');
+      const token = tokenData?.value;
 
-      await axios.post(
+      const response = await axios.post(
         `${API_HOST.url}/agendas`,
         {
           ...form,
@@ -138,24 +137,21 @@ const AgendaCalendar = ({navigation, route}) => {
         },
       );
 
-      // update state agenda lokal
       const updatedAgenda = {...agendaData};
       if (!updatedAgenda[selectedDate]) updatedAgenda[selectedDate] = [];
       updatedAgenda[selectedDate].push({
         ...form,
         waktu_mulai: formattedStartTime,
         waktu_selesai: formattedEndTime,
-        status: 'Pending',
       });
 
+      // Sort the updated agenda by waktu_mulai in ascending order
       updatedAgenda[selectedDate].sort((a, b) =>
         moment(a.waktu_mulai, 'HH:mm').diff(moment(b.waktu_mulai, 'HH:mm')),
       );
 
       setAgendaData(updatedAgenda);
-
-      // navigate lebih ringan dibanding replace
-      navigation.navigate('SuccessBooking');
+      navigation.replace('SuccessBooking');
     } catch (error) {
       showMessage(
         error.response?.data?.message || 'Error adding agenda',
@@ -168,30 +164,26 @@ const AgendaCalendar = ({navigation, route}) => {
     }
   };
 
-  // optimasi: markedDates dibuat hanya jika agendaData/selectedDate/today berubah
-  const markedDates = useMemo(() => {
-    const marks = {};
-    for (const date in agendaData) {
-      marks[date] = {marked: true, selected: true, selectedColor: 'grey'};
-    }
-    if (selectedDate) {
-      marks[selectedDate] = {
-        ...(marks[selectedDate] || {}),
-        selected: true,
-        selectedColor: '#08CDFE',
-      };
-    }
-    if (today) {
-      marks[today] = {
-        ...(marks[today] || {}),
-        dotColor: 'white',
-      };
-    }
-    return marks;
-  }, [agendaData, selectedDate, today]);
+  const markedDates = {};
+  for (const date in agendaData) {
+    markedDates[date] = {marked: true, selected: true, selectedColor: 'grey'};
+  }
+
+  if (selectedDate) {
+    markedDates[selectedDate] = {
+      marked: true,
+      selected: true,
+      selectedColor: '#08CDFE',
+    };
+  }
+
+  if (today) {
+    markedDates[today] = {...markedDates[today], dotColor: 'white'};
+  }
 
   return (
-    <View style={styles.container}>
+  <View style={styles.container}>
+    <ScrollView>
       <View style={styles.innerContainer}>
         <Header
           title="Kalender"
@@ -217,20 +209,20 @@ const AgendaCalendar = ({navigation, route}) => {
           />
         )}
       </View>
+    </ScrollView>
+    <AddButton onPress={handleOpenModal} />
+    <AgendaModal
+      visible={modalVisible}
+      onClose={() => setModalVisible(false)}
+      form={form}
+      setForm={(name, value) => setForm(name, value)}
+      onSubmit={handleAddAgenda}
+    />
+  </View>
+);
 
-      <AddButton onPress={handleOpenModal} />
-      <AgendaModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        form={form}
-        setForm={(name, value) => setForm(name, value)}
-        onSubmit={handleAddAgenda}
-      />
-    </View>
-  );
 };
 
-// cek apakah tanggal sudah lewat
 const isPastDate = date => {
   const today = moment().startOf('day');
   const agendaDate = moment(date);
@@ -240,13 +232,13 @@ const isPastDate = date => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'white', // background utama tetap putih
   },
   innerContainer: {
     flex: 1,
   },
   greySection: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#f0f0f0', // warna abu-abu
     paddingVertical: 10,
     paddingHorizontal: 5,
   },

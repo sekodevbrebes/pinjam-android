@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   agendaTitle: {
-    fontSize: 14,
+    fontSize: 15,
     marginBottom: 10,
     fontWeight: 'bold',
     fontFamily: 'Poppins-Regular',
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 20,
+    elevation: 6,
   },
 });
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {ICTime} from '../../assets';
+import {IceUsers, ICTime} from '../../assets';
 import {formatTime} from '../../utilities';
 
 const AgendaItem = ({agenda, onPress}) => {
@@ -31,6 +31,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor : '#f0f0f0'
   },
   timeContainer: {
     flexDirection: 'row',
@@ -38,8 +40,9 @@ const styles = StyleSheet.create({
   },
   time: {
     fontFamily: 'Poppins-Regular',
-    color: '#8F9BB3',
+    color: '#000000',
     paddingLeft: 14,
+    fontWeight:'bold'
   },
   activityContainer: {
     paddingLeft: 30,
@@ -47,13 +50,14 @@ const styles = StyleSheet.create({
   },
   activity: {
     fontFamily: 'Poppins-Regular',
-    color: '#8F9BB3',
-    lineHeight: 24,
+        lineHeight: 24,
+    fontSize: 16,
+    fontWeight:'bold'
   },
   peminjam: {
     fontFamily: 'Poppins-Regular',
     color: '#8F9BB3',
-    textDecorationLine: 'underline',
+  
   },
 });
 

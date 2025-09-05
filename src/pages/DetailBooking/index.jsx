@@ -6,7 +6,6 @@ import {Header, ListDetail} from '../../components';
 
 const DetailBooking = ({route, navigation}) => {
   const booking = route.params;
-
   // Format tanggal
   const formattedTanggal = moment(booking.tanggal)
     .locale('id')
@@ -14,7 +13,6 @@ const DetailBooking = ({route, navigation}) => {
   const formattedCreatedAt = moment(booking.created_at)
     .locale('id')
     .format('dddd, D MMMM YYYY');
-
   // Format waktu
   const formattedWaktuMulai = moment(booking.waktu_mulai, 'HH:mm:ss').format(
     'HH:mm',
@@ -23,7 +21,6 @@ const DetailBooking = ({route, navigation}) => {
     booking.waktu_selesai,
     'HH:mm:ss',
   ).format('HH:mm');
-
   return (
     <View>
       <Header

@@ -1,29 +1,26 @@
-import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import React, { memo } from 'react';
+import { ActivityIndicator, StyleSheet, View, Text } from 'react-native';
 
-const Loading = () => {
-    return (
-        <View style={styles.container}>
-            <ActivityIndicator size='large' color='green' />
-        </View>
-    );
-}
+const Loading = () => (
+  <View style={styles.container}>
+    <ActivityIndicator size="small" color="green" />
+    <Text style={styles.text}>Loading...</Text>
+  </View>
+);
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        position: 'absolute',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0,0,0,0.2)',
-    },
-    text: {
-        fontSize: 18,
-        fontFamily:'Poppins-Regular',
-        marginTop: 12,
-    }
-})
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.2)',
+  },
+  text: {
+    marginTop: 12,
+    fontSize: 16,
+    fontWeight: '500',
+    color: 'grey',
+  },
+});
 
-export default Loading;
+export default memo(Loading);

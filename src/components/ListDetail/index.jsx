@@ -22,7 +22,6 @@ import Button from '../Button';
 const {width} = Dimensions.get('window');
 
 const ListRoom = ({
-  navigation,
   name,
   tanggal,
   created_at,
@@ -37,7 +36,6 @@ const ListRoom = ({
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [reason, setReason] = useState('');
-  const [cancellationReason, setCancellationReason] = useState('');
 
   // Mendapatkan data ruangan dari Redux store
   const rooms = useSelector(state => state.home.rooms);
@@ -64,9 +62,6 @@ const ListRoom = ({
       const tokenData = await getData('token');
       const token = tokenData?.value;
 
-      console.log('Token:', token);
-      console.log('Data yang dikirim untuk pembatalan:', data);
-
       // Mengirimkan permintaan ke endpoint untuk mengubah status menggunakan metode POST
       await axios.post(
         `${API_HOST.url}/agendas/${id}/change-status`,
@@ -92,12 +87,6 @@ const ListRoom = ({
       console.log('Response:', 'Success Cancel Booking and Update Reason!');
       setModalVisible(false);
 
-      // Pastikan navigation.reset tersedia sebelum menggunakannya
-      // if (navigation && navigation.reset) {
-      //   navigation.reset({index: 0, routes: [{name: 'MainApp'}]});
-      // } else {
-      //   console.warn('navigation.reset is not available');
-      // }
     } catch (error) {
       console.log(
         'Error response cancel: ',

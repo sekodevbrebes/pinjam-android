@@ -14,6 +14,7 @@ import ICTime from './time.svg'
 import ICNext from './arrow_right.svg'
 import IcEyeOff from './eye-off.svg'
 import IcEyeOn from './eye.svg'
+import IceUsers from './users.svg'
 
 export {
     BackButton,
@@ -30,5 +31,6 @@ export {
     ICTime,
     ICNext,
     IcEyeOff,
-    IcEyeOn
+    IcEyeOn,
+    IceUsers
 }

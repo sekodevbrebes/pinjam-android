@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isError: false,   // ✅ default false, jangan true
-  message: '',
+  isError: true,
+  message: 'Error',
   isLoading: false,
 };
 
@@ -25,4 +25,14 @@ const globalSlice = createSlice({
 });
 
 export const { setError, clearError, setLoading } = globalSlice.actions;
+
+// 🔥 Helper reusable untuk loading otomatis mati setelah waktu tertentu
+export const setLoadingWithTimeout = (duration = 3000) => (dispatch) => {
+  dispatch(setLoading({ isLoading: true }));
+
+  setTimeout(() => {
+    dispatch(setLoading({ isLoading: false }));
+  }, duration);
+};
+
 export default globalSlice.reducer;

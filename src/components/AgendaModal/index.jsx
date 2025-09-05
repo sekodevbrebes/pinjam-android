@@ -6,17 +6,15 @@ import Gap from '../Gap';
 import TextAreaType from '../Input/textarea';
 import TimeType from '../Input/timepicker';
 import moment from 'moment';
-import 'moment/locale/id'; // Import locale Indonesia untuk moment
+import 'moment/locale/id';
 
 const {width} = Dimensions.get('window');
 
 const AgendaModal = ({visible, onClose, onSubmit, form, setForm}) => {
-  // Format tanggal untuk tampilan dan untuk penyimpanan di database MySQL
   const formattedDate = moment(form.tanggal).locale('id').format('D MMMM YYYY');
   const mysqlFormattedDate = moment(form.tanggal).format('YYYY-MM-DD'); // Format MySQL
 
   const onChangePeserta = value => {
-    // Hanya memperbolehkan angka
     const numberRegex = /^[0-9]*$/;
     if (numberRegex.test(value)) {
       setForm('peserta', value);
@@ -36,7 +34,7 @@ const AgendaModal = ({visible, onClose, onSubmit, form, setForm}) => {
             label="Date"
             placeholder="Selected Date"
             value={formattedDate}
-            editable={false} // Membuat input tidak bisa diedit
+            editable={false} 
           />
           <Gap height={12} />
           <View style={styles.hidden}>
@@ -44,7 +42,7 @@ const AgendaModal = ({visible, onClose, onSubmit, form, setForm}) => {
               label="Room ID"
               placeholder="Room ID"
               value={form.room_id}
-              editable={false} // Membuat input tidak bisa diedit
+              editable={false}
             />
           </View>
           <Gap height={12} />
